@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubjectCategory {
+  FIVEM_CHEAT
+  GENERAL_GAME_CHEAT
+  CHEAT_RESELLER
+  CHEAT_DEVELOPMENT
+  LEAKING
+  EXPLOIT_COMMUNITY
+  HWID_SPOOFER
+  ACCOUNT_MARKETPLACE
+  UNKNOWN_SUSPICIOUS
+}
+
+enum Confidence {
+  UNVERIFIED
+  LOW
+  MEDIUM
+  HIGH
+  CONFIRMED
+}
+
+enum EvidenceSourceType {
+  MANUAL
+  PUBLIC_SOURCE
+  AUTHORIZED_EXPORT
+  INTERNAL_MODERATION_RECORD
+  USER_SUBMITTED
+}
+
+model Subject {
+  id          String          @id @default(cuid())
+  name        String          @unique
+  category    SubjectCategory
+  confidence  Confidence      @default(UNVERIFIED)
+  description String?
+  sourceUrl   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  servers     DiscordServer[]
+}
+
+model DiscordServer {
+  id          String      @id @default(cuid())
+  discordId   String      @unique
+  name        String
+  subjectId   String?
+  subject     Subject?    @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  confidence  Confidence  @default(UNVERIFIED)
+  sourceUrl   String?
+  active      Boolean?
+  firstSeenAt DateTime?
+  lastSeenAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  evidence    Evidence[]
+}
+
+model DiscordUser {
+  id        String     @id @default(cuid())
+  discordId String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  evidence  Evidence[]
+}
+
+model Evidence {
+  id          String             @id @default(cuid())
+  userId      String
+  user        DiscordUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serverId    String?
+  server      DiscordServer?     @relation(fields: [serverId], references: [id], onDelete: SetNull)
+
+  sourceType  EvidenceSourceType
+  sourceRef   String
+  observedAt  DateTime
+  endedAt     DateTime?
+  confidence  Confidence         @default(UNVERIFIED)
+
+  roleNames   String[]
+  notes       String?
+  createdBy   String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([serverId])
+  @@index([observedAt])
+}
