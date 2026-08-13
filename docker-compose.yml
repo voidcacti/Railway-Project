@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: intel
+      POSTGRES_PASSWORD: intel
+      POSTGRES_DB: intel
+    ports:
+      - "5432:5432"
+    volumes:
+      - intel_postgres:/var/lib/postgresql/data
+
+volumes:
+  intel_postgres:
