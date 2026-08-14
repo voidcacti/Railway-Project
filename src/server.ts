@@ -250,10 +250,6 @@ app.post(
       });
     }
 
-    /*
-      Record the successful login time.
-    */
-
     await prisma.staffUser.update({
       where: {
         id: user.id
@@ -331,7 +327,7 @@ app.get(
 
 /*
 |--------------------------------------------------------------------------
-| STAFF MANAGEMENT
+| STAFF
 |--------------------------------------------------------------------------
 */
 
@@ -385,9 +381,7 @@ app.post(
       ])
     }).parse(req.body);
 
-    if (
-      bcrypt.truncates(body.password)
-    ) {
+    if (bcrypt.truncates(body.password)) {
       return reply.code(400).send({
         error:
           "Password is too long."
@@ -553,79 +547,6 @@ app.get(
   }
 );
 
-app.post(
-  "/api/v1/subjects",
-  {
-    preHandler:
-      requireRole(["ADMIN"])
-  },
-  async (req, reply) => {
-    const body = z.object({
-      name: z
-        .string()
-        .min(2)
-        .max(100),
-
-      category: z.enum([
-        "FIVEM_CHEAT",
-        "GENERAL_GAME_CHEAT",
-        "CHEAT_RESELLER",
-        "CHEAT_DEVELOPMENT",
-        "LEAKING",
-        "EXPLOIT_COMMUNITY",
-        "HWID_SPOOFER",
-        "ACCOUNT_MARKETPLACE",
-        "UNKNOWN_SUSPICIOUS"
-      ]),
-
-      confidence: z
-        .enum([
-          "UNVERIFIED",
-          "LOW",
-          "MEDIUM",
-          "HIGH",
-          "CONFIRMED"
-        ])
-        .default(
-          "UNVERIFIED"
-        ),
-
-      description: z
-        .string()
-        .max(2000)
-        .optional(),
-
-      sourceUrl: z
-        .string()
-        .url()
-        .optional()
-    }).parse(req.body);
-
-    const existing =
-      await prisma.subject.findUnique({
-        where: {
-          name: body.name
-        }
-      });
-
-    if (existing) {
-      return reply.code(409).send({
-        error:
-          "Subject already exists"
-      });
-    }
-
-    const subject =
-      await prisma.subject.create({
-        data: body
-      });
-
-    return reply
-      .code(201)
-      .send(subject);
-  }
-);
-
 /*
 |--------------------------------------------------------------------------
 | COMMUNITIES
@@ -711,22 +632,6 @@ app.post(
       });
     }
 
-    if (body.subjectId) {
-      const subject =
-        await prisma.subject.findUnique({
-          where: {
-            id: body.subjectId
-          }
-        });
-
-      if (!subject) {
-        return reply.code(400).send({
-          error:
-            "Unknown subjectId"
-        });
-      }
-    }
-
     const server =
       await prisma.discordServer.create({
         data: body,
@@ -808,6 +713,149 @@ app.get(
       evidence:
         user.evidence
     };
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
+| MEMBERSHIPS
+|--------------------------------------------------------------------------
+*/
+
+app.post(
+  "/api/v1/users/:discordId/evidence",
+  {
+    preHandler:
+      requireRole([
+        "ADMIN",
+        "ANALYST"
+      ])
+  },
+  async (req: any, reply) => {
+    const { discordId } =
+      z.object({
+        discordId:
+          discordIdSchema
+      }).parse(req.params);
+
+    const body = z.object({
+      serverDiscordId:
+        discordIdSchema,
+
+      observedAt:
+        z.coerce.date(),
+
+      endedAt:
+        z.coerce
+          .date()
+          .optional(),
+
+      confidence: z
+        .enum([
+          "UNVERIFIED",
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "CONFIRMED"
+        ])
+        .default("HIGH"),
+
+      roleNames:
+        z.array(
+          z.string().max(100)
+        )
+        .default([])
+    }).parse(req.body);
+
+    const server =
+      await prisma.discordServer.findUnique({
+        where: {
+          discordId:
+            body.serverDiscordId
+        }
+      });
+
+    if (!server) {
+      return reply.code(400).send({
+        error:
+          "Unknown community"
+      });
+    }
+
+    const user =
+      await prisma.discordUser.upsert({
+        where: {
+          discordId
+        },
+
+        update: {},
+
+        create: {
+          discordId
+        }
+      });
+
+    const existing =
+      await prisma.evidence.findFirst({
+        where: {
+          userId:
+            user.id,
+
+          serverId:
+            server.id
+        }
+      });
+
+    if (existing) {
+      return reply.code(409).send({
+        error:
+          "Association already exists"
+      });
+    }
+
+    const evidence =
+      await prisma.evidence.create({
+        data: {
+          userId:
+            user.id,
+
+          serverId:
+            server.id,
+
+          sourceType:
+            "INTERNAL_MODERATION_RECORD",
+
+          sourceRef:
+            "Dashboard membership entry",
+
+          observedAt:
+            body.observedAt,
+
+          endedAt:
+            body.endedAt,
+
+          confidence:
+            body.confidence,
+
+          roleNames:
+            body.roleNames,
+
+          createdBy:
+            req.staffUser.username
+        },
+
+        include: {
+          server: {
+            include: {
+              subject: true
+            }
+          }
+        }
+      });
+
+    return reply
+      .code(201)
+      .send(evidence);
   }
 );
 
