@@ -27,51 +27,22 @@
     body {
       margin: 0;
       min-height: 100vh;
-
       color: var(--text);
-
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(
-          circle at 20% 10%,
-          rgba(56, 189, 248, 0.08),
-          transparent 35%
-        ),
-        radial-gradient(
-          circle at 85% 20%,
-          rgba(129, 140, 248, 0.08),
-          transparent 35%
-        ),
+        radial-gradient(circle at 20% 10%, rgba(56,189,248,.08), transparent 35%),
+        radial-gradient(circle at 85% 20%, rgba(129,140,248,.08), transparent 35%),
         var(--bg);
     }
 
     body::before {
       content: "";
-
       position: fixed;
       inset: 0;
-
       pointer-events: none;
-
       background-image:
-        linear-gradient(
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,.025) 1px,
-          transparent 1px
-        );
-
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
       background-size: 42px 42px;
     }
 
@@ -122,11 +93,8 @@
 
     label {
       display: block;
-
       margin-bottom: 7px;
-
       color: #cbd5e1;
-
       font-size: 13px;
       font-weight: 700;
     }
@@ -134,118 +102,68 @@
     input,
     select {
       width: 100%;
-
       padding: 13px 14px;
-
       margin-bottom: 16px;
-
       color: white;
-
-      background:
-        rgba(3, 7, 18, 0.58);
-
-      border:
-        1px solid rgba(148,163,184,.18);
-
+      background: rgba(3,7,18,.58);
+      border: 1px solid rgba(148,163,184,.18);
       border-radius: 10px;
-
       outline: none;
     }
 
     input:focus,
     select:focus {
-      border-color:
-        rgba(56,189,248,.55);
-
-      box-shadow:
-        0 0 0 3px rgba(56,189,248,.08);
+      border-color: rgba(56,189,248,.55);
+      box-shadow: 0 0 0 3px rgba(56,189,248,.08);
     }
 
     .primary-btn {
       padding: 12px 17px;
-
       border: none;
-
       color: #06101c;
-
-      background:
-        linear-gradient(
-          135deg,
-          #7dd3fc,
-          #818cf8
-        );
-
+      background: linear-gradient(135deg,#7dd3fc,#818cf8);
       border-radius: 10px;
-
       font-weight: 800;
     }
 
     .secondary-btn {
       padding: 10px 13px;
-
-      border:
-        1px solid var(--border);
-
+      border: 1px solid var(--border);
       color: white;
-
-      background:
-        rgba(148,163,184,.1);
-
+      background: rgba(148,163,184,.1);
       border-radius: 9px;
     }
 
-    /*
-    LOGIN
-    */
-
     .login-screen {
       min-height: 100vh;
-
       display: grid;
       place-items: center;
-
       padding: 30px;
     }
 
     .login-shell {
-      width:
-        min(470px, 100%);
+      width: min(470px,100%);
     }
 
     .brand-lockup {
       text-align: center;
-
       margin-bottom: 28px;
     }
 
     .brand-icon {
       width: 74px;
       height: 74px;
-
       display: grid;
       place-items: center;
-
-      margin:
-        0 auto 18px;
-
+      margin: 0 auto 18px;
       border-radius: 20px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(56,189,248,.2),
-          rgba(129,140,248,.18)
-        );
-
-      border:
-        1px solid rgba(56,189,248,.3);
-
+      background: linear-gradient(135deg,rgba(56,189,248,.2),rgba(129,140,248,.18));
+      border: 1px solid rgba(56,189,248,.3);
       font-size: 30px;
     }
 
     .brand-lockup h1 {
       margin-bottom: 7px;
-
       font-size: 30px;
     }
 
@@ -256,21 +174,12 @@
     .system-status {
       display: inline-flex;
       align-items: center;
-
       gap: 8px;
-
       padding: 6px 10px;
-
       color: #bbf7d0;
-
-      background:
-        rgba(74,222,128,.07);
-
-      border:
-        1px solid rgba(74,222,128,.18);
-
+      background: rgba(74,222,128,.07);
+      border: 1px solid rgba(74,222,128,.18);
       border-radius: 999px;
-
       font-size: 11px;
       font-weight: 800;
     }
@@ -278,95 +187,58 @@
     .status-dot {
       width: 7px;
       height: 7px;
-
       background: var(--success);
-
       border-radius: 50%;
-
-      box-shadow:
-        0 0 12px rgba(74,222,128,.9);
+      box-shadow: 0 0 12px rgba(74,222,128,.9);
     }
 
     .login-card {
       padding: 28px;
-
-      background:
-        rgba(15,23,42,.9);
-
-      border:
-        1px solid var(--border);
-
+      background: rgba(15,23,42,.9);
+      border: 1px solid var(--border);
       border-radius: 18px;
     }
 
     .security-label {
       margin-bottom: 24px;
-
       color: var(--muted);
-
       font-size: 11px;
       font-weight: 700;
-
       text-transform: uppercase;
-
       letter-spacing: .12em;
     }
 
-    /*
-    DASHBOARD
-    */
-
     .dashboard-layout {
       display: grid;
-
-      grid-template-columns:
-        260px minmax(0,1fr);
-
+      grid-template-columns: 260px minmax(0,1fr);
       min-height: 100vh;
     }
 
     .sidebar {
       position: sticky;
       top: 0;
-
       height: 100vh;
-
       padding: 26px 18px;
-
-      background:
-        rgba(5,9,18,.88);
-
-      border-right:
-        1px solid var(--border);
+      background: rgba(5,9,18,.88);
+      border-right: 1px solid var(--border);
     }
 
     .sidebar-brand {
       display: flex;
       align-items: center;
-
       gap: 12px;
-
-      padding:
-        0 8px 25px;
-
+      padding: 0 8px 25px;
       margin-bottom: 20px;
-
-      border-bottom:
-        1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .sidebar-logo {
       width: 43px;
       height: 43px;
-
       display: grid;
       place-items: center;
-
       border-radius: 12px;
-
-      background:
-        rgba(56,189,248,.12);
-
+      background: rgba(56,189,248,.12);
       font-size: 19px;
     }
 
@@ -376,137 +248,87 @@
 
     .sidebar-brand span {
       display: block;
-
       margin-top: 3px;
-
       color: var(--muted);
-
       font-size: 9px;
       font-weight: 700;
-
       text-transform: uppercase;
-
       letter-spacing: .09em;
     }
 
     .nav-section-label {
-      padding:
-        0 10px;
-
+      padding: 0 10px;
       margin-bottom: 8px;
-
       color: #64748b;
-
       font-size: 10px;
       font-weight: 800;
-
       text-transform: uppercase;
-
       letter-spacing: .12em;
     }
 
     .nav-button {
       width: 100%;
-
       display: flex;
       align-items: center;
-
       gap: 11px;
-
       padding: 11px 12px;
-
       margin-bottom: 6px;
-
-      border:
-        1px solid transparent;
-
+      border: 1px solid transparent;
       border-radius: 11px;
-
       color: #cbd5e1;
-
       background: transparent;
-
       text-align: left;
     }
 
     .nav-button.active {
       color: white;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(56,189,248,.14),
-          rgba(129,140,248,.07)
-        );
-
-      border:
-        1px solid rgba(56,189,248,.12);
+      background: linear-gradient(90deg,rgba(56,189,248,.14),rgba(129,140,248,.07));
+      border: 1px solid rgba(56,189,248,.12);
     }
 
     .nav-icon {
       width: 25px;
-
       color: var(--accent);
-
       text-align: center;
     }
 
     .sidebar-user {
       position: absolute;
-
       bottom: 20px;
       left: 18px;
       right: 18px;
-
       padding: 14px;
-
-      background:
-        rgba(15,23,42,.7);
-
-      border:
-        1px solid var(--border);
-
+      background: rgba(15,23,42,.7);
+      border: 1px solid var(--border);
       border-radius: 13px;
     }
 
     .authenticated-label {
       color: #64748b;
-
       font-size: 9px;
       font-weight: 800;
-
       text-transform: uppercase;
     }
 
     .user-name {
       margin-top: 5px;
-
       font-weight: 700;
     }
 
     .role-pill {
       display: inline-flex;
-
       margin-top: 7px;
-
       padding: 4px 8px;
-
       color: #bae6fd;
-
-      background:
-        rgba(56,189,248,.1);
-
+      background: rgba(56,189,248,.1);
       border-radius: 999px;
-
       font-size: 10px;
       font-weight: 800;
     }
 
     .main {
       min-width: 0;
-
-      padding:
-        34px clamp(24px,4vw,58px) 60px;
+      padding: 34px clamp(24px,4vw,58px) 60px;
     }
 
     .topbar {
@@ -515,73 +337,44 @@
 
     .page-title {
       margin-bottom: 6px;
-
-      font-size:
-        clamp(28px,3vw,38px);
+      font-size: clamp(28px,3vw,38px);
     }
 
     .page-description {
       color: var(--muted);
     }
 
-    /*
-    PANELS
-    */
-
     .panel {
       padding: 22px;
-
       margin-bottom: 20px;
-
-      background:
-        rgba(15,23,42,.82);
-
-      border:
-        1px solid var(--border);
-
+      background: rgba(15,23,42,.82);
+      border: 1px solid var(--border);
       border-radius: 16px;
     }
 
     .panel-heading {
       display: flex;
-
       justify-content: space-between;
-
       gap: 16px;
-
       margin-bottom: 20px;
     }
 
     .panel-heading h2 {
       margin: 0;
-
       font-size: 18px;
     }
 
     .panel-heading p {
-      margin:
-        5px 0 0;
-
+      margin: 5px 0 0;
       color: var(--muted);
-
       font-size: 13px;
     }
 
     .grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(240px,1fr)
-        );
-
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
       gap: 15px;
     }
-
-    /*
-    LOOKUP
-    */
 
     .lookup-shell {
       max-width: 900px;
@@ -589,12 +382,8 @@
 
     .lookup-input-row {
       display: grid;
-
-      grid-template-columns:
-        1fr auto;
-
+      grid-template-columns: 1fr auto;
       gap: 10px;
-
       align-items: end;
     }
 
@@ -612,100 +401,66 @@
 
     .result-banner {
       padding: 14px 16px;
-
       border-radius: 11px;
-
       font-size: 13px;
       font-weight: 800;
     }
 
     .match-banner {
       color: #bbf7d0;
-
-      background:
-        rgba(34,197,94,.09);
-
-      border:
-        1px solid rgba(74,222,128,.18);
+      background: rgba(34,197,94,.09);
+      border: 1px solid rgba(74,222,128,.18);
     }
 
     .no-match-banner {
       color: #cbd5e1;
-
-      background:
-        rgba(148,163,184,.06);
-
-      border:
-        1px solid var(--border);
+      background: rgba(148,163,184,.06);
+      border: 1px solid var(--border);
     }
 
     .error-banner {
       color: #fecaca;
-
-      background:
-        rgba(248,113,113,.08);
-
-      border:
-        1px solid rgba(248,113,113,.18);
+      background: rgba(248,113,113,.08);
+      border: 1px solid rgba(248,113,113,.18);
     }
 
     .result-card {
       overflow: hidden;
-
       margin-top: 18px;
-
-      background:
-        rgba(15,23,42,.9);
-
-      border:
-        1px solid var(--border);
-
+      background: rgba(15,23,42,.9);
+      border: 1px solid var(--border);
       border-radius: 16px;
     }
 
     .result-header {
       padding: 20px;
-
-      border-bottom:
-        1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .result-id {
       display: flex;
       align-items: center;
-
       gap: 9px;
-
       flex-wrap: wrap;
-
       margin-top: 7px;
-
-      font-family:
-        monospace;
-
+      font-family: monospace;
       font-size: 17px;
     }
 
     .association {
       padding: 20px;
-
-      border-bottom:
-        1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .association-top {
       display: flex;
-
       justify-content: space-between;
-
       gap: 18px;
-
       margin-bottom: 18px;
     }
 
     .association-name {
       margin-bottom: 6px;
-
       font-size: 20px;
     }
 
@@ -714,63 +469,41 @@
     .status-pill,
     .badge {
       display: inline-flex;
-
       padding: 5px 9px;
-
       border-radius: 999px;
-
       font-size: 10px;
       font-weight: 700;
     }
 
     .category-tag {
       color: #bae6fd;
-
-      background:
-        rgba(56,189,248,.08);
+      background: rgba(56,189,248,.08);
     }
 
     .confidence {
       color: #fde68a;
-
-      background:
-        rgba(250,204,21,.08);
+      background: rgba(250,204,21,.08);
     }
 
     .data-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(190px,1fr)
-        );
-
+      grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
       gap: 14px;
     }
 
     .data-item {
       padding: 13px 14px;
-
-      background:
-        rgba(3,7,18,.35);
-
-      border:
-        1px solid rgba(148,163,184,.08);
-
+      background: rgba(3,7,18,.35);
+      border: 1px solid rgba(148,163,184,.08);
       border-radius: 10px;
     }
 
     .data-label {
       margin-bottom: 5px;
-
       color: #64748b;
-
       font-size: 9px;
       font-weight: 800;
-
       text-transform: uppercase;
-
       letter-spacing: .1em;
     }
 
@@ -778,83 +511,42 @@
       font-size: 13px;
     }
 
-    .copy-btn {
-      padding: 5px 8px;
-
-      margin-left: 4px;
-
-      color: #cbd5e1;
-
-      background:
-        rgba(148,163,184,.08);
-
-      border:
-        1px solid var(--border);
-
-      border-radius: 7px;
-
-      font-size: 10px;
-    }
-
-    /*
-    COMMUNITIES + STAFF
-    */
-
     .community-card,
     .staff-card {
       padding: 18px;
-
       margin-top: 13px;
-
-      background:
-        rgba(3,7,18,.36);
-
-      border:
-        1px solid rgba(148,163,184,.1);
-
+      background: rgba(3,7,18,.36);
+      border: 1px solid rgba(148,163,184,.1);
       border-radius: 13px;
     }
 
     .community-top,
     .staff-top {
       display: flex;
-
       justify-content: space-between;
-
       gap: 15px;
     }
 
     .status-active {
       color: #bbf7d0;
-
-      background:
-        rgba(74,222,128,.08);
+      background: rgba(74,222,128,.08);
     }
 
     .status-disabled {
       color: #fecaca;
-
-      background:
-        rgba(248,113,113,.08);
+      background: rgba(248,113,113,.08);
     }
 
     .status-history {
       color: #fde68a;
-
-      background:
-        rgba(250,204,21,.08);
+      background: rgba(250,204,21,.08);
     }
 
     .staff-actions {
       display: grid;
-
-      grid-template-columns:
-        180px 150px auto;
-
+      grid-template-columns: 180px 150px auto;
       gap: 10px;
-
       margin-top: 16px;
-
       align-items: center;
     }
 
@@ -863,33 +555,25 @@
     }
 
     @media(max-width:850px) {
-
       .dashboard-layout {
         grid-template-columns: 1fr;
       }
 
       .sidebar {
         position: relative;
-
         height: auto;
-
         border-right: none;
       }
 
       .sidebar-user {
         position: static;
-
         margin-top: 18px;
       }
-
     }
-
   </style>
 </head>
 
 <body>
-
-<!-- LOGIN -->
 
 <div
   id="loginScreen"
@@ -971,8 +655,6 @@
 </div>
 
 
-<!-- DASHBOARD -->
-
 <div
   id="dashboard"
   class="dashboard-layout hidden"
@@ -1008,11 +690,17 @@
       class="nav-button active"
       onclick="showTab('lookup', this)"
     >
-      <span class="nav-icon">
-        ⌕
-      </span>
-
+      <span class="nav-icon">⌕</span>
       User Lookup
+    </button>
+
+    <button
+      id="membershipsTabButton"
+      class="nav-button hidden"
+      onclick="showTab('memberships', this)"
+    >
+      <span class="nav-icon">◎</span>
+      Memberships
     </button>
 
     <button
@@ -1020,10 +708,7 @@
       class="nav-button hidden"
       onclick="showTab('communities', this)"
     >
-      <span class="nav-icon">
-        ◫
-      </span>
-
+      <span class="nav-icon">◫</span>
       Communities
     </button>
 
@@ -1032,10 +717,7 @@
       class="nav-button hidden"
       onclick="showTab('staff', this)"
     >
-      <span class="nav-icon">
-        ◉
-      </span>
-
+      <span class="nav-icon">◉</span>
       Staff
     </button>
 
@@ -1057,10 +739,7 @@
 
       <button
         class="secondary-btn"
-        style="
-          width:100%;
-          margin-top:12px;
-        "
+        style="width:100%; margin-top:12px;"
         onclick="logout()"
       >
         Sign Out
@@ -1137,7 +816,7 @@
             class="primary-btn"
             onclick="searchUser()"
           >
-            Search Discord
+            Search Intelligence
           </button>
 
         </div>
@@ -1153,6 +832,152 @@
         id="lookupResults"
         class="lookup-shell"
       ></div>
+
+    </section>
+
+
+    <!-- MEMBERSHIPS -->
+
+    <section
+      id="memberships"
+      class="tab"
+    >
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              Add Community Membership
+            </h2>
+
+            <p>
+              Associate a Discord user with a registered community.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="grid">
+
+          <div>
+
+            <label>
+              Discord User ID
+            </label>
+
+            <input
+              id="membershipUserId"
+              placeholder="198165163172429824"
+            />
+
+          </div>
+
+          <div>
+
+            <label>
+              Community
+            </label>
+
+            <select id="membershipCommunity">
+
+              <option value="">
+                Select community
+              </option>
+
+            </select>
+
+          </div>
+
+          <div>
+
+            <label>
+              Roles
+            </label>
+
+            <input
+              id="membershipRoles"
+              placeholder="Member, Customer, FiveM"
+            />
+
+          </div>
+
+          <div>
+
+            <label>
+              Confidence
+            </label>
+
+            <select id="membershipConfidence">
+
+              <option>
+                UNVERIFIED
+              </option>
+
+              <option>
+                LOW
+              </option>
+
+              <option>
+                MEDIUM
+              </option>
+
+              <option selected>
+                HIGH
+              </option>
+
+              <option>
+                CONFIRMED
+              </option>
+
+            </select>
+
+          </div>
+
+          <div>
+
+            <label>
+              Observed At
+            </label>
+
+            <input
+              id="membershipObservedAt"
+              type="datetime-local"
+            />
+
+          </div>
+
+          <div>
+
+            <label>
+              Ended At
+            </label>
+
+            <input
+              id="membershipEndedAt"
+              type="datetime-local"
+            />
+
+          </div>
+
+        </div>
+
+        <button
+          class="primary-btn"
+          onclick="addMembership()"
+        >
+          Add Association
+        </button>
+
+        <div
+          id="membershipStatus"
+          class="status-box"
+        ></div>
+
+      </div>
 
     </section>
 
@@ -1510,10 +1335,8 @@ async function apiRequest(
     null;
 
   try {
-
     data =
       await response.json();
-
   }
   catch {}
 
@@ -1530,11 +1353,9 @@ async function apiRequest(
       response.status;
 
     throw error;
-
   }
 
   return data;
-
 }
 
 
@@ -1564,7 +1385,6 @@ async function checkSession() {
     showLogin();
 
   }
-
 }
 
 
@@ -1599,15 +1419,12 @@ async function login() {
       await apiRequest(
         `${API_BASE}/api/v1/auth/login`,
         {
-
           method:
             "POST",
 
           headers: {
-
             "Content-Type":
               "application/json"
-
           },
 
           body:
@@ -1615,7 +1432,6 @@ async function login() {
               username,
               password
             })
-
         }
       );
 
@@ -1640,9 +1456,7 @@ async function login() {
           ${escapeHtml(error.message)}
         </div>
       `;
-
   }
-
 }
 
 
@@ -1665,7 +1479,6 @@ async function logout() {
     null;
 
   showLogin();
-
 }
 
 
@@ -1684,7 +1497,6 @@ function showLogin() {
     )
     .classList
     .remove("hidden");
-
 }
 
 
@@ -1721,11 +1533,15 @@ function showDashboard() {
       );
 
   configureRoleAccess();
-
 }
 
 
 function configureRoleAccess() {
+
+  const memberships =
+    document.getElementById(
+      "membershipsTabButton"
+    );
 
   const communities =
     document.getElementById(
@@ -1742,6 +1558,10 @@ function configureRoleAccess() {
       "addCommunityCard"
     );
 
+  memberships
+    .classList
+    .add("hidden");
+
   communities
     .classList
     .add("hidden");
@@ -1755,24 +1575,23 @@ function configureRoleAccess() {
     .add("hidden");
 
   if (
-    currentUser.role ===
-    "ANALYST"
+    currentUser.role === "ANALYST" ||
+    currentUser.role === "ADMIN"
   ) {
+
+    memberships
+      .classList
+      .remove("hidden");
 
     communities
       .classList
       .remove("hidden");
-
   }
 
   if (
     currentUser.role ===
     "ADMIN"
   ) {
-
-    communities
-      .classList
-      .remove("hidden");
 
     staff
       .classList
@@ -1781,9 +1600,7 @@ function configureRoleAccess() {
     addCommunity
       .classList
       .remove("hidden");
-
   }
-
 }
 
 
@@ -1808,8 +1625,8 @@ function showTab(
       ".nav-button"
     )
     .forEach(
-      button =>
-        button.classList.remove(
+      nav =>
+        nav.classList.remove(
           "active"
         )
     );
@@ -1844,7 +1661,21 @@ function showTab(
 
     description.textContent =
       "Search a Discord ID against stored community intelligence.";
+  }
 
+  if (
+    id === "memberships"
+  ) {
+
+    title.textContent =
+      "Membership Associations";
+
+    description.textContent =
+      "Add user-to-community associations directly to the intelligence database.";
+
+    loadMembershipCommunities();
+
+    setDefaultObservedTime();
   }
 
   if (
@@ -1865,9 +1696,7 @@ function showTab(
     ) {
 
       loadSubjects();
-
     }
-
   }
 
   if (
@@ -1881,25 +1710,242 @@ function showTab(
       "View account activity and manage dashboard access.";
 
     loadStaff();
-
   }
-
 }
 
 
 /*
-USER LOOKUP
+MEMBERSHIPS
+*/
+
+async function loadMembershipCommunities() {
+
+  const select =
+    document.getElementById(
+      "membershipCommunity"
+    );
+
+  try {
+
+    const servers =
+      await apiRequest(
+        `${API_BASE}/api/v1/servers`
+      );
+
+    select.innerHTML =
+      `
+        <option value="">
+          Select community
+        </option>
+      `;
+
+    for (
+      const server
+      of servers
+    ) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        server.discordId;
+
+      option.textContent =
+        `${server.name} · ${server.subject?.name || "Unknown Product"}`;
+
+      select.appendChild(
+        option
+      );
+    }
+
+  }
+  catch {
+
+    select.innerHTML =
+      `
+        <option value="">
+          Unable to load communities
+        </option>
+      `;
+  }
+}
+
+
+function setDefaultObservedTime() {
+
+  const field =
+    document.getElementById(
+      "membershipObservedAt"
+    );
+
+  if (field.value) {
+    return;
+  }
+
+  const now =
+    new Date();
+
+  const local =
+    new Date(
+      now.getTime() -
+      now.getTimezoneOffset() * 60000
+    )
+    .toISOString()
+    .slice(0,16);
+
+  field.value =
+    local;
+}
+
+
+async function addMembership() {
+
+  const userId =
+    document.getElementById(
+      "membershipUserId"
+    ).value.trim();
+
+  const serverDiscordId =
+    document.getElementById(
+      "membershipCommunity"
+    ).value;
+
+  const confidence =
+    document.getElementById(
+      "membershipConfidence"
+    ).value;
+
+  const observedAt =
+    document.getElementById(
+      "membershipObservedAt"
+    ).value;
+
+  const endedAt =
+    document.getElementById(
+      "membershipEndedAt"
+    ).value;
+
+  const roles =
+    document.getElementById(
+      "membershipRoles"
+    )
+    .value
+    .split(",")
+    .map(
+      role =>
+        role.trim()
+    )
+    .filter(Boolean);
+
+  const status =
+    document.getElementById(
+      "membershipStatus"
+    );
+
+  status.innerHTML =
+    "";
+
+  if (
+    !userId ||
+    !serverDiscordId ||
+    !observedAt
+  ) {
+
+    status.innerHTML =
+      `
+        <span class="error">
+          Discord User ID, community, and observed time are required.
+        </span>
+      `;
+
+    return;
+  }
+
+  const body = {
+    serverDiscordId,
+
+    confidence,
+
+    roleNames:
+      roles,
+
+    observedAt:
+      new Date(
+        observedAt
+      ).toISOString()
+  };
+
+  if (endedAt) {
+
+    body.endedAt =
+      new Date(
+        endedAt
+      ).toISOString();
+  }
+
+  try {
+
+    await apiRequest(
+      `${API_BASE}/api/v1/users/${encodeURIComponent(userId)}/evidence`,
+      {
+        method:
+          "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(body)
+      }
+    );
+
+    status.innerHTML =
+      `
+        <span class="success">
+          Membership association added successfully.
+        </span>
+      `;
+
+    document.getElementById(
+      "membershipRoles"
+    ).value =
+      "";
+
+    document.getElementById(
+      "membershipEndedAt"
+    ).value =
+      "";
+  }
+  catch(error) {
+
+    status.innerHTML =
+      `
+        <span class="${
+          error.status === 409
+          ? "warning"
+          : "error"
+        }">
+          ${escapeHtml(error.message)}
+        </span>
+      `;
+  }
+}
+
+
+/*
+LOOKUP
 */
 
 async function searchUser() {
 
   const discordId =
-    document
-      .getElementById(
-        "lookupDiscordId"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "lookupDiscordId"
+    ).value.trim();
 
   const status =
     document.getElementById(
@@ -1927,7 +1973,6 @@ async function searchUser() {
       `;
 
     return;
-
   }
 
   try {
@@ -1957,7 +2002,6 @@ async function searchUser() {
         `;
 
       return;
-
     }
 
     if (!response.ok) {
@@ -1966,7 +2010,6 @@ async function searchUser() {
         data.error ||
         "Lookup failed"
       );
-
     }
 
     status.innerHTML =
@@ -1989,24 +2032,13 @@ async function searchUser() {
     wrapper.innerHTML =
       `
         <div class="result-header">
-
           <small>
             Discord User
           </small>
 
           <div class="result-id">
-
             ${escapeHtml(data.discordId)}
-
-            <button
-              class="copy-btn"
-              onclick="copyText('${escapeHtml(data.discordId)}')"
-            >
-              COPY
-            </button>
-
           </div>
-
         </div>
       `;
 
@@ -2070,7 +2102,6 @@ async function searchUser() {
           <div class="data-grid">
 
             <div class="data-item">
-
               <div class="data-label">
                 Product
               </div>
@@ -2078,11 +2109,9 @@ async function searchUser() {
               <div class="data-value">
                 ${escapeHtml(subject?.name || "Unknown")}
               </div>
-
             </div>
 
             <div class="data-item">
-
               <div class="data-label">
                 Guild ID
               </div>
@@ -2090,11 +2119,9 @@ async function searchUser() {
               <div class="data-value">
                 ${escapeHtml(server?.discordId || "Unknown")}
               </div>
-
             </div>
 
             <div class="data-item">
-
               <div class="data-label">
                 Observed
               </div>
@@ -2102,11 +2129,9 @@ async function searchUser() {
               <div class="data-value">
                 ${formatDate(evidence.observedAt)}
               </div>
-
             </div>
 
             <div class="data-item">
-
               <div class="data-label">
                 Roles
               </div>
@@ -2114,7 +2139,6 @@ async function searchUser() {
               <div class="data-value">
                 ${roles}
               </div>
-
             </div>
 
           </div>
@@ -2123,13 +2147,11 @@ async function searchUser() {
       wrapper.appendChild(
         association
       );
-
     }
 
     results.appendChild(
       wrapper
     );
-
   }
   catch(error) {
 
@@ -2139,9 +2161,7 @@ async function searchUser() {
           ${escapeHtml(error.message)}
         </div>
       `;
-
   }
-
 }
 
 
@@ -2189,9 +2209,7 @@ async function loadSubjects() {
       select.appendChild(
         option
       );
-
     }
-
   }
   catch {
 
@@ -2201,9 +2219,7 @@ async function loadSubjects() {
           Unable to load
         </option>
       `;
-
   }
-
 }
 
 
@@ -2277,8 +2293,8 @@ async function loadCommunities() {
             }">
               ${
                 server.active
-                ? "Active"
-                : "Historical"
+                  ? "Active"
+                  : "Historical"
               }
             </span>
 
@@ -2290,7 +2306,6 @@ async function loadCommunities() {
           >
 
             <div class="data-item">
-
               <div class="data-label">
                 Guild ID
               </div>
@@ -2298,11 +2313,9 @@ async function loadCommunities() {
               <div class="data-value">
                 ${escapeHtml(server.discordId)}
               </div>
-
             </div>
 
             <div class="data-item">
-
               <div class="data-label">
                 Category
               </div>
@@ -2310,11 +2323,9 @@ async function loadCommunities() {
               <div class="data-value">
                 ${friendlyCategory(server.subject?.category)}
               </div>
-
             </div>
 
             <div class="data-item">
-
               <div class="data-label">
                 Confidence
               </div>
@@ -2322,7 +2333,6 @@ async function loadCommunities() {
               <div class="data-value">
                 ${escapeHtml(server.confidence)}
               </div>
-
             </div>
 
           </div>
@@ -2331,9 +2341,7 @@ async function loadCommunities() {
       list.appendChild(
         card
       );
-
     }
-
   }
   catch(error) {
 
@@ -2343,9 +2351,7 @@ async function loadCommunities() {
           ${escapeHtml(error.message)}
         </span>
       `;
-
   }
-
 }
 
 
@@ -2385,7 +2391,6 @@ async function addCommunity() {
       `;
 
     return;
-
   }
 
   const body = {
@@ -2410,10 +2415,8 @@ async function addCommunity() {
     ).value.trim();
 
   if (source) {
-
     body.sourceUrl =
       source;
-
   }
 
   try {
@@ -2421,7 +2424,6 @@ async function addCommunity() {
     await apiRequest(
       `${API_BASE}/api/v1/servers`,
       {
-
         method:
           "POST",
 
@@ -2432,7 +2434,6 @@ async function addCommunity() {
 
         body:
           JSON.stringify(body)
-
       }
     );
 
@@ -2444,19 +2445,20 @@ async function addCommunity() {
       `;
 
     loadCommunities();
-
   }
   catch(error) {
 
     status.innerHTML =
       `
-        <span class="error">
+        <span class="${
+          error.status === 409
+          ? "warning"
+          : "error"
+        }">
           ${escapeHtml(error.message)}
         </span>
       `;
-
   }
-
 }
 
 
@@ -2513,7 +2515,7 @@ async function loadStaff() {
 
             <div>
 
-              <h3 style="margin-bottom:5px;">
+              <h3>
                 ${escapeHtml(user.username)}
               </h3>
 
@@ -2537,14 +2539,12 @@ async function loadStaff() {
 
           </div>
 
-
           <div
             class="data-grid"
             style="margin-top:16px;"
           >
 
             <div class="data-item">
-
               <div class="data-label">
                 Last Login
               </div>
@@ -2556,12 +2556,9 @@ async function loadStaff() {
                     : "Never"
                 }
               </div>
-
             </div>
 
-
             <div class="data-item">
-
               <div class="data-label">
                 Account Created
               </div>
@@ -2569,18 +2566,15 @@ async function loadStaff() {
               <div class="data-value">
                 ${formatDate(user.createdAt)}
               </div>
-
             </div>
 
           </div>
-
 
           <div class="staff-actions">
 
             <select
               id="role-${user.id}"
             >
-
               <option
                 value="READ_ONLY"
                 ${
@@ -2613,14 +2607,11 @@ async function loadStaff() {
               >
                 Admin
               </option>
-
             </select>
-
 
             <select
               id="active-${user.id}"
             >
-
               <option
                 value="true"
                 ${
@@ -2642,9 +2633,7 @@ async function loadStaff() {
               >
                 Disabled
               </option>
-
             </select>
-
 
             <button
               class="secondary-btn"
@@ -2659,9 +2648,7 @@ async function loadStaff() {
       list.appendChild(
         card
       );
-
     }
-
   }
   catch(error) {
 
@@ -2671,9 +2658,7 @@ async function loadStaff() {
           ${escapeHtml(error.message)}
         </span>
       `;
-
   }
-
 }
 
 
@@ -2704,7 +2689,6 @@ async function createStaff() {
     await apiRequest(
       `${API_BASE}/api/v1/staff`,
       {
-
         method:
           "POST",
 
@@ -2719,7 +2703,6 @@ async function createStaff() {
             password,
             role
           })
-
       }
     );
 
@@ -2732,14 +2715,15 @@ async function createStaff() {
 
     document.getElementById(
       "newStaffUsername"
-    ).value = "";
+    ).value =
+      "";
 
     document.getElementById(
       "newStaffPassword"
-    ).value = "";
+    ).value =
+      "";
 
     loadStaff();
-
   }
   catch(error) {
 
@@ -2749,9 +2733,7 @@ async function createStaff() {
           ${escapeHtml(error.message)}
         </span>
       `;
-
   }
-
 }
 
 
@@ -2774,7 +2756,6 @@ async function updateStaff(
     await apiRequest(
       `${API_BASE}/api/v1/staff/${id}`,
       {
-
         method:
           "PATCH",
 
@@ -2788,21 +2769,17 @@ async function updateStaff(
             role,
             active
           })
-
       }
     );
 
     loadStaff();
-
   }
   catch(error) {
 
     alert(
       error.message
     );
-
   }
-
 }
 
 
@@ -2824,7 +2801,6 @@ function friendlyRole(
     READ_ONLY:
       "Read Only"
   }[value] || value;
-
 }
 
 
@@ -2833,26 +2809,20 @@ function friendlyCategory(
 ) {
 
   if (!value) {
-
     return "Unknown";
-
   }
 
   return String(value)
-
     .replaceAll(
       "_",
       " "
     )
-
     .toLowerCase()
-
     .replace(
       /\b\w/g,
       char =>
         char.toUpperCase()
     );
-
 }
 
 
@@ -2861,31 +2831,12 @@ function formatDate(
 ) {
 
   if (!value) {
-
     return "Never";
-
   }
 
   return new Date(
     value
   ).toLocaleString();
-
-}
-
-
-async function copyText(
-  value
-) {
-
-  try {
-
-    await navigator.clipboard.writeText(
-      value
-    );
-
-  }
-  catch {}
-
 }
 
 
@@ -2897,38 +2848,15 @@ function escapeHtml(
     value === null ||
     value === undefined
   ) {
-
     return "";
-
   }
 
   return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 </script>
