@@ -9,37 +9,24 @@
   <style>
     :root {
       --bg: #070b14;
-      --bg2: #0a1020;
       --panel: rgba(15, 23, 42, 0.84);
-      --panel2: rgba(10, 17, 32, 0.92);
       --border: rgba(148, 163, 184, 0.15);
-      --border-hover: rgba(56, 189, 248, 0.28);
-
       --text: #f8fafc;
       --muted: #94a3b8;
-      --muted2: #64748b;
-
       --accent: #38bdf8;
       --accent2: #818cf8;
-
       --success: #4ade80;
       --warning: #facc15;
       --danger: #f87171;
-
-      --radius: 16px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      min-height: 100%;
-    }
-
     body {
       margin: 0;
+      min-height: 100vh;
 
       color: var(--text);
 
@@ -76,23 +63,16 @@
 
       background-image:
         linear-gradient(
-          rgba(255,255,255,0.025) 1px,
+          rgba(255,255,255,.025) 1px,
           transparent 1px
         ),
         linear-gradient(
           90deg,
-          rgba(255,255,255,0.025) 1px,
+          rgba(255,255,255,.025) 1px,
           transparent 1px
         );
 
       background-size: 42px 42px;
-
-      mask-image:
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,0.8),
-          transparent 90%
-        );
     }
 
     button,
@@ -112,26 +92,9 @@
       margin-top: 0;
     }
 
-    code {
-      color: #e2e8f0;
-
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-    }
-
     .hidden {
       display: none !important;
     }
-
-    /*
-      IMPORTANT:
-      This prevents every dashboard page from
-      displaying simultaneously.
-    */
 
     .tab {
       display: none;
@@ -157,153 +120,6 @@
       color: var(--danger);
     }
 
-    /* =========================
-       LOGIN
-       ========================= */
-
-    .login-screen {
-      min-height: 100vh;
-
-      display: grid;
-      place-items: center;
-
-      padding: 30px;
-    }
-
-    .login-shell {
-      width: min(470px, 100%);
-    }
-
-    .brand-lockup {
-      text-align: center;
-
-      margin-bottom: 28px;
-    }
-
-    .brand-icon {
-      width: 74px;
-      height: 74px;
-
-      display: grid;
-      place-items: center;
-
-      margin: 0 auto 18px;
-
-      border-radius: 20px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(56,189,248,.20),
-          rgba(129,140,248,.18)
-        );
-
-      border:
-        1px solid rgba(56,189,248,.30);
-
-      box-shadow:
-        0 0 50px rgba(56,189,248,.12);
-
-      font-size: 30px;
-    }
-
-    .brand-lockup h1 {
-      margin-bottom: 7px;
-
-      font-size: 30px;
-
-      letter-spacing: -0.04em;
-    }
-
-    .brand-lockup p {
-      margin-bottom: 0;
-
-      color: var(--muted);
-    }
-
-    .system-status {
-      display: inline-flex;
-      align-items: center;
-
-      gap: 8px;
-
-      margin-top: 14px;
-
-      padding: 6px 10px;
-
-      border:
-        1px solid rgba(74,222,128,.18);
-
-      background:
-        rgba(74,222,128,.07);
-
-      border-radius: 999px;
-
-      color: #bbf7d0;
-
-      font-size: 11px;
-      font-weight: 800;
-
-      letter-spacing: .08em;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-
-      background: var(--success);
-
-      border-radius: 50%;
-
-      box-shadow:
-        0 0 12px rgba(74,222,128,.9);
-    }
-
-    .glass-card {
-      background:
-        linear-gradient(
-          180deg,
-          rgba(17,24,39,.94),
-          rgba(15,23,42,.90)
-        );
-
-      border:
-        1px solid var(--border);
-
-      border-radius: 18px;
-
-      box-shadow:
-        0 24px 80px rgba(0,0,0,.35);
-
-      backdrop-filter: blur(18px);
-    }
-
-    .login-card {
-      padding: 28px;
-    }
-
-    .security-label {
-      display: flex;
-      align-items: center;
-
-      gap: 8px;
-
-      margin-bottom: 24px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-      font-weight: 700;
-
-      text-transform: uppercase;
-
-      letter-spacing: .12em;
-    }
-
-    /* =========================
-       FORMS
-       ========================= */
-
     label {
       display: block;
 
@@ -326,7 +142,7 @@
       color: white;
 
       background:
-        rgba(3,7,18,.58);
+        rgba(3, 7, 18, 0.58);
 
       border:
         1px solid rgba(148,163,184,.18);
@@ -334,15 +150,6 @@
       border-radius: 10px;
 
       outline: none;
-
-      transition:
-        border .15s ease,
-        box-shadow .15s ease,
-        background .15s ease;
-    }
-
-    input::placeholder {
-      color: #475569;
     }
 
     input:focus,
@@ -350,19 +157,14 @@
       border-color:
         rgba(56,189,248,.55);
 
-      background:
-        rgba(15,23,42,.82);
-
       box-shadow:
         0 0 0 3px rgba(56,189,248,.08);
     }
 
-    button {
-      border: none;
-    }
-
     .primary-btn {
       padding: 12px 17px;
+
+      border: none;
 
       color: #06101c;
 
@@ -376,52 +178,149 @@
       border-radius: 10px;
 
       font-weight: 800;
-
-      box-shadow:
-        0 10px 30px rgba(56,189,248,.14);
-
-      transition:
-        transform .15s ease,
-        filter .15s ease;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-1px);
-
-      filter: brightness(1.08);
     }
 
     .secondary-btn {
       padding: 10px 13px;
 
+      border:
+        1px solid var(--border);
+
       color: white;
 
       background:
-        rgba(148,163,184,.10);
+        rgba(148,163,184,.1);
+
+      border-radius: 9px;
+    }
+
+    /*
+    LOGIN
+    */
+
+    .login-screen {
+      min-height: 100vh;
+
+      display: grid;
+      place-items: center;
+
+      padding: 30px;
+    }
+
+    .login-shell {
+      width:
+        min(470px, 100%);
+    }
+
+    .brand-lockup {
+      text-align: center;
+
+      margin-bottom: 28px;
+    }
+
+    .brand-icon {
+      width: 74px;
+      height: 74px;
+
+      display: grid;
+      place-items: center;
+
+      margin:
+        0 auto 18px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(56,189,248,.2),
+          rgba(129,140,248,.18)
+        );
+
+      border:
+        1px solid rgba(56,189,248,.3);
+
+      font-size: 30px;
+    }
+
+    .brand-lockup h1 {
+      margin-bottom: 7px;
+
+      font-size: 30px;
+    }
+
+    .brand-lockup p {
+      color: var(--muted);
+    }
+
+    .system-status {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 6px 10px;
+
+      color: #bbf7d0;
+
+      background:
+        rgba(74,222,128,.07);
+
+      border:
+        1px solid rgba(74,222,128,.18);
+
+      border-radius: 999px;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      background: var(--success);
+
+      border-radius: 50%;
+
+      box-shadow:
+        0 0 12px rgba(74,222,128,.9);
+    }
+
+    .login-card {
+      padding: 28px;
+
+      background:
+        rgba(15,23,42,.9);
 
       border:
         1px solid var(--border);
 
-      border-radius: 9px;
-
-      transition:
-        background .15s ease;
+      border-radius: 18px;
     }
 
-    .secondary-btn:hover {
-      background:
-        rgba(148,163,184,.16);
+    .security-label {
+      margin-bottom: 24px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
     }
 
-    /* =========================
-       DASHBOARD
-       ========================= */
+    /*
+    DASHBOARD
+    */
 
     .dashboard-layout {
       display: grid;
 
       grid-template-columns:
-        260px minmax(0, 1fr);
+        260px minmax(0,1fr);
 
       min-height: 100vh;
     }
@@ -439,10 +338,6 @@
 
       border-right:
         1px solid var(--border);
-
-      backdrop-filter: blur(20px);
-
-      z-index: 20;
     }
 
     .sidebar-brand {
@@ -464,30 +359,19 @@
       width: 43px;
       height: 43px;
 
-      flex-shrink: 0;
-
       display: grid;
       place-items: center;
 
       border-radius: 12px;
 
       background:
-        linear-gradient(
-          135deg,
-          rgba(56,189,248,.18),
-          rgba(129,140,248,.18)
-        );
-
-      border:
-        1px solid rgba(56,189,248,.22);
+        rgba(56,189,248,.12);
 
       font-size: 19px;
     }
 
     .sidebar-brand strong {
       display: block;
-
-      font-size: 14px;
     }
 
     .sidebar-brand span {
@@ -506,7 +390,8 @@
     }
 
     .nav-section-label {
-      padding: 0 10px;
+      padding:
+        0 10px;
 
       margin-bottom: 8px;
 
@@ -532,31 +417,16 @@
 
       margin-bottom: 6px;
 
-      color: #cbd5e1;
-
-      background: transparent;
-
       border:
         1px solid transparent;
 
       border-radius: 11px;
 
+      color: #cbd5e1;
+
+      background: transparent;
+
       text-align: left;
-
-      transition:
-        background .15s ease,
-        color .15s ease,
-        transform .15s ease;
-    }
-
-    .nav-button:hover {
-      color: white;
-
-      background:
-        rgba(148,163,184,.07);
-
-      transform:
-        translateX(2px);
     }
 
     .nav-button.active {
@@ -576,9 +446,9 @@
     .nav-icon {
       width: 25px;
 
-      text-align: center;
-
       color: var(--accent);
+
+      text-align: center;
     }
 
     .sidebar-user {
@@ -591,7 +461,7 @@
       padding: 14px;
 
       background:
-        rgba(15,23,42,.70);
+        rgba(15,23,42,.7);
 
       border:
         1px solid var(--border);
@@ -600,14 +470,12 @@
     }
 
     .authenticated-label {
-      color: var(--muted2);
+      color: #64748b;
 
       font-size: 9px;
       font-weight: 800;
 
       text-transform: uppercase;
-
-      letter-spacing: .10em;
     }
 
     .user-name {
@@ -626,19 +494,12 @@
       color: #bae6fd;
 
       background:
-        rgba(56,189,248,.10);
-
-      border:
-        1px solid rgba(56,189,248,.14);
+        rgba(56,189,248,.1);
 
       border-radius: 999px;
 
       font-size: 10px;
       font-weight: 800;
-
-      text-transform: uppercase;
-
-      letter-spacing: .06em;
     }
 
     .main {
@@ -657,19 +518,15 @@
 
       font-size:
         clamp(28px,3vw,38px);
-
-      letter-spacing: -.045em;
     }
 
     .page-description {
-      margin-bottom: 0;
-
       color: var(--muted);
     }
 
-    /* =========================
-       PANELS
-       ========================= */
+    /*
+    PANELS
+    */
 
     .panel {
       padding: 22px;
@@ -677,26 +534,16 @@
       margin-bottom: 20px;
 
       background:
-        linear-gradient(
-          180deg,
-          rgba(15,23,42,.82),
-          rgba(8,15,29,.86)
-        );
+        rgba(15,23,42,.82);
 
       border:
         1px solid var(--border);
 
-      border-radius: var(--radius);
-
-      box-shadow:
-        0 18px 50px rgba(0,0,0,.18);
-
-      backdrop-filter: blur(14px);
+      border-radius: 16px;
     }
 
     .panel-heading {
       display: flex;
-      align-items: center;
 
       justify-content: space-between;
 
@@ -732,9 +579,9 @@
       gap: 15px;
     }
 
-    /* =========================
-       LOOKUP
-       ========================= */
+    /*
+    LOOKUP
+    */
 
     .lookup-shell {
       max-width: 900px;
@@ -755,7 +602,7 @@
       margin-bottom: 0;
     }
 
-    .lookup-input-row .primary-btn {
+    .lookup-input-row button {
       height: 46px;
     }
 
@@ -770,8 +617,6 @@
 
       font-size: 13px;
       font-weight: 800;
-
-      letter-spacing: .04em;
     }
 
     .match-banner {
@@ -810,11 +655,7 @@
       margin-top: 18px;
 
       background:
-        linear-gradient(
-          180deg,
-          rgba(15,23,42,.92),
-          rgba(8,15,29,.95)
-        );
+        rgba(15,23,42,.9);
 
       border:
         1px solid var(--border);
@@ -825,22 +666,8 @@
     .result-header {
       padding: 20px;
 
-      background:
-        rgba(56,189,248,.025);
-
       border-bottom:
         1px solid var(--border);
-    }
-
-    .result-header small {
-      color: var(--muted);
-
-      font-size: 10px;
-      font-weight: 800;
-
-      text-transform: uppercase;
-
-      letter-spacing: .1em;
     }
 
     .result-id {
@@ -854,10 +681,6 @@
       margin-top: 7px;
 
       font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
         monospace;
 
       font-size: 17px;
@@ -870,16 +693,10 @@
         1px solid var(--border);
     }
 
-    .association:last-child {
-      border-bottom: none;
-    }
-
     .association-top {
       display: flex;
 
       justify-content: space-between;
-
-      align-items: flex-start;
 
       gap: 18px;
 
@@ -892,46 +709,32 @@
       font-size: 20px;
     }
 
-    .category-tag {
+    .category-tag,
+    .confidence,
+    .status-pill,
+    .badge {
       display: inline-flex;
 
       padding: 5px 9px;
-
-      color: #bae6fd;
-
-      background:
-        rgba(56,189,248,.08);
-
-      border:
-        1px solid rgba(56,189,248,.13);
 
       border-radius: 999px;
 
       font-size: 10px;
       font-weight: 700;
+    }
 
-      text-transform: uppercase;
+    .category-tag {
+      color: #bae6fd;
 
-      letter-spacing: .06em;
+      background:
+        rgba(56,189,248,.08);
     }
 
     .confidence {
-      padding: 6px 10px;
-
       color: #fde68a;
 
       background:
         rgba(250,204,21,.08);
-
-      border:
-        1px solid rgba(250,204,21,.13);
-
-      border-radius: 999px;
-
-      font-size: 10px;
-      font-weight: 800;
-
-      text-transform: uppercase;
     }
 
     .data-grid {
@@ -972,32 +775,7 @@
     }
 
     .data-value {
-      color: #e2e8f0;
-
       font-size: 13px;
-
-      word-break: break-word;
-    }
-
-    .badge {
-      display: inline-flex;
-
-      padding: 5px 8px;
-
-      margin:
-        3px 4px 3px 0;
-
-      color: #c7d2fe;
-
-      background:
-        rgba(129,140,248,.08);
-
-      border:
-        1px solid rgba(129,140,248,.12);
-
-      border-radius: 999px;
-
-      font-size: 10px;
     }
 
     .copy-btn {
@@ -1018,9 +796,9 @@
       font-size: 10px;
     }
 
-    /* =========================
-       COMMUNITIES + STAFF
-       ========================= */
+    /*
+    COMMUNITIES + STAFF
+    */
 
     .community-card,
     .staff-card {
@@ -1032,22 +810,9 @@
         rgba(3,7,18,.36);
 
       border:
-        1px solid rgba(148,163,184,.10);
+        1px solid rgba(148,163,184,.1);
 
       border-radius: 13px;
-
-      transition:
-        transform .15s ease,
-        border-color .15s ease;
-    }
-
-    .community-card:hover,
-    .staff-card:hover {
-      transform:
-        translateY(-1px);
-
-      border-color:
-        var(--border-hover);
     }
 
     .community-top,
@@ -1056,24 +821,7 @@
 
       justify-content: space-between;
 
-      align-items: flex-start;
-
       gap: 15px;
-    }
-
-    .status-pill {
-      display: inline-flex;
-
-      padding: 5px 8px;
-
-      border-radius: 999px;
-
-      font-size: 9px;
-      font-weight: 800;
-
-      text-transform: uppercase;
-
-      letter-spacing: .08em;
     }
 
     .status-active {
@@ -1081,9 +829,6 @@
 
       background:
         rgba(74,222,128,.08);
-
-      border:
-        1px solid rgba(74,222,128,.14);
     }
 
     .status-disabled {
@@ -1091,9 +836,6 @@
 
       background:
         rgba(248,113,113,.08);
-
-      border:
-        1px solid rgba(248,113,113,.14);
     }
 
     .status-history {
@@ -1101,9 +843,6 @@
 
       background:
         rgba(250,204,21,.08);
-
-      border:
-        1px solid rgba(250,204,21,.14);
     }
 
     .staff-actions {
@@ -1123,11 +862,7 @@
       margin: 0;
     }
 
-    /* =========================
-       RESPONSIVE
-       ========================= */
-
-    @media (max-width: 850px) {
+    @media(max-width:850px) {
 
       .dashboard-layout {
         grid-template-columns: 1fr;
@@ -1139,9 +874,6 @@
         height: auto;
 
         border-right: none;
-
-        border-bottom:
-          1px solid var(--border);
       }
 
       .sidebar-user {
@@ -1150,40 +882,6 @@
         margin-top: 18px;
       }
 
-      .nav-group {
-        display: flex;
-
-        gap: 8px;
-
-        flex-wrap: wrap;
-      }
-
-      .nav-button {
-        width: auto;
-
-        flex:
-          1 1 160px;
-      }
-    }
-
-    @media (max-width: 620px) {
-
-      .main {
-        padding:
-          26px 18px 50px;
-      }
-
-      .lookup-input-row {
-        grid-template-columns: 1fr;
-      }
-
-      .lookup-input-row .primary-btn {
-        width: 100%;
-      }
-
-      .staff-actions {
-        grid-template-columns: 1fr;
-      }
     }
 
   </style>
@@ -1191,9 +889,7 @@
 
 <body>
 
-<!-- =========================
-     LOGIN
-     ========================= -->
+<!-- LOGIN -->
 
 <div
   id="loginScreen"
@@ -1226,14 +922,13 @@
 
     </div>
 
-
-    <div class="glass-card login-card">
+    <div class="login-card">
 
       <div class="security-label">
-        🔐 Authorized Staff Access
+        🔐 Authorized BadlandsRP Staff Access
       </div>
 
-      <label for="loginUsername">
+      <label>
         Username
       </label>
 
@@ -1244,8 +939,7 @@
         onkeydown="if(event.key === 'Enter') login()"
       />
 
-
-      <label for="loginPassword">
+      <label>
         Password
       </label>
 
@@ -1257,7 +951,6 @@
         onkeydown="if(event.key === 'Enter') login()"
       />
 
-
       <button
         class="primary-btn"
         style="width:100%;"
@@ -1265,7 +958,6 @@
       >
         Authenticate
       </button>
-
 
       <div
         id="loginStatus"
@@ -1279,16 +971,12 @@
 </div>
 
 
-<!-- =========================
-     DASHBOARD
-     ========================= -->
+<!-- DASHBOARD -->
 
 <div
   id="dashboard"
   class="dashboard-layout hidden"
 >
-
-  <!-- SIDEBAR -->
 
   <aside class="sidebar">
 
@@ -1312,59 +1000,44 @@
 
     </div>
 
-
     <div class="nav-section-label">
       Intelligence
     </div>
 
+    <button
+      class="nav-button active"
+      onclick="showTab('lookup', this)"
+    >
+      <span class="nav-icon">
+        ⌕
+      </span>
 
-    <div class="nav-group">
+      User Lookup
+    </button>
 
-      <button
-        class="nav-button active"
-        onclick="showTab('lookup', this)"
-      >
+    <button
+      id="communitiesTabButton"
+      class="nav-button hidden"
+      onclick="showTab('communities', this)"
+    >
+      <span class="nav-icon">
+        ◫
+      </span>
 
-        <span class="nav-icon">
-          ⌕
-        </span>
+      Communities
+    </button>
 
-        User Lookup
+    <button
+      id="staffTabButton"
+      class="nav-button hidden"
+      onclick="showTab('staff', this)"
+    >
+      <span class="nav-icon">
+        ◉
+      </span>
 
-      </button>
-
-
-      <button
-        id="communitiesTabButton"
-        class="nav-button hidden"
-        onclick="showTab('communities', this)"
-      >
-
-        <span class="nav-icon">
-          ◫
-        </span>
-
-        Communities
-
-      </button>
-
-
-      <button
-        id="staffTabButton"
-        class="nav-button hidden"
-        onclick="showTab('staff', this)"
-      >
-
-        <span class="nav-icon">
-          ◉
-        </span>
-
-        Staff
-
-      </button>
-
-    </div>
-
+      Staff
+    </button>
 
     <div class="sidebar-user">
 
@@ -1382,7 +1055,6 @@
         class="role-pill"
       ></div>
 
-
       <button
         class="secondary-btn"
         style="
@@ -1399,36 +1071,28 @@
   </aside>
 
 
-  <!-- MAIN CONTENT -->
-
   <main class="main">
 
     <div class="topbar">
 
-      <div>
+      <h1
+        id="pageTitle"
+        class="page-title"
+      >
+        User Intelligence
+      </h1>
 
-        <h1
-          id="pageTitle"
-          class="page-title"
-        >
-          User Intelligence
-        </h1>
-
-        <p
-          id="pageDescription"
-          class="page-description"
-        >
-          Search a Discord ID against stored community intelligence.
-        </p>
-
-      </div>
+      <p
+        id="pageDescription"
+        class="page-description"
+      >
+        Search a Discord ID against stored community intelligence.
+      </p>
 
     </div>
 
 
-    <!-- =========================
-         USER LOOKUP PAGE
-         ========================= -->
+    <!-- LOOKUP -->
 
     <section
       id="lookup"
@@ -1446,19 +1110,18 @@
             </h2>
 
             <p>
-              Enter a Discord user ID to search known community associations.
+              Search a Discord account against known cheating communities.
             </p>
 
           </div>
 
         </div>
 
-
         <div class="lookup-input-row">
 
           <div>
 
-            <label for="lookupDiscordId">
+            <label>
               Discord User ID
             </label>
 
@@ -1470,7 +1133,6 @@
 
           </div>
 
-
           <button
             class="primary-btn"
             onclick="searchUser()"
@@ -1480,14 +1142,12 @@
 
         </div>
 
-
         <div
           id="lookupStatus"
           class="status-box"
         ></div>
 
       </div>
-
 
       <div
         id="lookupResults"
@@ -1497,9 +1157,7 @@
     </section>
 
 
-    <!-- =========================
-         COMMUNITIES PAGE
-         ========================= -->
+    <!-- COMMUNITIES -->
 
     <section
       id="communities"
@@ -1520,13 +1178,12 @@
             </h2>
 
             <p>
-              Add a Discord community to the intelligence database.
+              Add a Discord community to the database.
             </p>
 
           </div>
 
         </div>
-
 
         <div class="grid">
 
@@ -1546,7 +1203,6 @@
 
           </div>
 
-
           <div>
 
             <label>
@@ -1555,25 +1211,21 @@
 
             <input
               id="communityDiscordId"
-              placeholder="1136029776080023563"
             />
 
           </div>
-
 
           <div>
 
             <label>
-              Discord Server Name
+              Server Name
             </label>
 
             <input
               id="communityName"
-              placeholder="Eulen"
             />
 
           </div>
-
 
           <div>
 
@@ -1607,7 +1259,6 @@
 
           </div>
 
-
           <div>
 
             <label>
@@ -1628,7 +1279,6 @@
 
           </div>
 
-
           <div>
 
             <label>
@@ -1644,7 +1294,6 @@
 
         </div>
 
-
         <button
           class="primary-btn"
           onclick="addCommunity()"
@@ -1652,14 +1301,12 @@
           Register Community
         </button>
 
-
         <div
           id="communityStatus"
           class="status-box"
         ></div>
 
       </div>
-
 
       <div class="panel">
 
@@ -1672,11 +1319,10 @@
             </h2>
 
             <p>
-              Discord communities currently stored in the intelligence database.
+              Communities currently registered in the system.
             </p>
 
           </div>
-
 
           <button
             class="secondary-btn"
@@ -1687,11 +1333,9 @@
 
         </div>
 
-
         <div
           id="communityListStatus"
         ></div>
-
 
         <div
           id="communityList"
@@ -1702,9 +1346,7 @@
     </section>
 
 
-    <!-- =========================
-         STAFF PAGE
-         ========================= -->
+    <!-- STAFF -->
 
     <section
       id="staff"
@@ -1722,13 +1364,12 @@
             </h2>
 
             <p>
-              Provision individual access to the BadlandsRP Cheater Dashboard.
+              Provision dashboard access for another BadlandsRP staff member.
             </p>
 
           </div>
 
         </div>
-
 
         <div class="grid">
 
@@ -1740,11 +1381,9 @@
 
             <input
               id="newStaffUsername"
-              placeholder="staff.username"
             />
 
           </div>
-
 
           <div>
 
@@ -1760,14 +1399,15 @@
 
           </div>
 
-
           <div>
 
             <label>
-              Access Role
+              Role
             </label>
 
-            <select id="newStaffRole">
+            <select
+              id="newStaffRole"
+            >
 
               <option value="READ_ONLY">
                 Read Only
@@ -1787,7 +1427,6 @@
 
         </div>
 
-
         <button
           class="primary-btn"
           onclick="createStaff()"
@@ -1795,14 +1434,12 @@
           Create Account
         </button>
 
-
         <div
           id="createStaffStatus"
           class="status-box"
         ></div>
 
       </div>
-
 
       <div class="panel">
 
@@ -1815,11 +1452,10 @@
             </h2>
 
             <p>
-              Manage dashboard roles and account access.
+              View account activity and manage permissions.
             </p>
 
           </div>
-
 
           <button
             class="secondary-btn"
@@ -1830,11 +1466,9 @@
 
         </div>
 
-
         <div
           id="staffListStatus"
         ></div>
-
 
         <div
           id="staffList"
@@ -1858,10 +1492,6 @@ let currentUser =
   null;
 
 
-/* =========================
-   API REQUEST
-   ========================= */
-
 async function apiRequest(
   url,
   options = {}
@@ -1870,17 +1500,14 @@ async function apiRequest(
   options.credentials =
     "same-origin";
 
-
   const response =
     await fetch(
       url,
       options
     );
 
-
   let data =
     null;
-
 
   try {
 
@@ -1888,13 +1515,7 @@ async function apiRequest(
       await response.json();
 
   }
-  catch {
-
-    data =
-      null;
-
-  }
-
+  catch {}
 
   if (!response.ok) {
 
@@ -1905,28 +1526,17 @@ async function apiRequest(
         `Request failed (${response.status})`
       );
 
-
     error.status =
       response.status;
-
-
-    error.data =
-      data;
-
 
     throw error;
 
   }
 
-
   return data;
 
 }
 
-
-/* =========================
-   SESSION
-   ========================= */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -1943,10 +1553,8 @@ async function checkSession() {
         `${API_BASE}/api/v1/auth/me`
       );
 
-
     currentUser =
       data.user;
-
 
     showDashboard();
 
@@ -1960,10 +1568,6 @@ async function checkSession() {
 }
 
 
-/* =========================
-   LOGIN
-   ========================= */
-
 async function login() {
 
   const username =
@@ -1974,7 +1578,6 @@ async function login() {
       .value
       .trim();
 
-
   const password =
     document
       .getElementById(
@@ -1982,33 +1585,13 @@ async function login() {
       )
       .value;
 
-
   const status =
     document.getElementById(
       "loginStatus"
     );
 
-
   status.innerHTML =
     "";
-
-
-  if (
-    !username ||
-    !password
-  ) {
-
-    status.innerHTML =
-      `
-        <div class="result-banner error-banner">
-          Username and password are required.
-        </div>
-      `;
-
-    return;
-
-  }
-
 
   try {
 
@@ -2036,10 +1619,8 @@ async function login() {
         }
       );
 
-
     currentUser =
       data.user;
-
 
     document
       .getElementById(
@@ -2047,7 +1628,6 @@ async function login() {
       )
       .value =
         "";
-
 
     showDashboard();
 
@@ -2066,10 +1646,6 @@ async function login() {
 }
 
 
-/* =========================
-   LOGOUT
-   ========================= */
-
 async function logout() {
 
   try {
@@ -2085,10 +1661,8 @@ async function logout() {
   }
   catch {}
 
-
   currentUser =
     null;
-
 
   showLogin();
 
@@ -2103,7 +1677,6 @@ function showLogin() {
     )
     .classList
     .add("hidden");
-
 
   document
     .getElementById(
@@ -2124,7 +1697,6 @@ function showDashboard() {
     .classList
     .add("hidden");
 
-
   document
     .getElementById(
       "dashboard"
@@ -2132,14 +1704,12 @@ function showDashboard() {
     .classList
     .remove("hidden");
 
-
   document
     .getElementById(
       "currentUsername"
     )
     .textContent =
       currentUser.username;
-
 
   document
     .getElementById(
@@ -2150,79 +1720,65 @@ function showDashboard() {
         currentUser.role
       );
 
-
   configureRoleAccess();
 
 }
 
 
-/* =========================
-   ROLE ACCESS
-   ========================= */
-
 function configureRoleAccess() {
 
-  const communitiesButton =
+  const communities =
     document.getElementById(
       "communitiesTabButton"
     );
 
-
-  const staffButton =
+  const staff =
     document.getElementById(
       "staffTabButton"
     );
 
-
-  const addCommunityCard =
+  const addCommunity =
     document.getElementById(
       "addCommunityCard"
     );
 
-
-  communitiesButton
+  communities
     .classList
     .add("hidden");
 
-
-  staffButton
+  staff
     .classList
     .add("hidden");
 
-
-  addCommunityCard
+  addCommunity
     .classList
     .add("hidden");
-
 
   if (
     currentUser.role ===
     "ANALYST"
   ) {
 
-    communitiesButton
+    communities
       .classList
       .remove("hidden");
 
   }
-
 
   if (
     currentUser.role ===
     "ADMIN"
   ) {
 
-    communitiesButton
+    communities
       .classList
       .remove("hidden");
 
-
-    staffButton
+    staff
       .classList
       .remove("hidden");
 
-
-    addCommunityCard
+    addCommunity
       .classList
       .remove("hidden");
 
@@ -2231,12 +1787,8 @@ function configureRoleAccess() {
 }
 
 
-/* =========================
-   PAGE NAVIGATION
-   ========================= */
-
 function showTab(
-  tabId,
+  id,
   button
 ) {
 
@@ -2245,88 +1797,67 @@ function showTab(
       ".tab"
     )
     .forEach(
-      tab => {
-
+      tab =>
         tab.classList.remove(
           "active"
-        );
-
-      }
+        )
     );
-
 
   document
     .querySelectorAll(
       ".nav-button"
     )
     .forEach(
-      btn => {
-
-        btn.classList.remove(
+      button =>
+        button.classList.remove(
           "active"
-        );
-
-      }
+        )
     );
-
 
   document
     .getElementById(
-      tabId
+      id
     )
     .classList
-    .add(
-      "active"
-    );
+    .add("active");
 
-
-  button.classList.add(
-    "active"
-  );
-
+  button
+    .classList
+    .add("active");
 
   const title =
     document.getElementById(
       "pageTitle"
     );
 
-
   const description =
     document.getElementById(
       "pageDescription"
     );
 
-
   if (
-    tabId ===
-    "lookup"
+    id === "lookup"
   ) {
 
     title.textContent =
       "User Intelligence";
-
 
     description.textContent =
       "Search a Discord ID against stored community intelligence.";
 
   }
 
-
   if (
-    tabId ===
-    "communities"
+    id === "communities"
   ) {
 
     title.textContent =
       "Community Intelligence";
 
-
     description.textContent =
       "View and manage known Discord communities.";
 
-
     loadCommunities();
-
 
     if (
       currentUser.role ===
@@ -2339,19 +1870,15 @@ function showTab(
 
   }
 
-
   if (
-    tabId ===
-    "staff"
+    id === "staff"
   ) {
 
     title.textContent =
       "Staff Access";
 
-
     description.textContent =
-      "Manage BadlandsRP staff dashboard access and permissions.";
-
+      "View account activity and manage dashboard access.";
 
     loadStaff();
 
@@ -2360,9 +1887,9 @@ function showTab(
 }
 
 
-/* =========================
-   USER LOOKUP
-   ========================= */
+/*
+USER LOOKUP
+*/
 
 async function searchUser() {
 
@@ -2374,26 +1901,21 @@ async function searchUser() {
       .value
       .trim();
 
-
   const status =
     document.getElementById(
       "lookupStatus"
     );
-
 
   const results =
     document.getElementById(
       "lookupResults"
     );
 
-
   status.innerHTML =
     "";
 
-
   results.innerHTML =
     "";
-
 
   if (!discordId) {
 
@@ -2408,50 +1930,23 @@ async function searchUser() {
 
   }
 
-
-  status.innerHTML =
-    `
-      <span class="muted">
-        Querying intelligence database...
-      </span>
-    `;
-
-
   try {
 
     const response =
       await fetch(
         `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
         {
-
           credentials:
             "same-origin"
-
         }
       );
 
-
-    let data =
-      null;
-
-
-    try {
-
-      data =
-        await response.json();
-
-    }
-    catch {
-
-      data =
-        null;
-
-    }
-
+    const data =
+      await response.json();
 
     if (
       response.status === 404 ||
-      data?.found === false
+      data.found === false
     ) {
 
       status.innerHTML =
@@ -2461,34 +1956,18 @@ async function searchUser() {
           </div>
         `;
 
-
-      results.innerHTML =
-        `
-          <div class="panel">
-
-            <span class="muted">
-              No known community associations are currently stored for
-              <code>${escapeHtml(discordId)}</code>.
-            </span>
-
-          </div>
-        `;
-
-
       return;
 
     }
 
-
     if (!response.ok) {
 
       throw new Error(
-        data?.error ||
+        data.error ||
         "Lookup failed"
       );
 
     }
-
 
     status.innerHTML =
       `
@@ -2499,16 +1978,13 @@ async function searchUser() {
         </div>
       `;
 
-
     const wrapper =
       document.createElement(
         "div"
       );
 
-
     wrapper.className =
       "result-card";
-
 
     wrapper.innerHTML =
       `
@@ -2534,7 +2010,6 @@ async function searchUser() {
         </div>
       `;
 
-
     for (
       const evidence
       of data.evidence
@@ -2543,10 +2018,8 @@ async function searchUser() {
       const server =
         evidence.server;
 
-
       const subject =
         server?.subject;
-
 
       const roles =
         evidence.roleNames?.length
@@ -2562,22 +2035,15 @@ async function searchUser() {
             )
             .join("")
 
-        : `
-            <span class="muted">
-              None recorded
-            </span>
-          `;
-
+        : "None recorded";
 
       const association =
         document.createElement(
           "div"
         );
 
-
       association.className =
         "association";
-
 
       association.innerHTML =
         `
@@ -2595,13 +2061,11 @@ async function searchUser() {
 
             </div>
 
-
             <span class="confidence">
               ${escapeHtml(evidence.confidence || "Unknown")}
             </span>
 
           </div>
-
 
           <div class="data-grid">
 
@@ -2617,7 +2081,6 @@ async function searchUser() {
 
             </div>
 
-
             <div class="data-item">
 
               <div class="data-label">
@@ -2625,28 +2088,10 @@ async function searchUser() {
               </div>
 
               <div class="data-value">
-
                 ${escapeHtml(server?.discordId || "Unknown")}
-
-                ${
-                  server?.discordId
-
-                  ? `
-                    <button
-                      class="copy-btn"
-                      onclick="copyText('${escapeHtml(server.discordId)}')"
-                    >
-                      COPY
-                    </button>
-                  `
-
-                  : ""
-                }
-
               </div>
 
             </div>
-
 
             <div class="data-item">
 
@@ -2659,28 +2104,6 @@ async function searchUser() {
               </div>
 
             </div>
-
-
-            <div class="data-item">
-
-              <div class="data-label">
-                Membership
-              </div>
-
-              <div class="data-value">
-
-                ${
-                  evidence.endedAt
-
-                  ? "Historical"
-
-                  : "Current / Last Known"
-                }
-
-              </div>
-
-            </div>
-
 
             <div class="data-item">
 
@@ -2697,44 +2120,11 @@ async function searchUser() {
           </div>
         `;
 
-
       wrapper.appendChild(
         association
       );
 
     }
-
-
-    const disclaimer =
-      document.createElement(
-        "div"
-      );
-
-
-    disclaimer.style.padding =
-      "16px 20px";
-
-
-    disclaimer.style.color =
-      "var(--muted)";
-
-
-    disclaimer.style.fontSize =
-      "12px";
-
-
-    disclaimer.style.borderTop =
-      "1px solid var(--border)";
-
-
-    disclaimer.textContent =
-      "Community association alone does not establish that an individual used cheating software.";
-
-
-    wrapper.appendChild(
-      disclaimer
-    );
-
 
     results.appendChild(
       wrapper
@@ -2755,9 +2145,9 @@ async function searchUser() {
 }
 
 
-/* =========================
-   LOAD PRODUCTS
-   ========================= */
+/*
+SUBJECTS
+*/
 
 async function loadSubjects() {
 
@@ -2766,15 +2156,6 @@ async function loadSubjects() {
       "communitySubject"
     );
 
-
-  select.innerHTML =
-    `
-      <option value="">
-        Loading...
-      </option>
-    `;
-
-
   try {
 
     const subjects =
@@ -2782,14 +2163,12 @@ async function loadSubjects() {
         `${API_BASE}/api/v1/subjects`
       );
 
-
     select.innerHTML =
       `
         <option value="">
           Select product
         </option>
       `;
-
 
     for (
       const subject
@@ -2801,14 +2180,11 @@ async function loadSubjects() {
           "option"
         );
 
-
       option.value =
         subject.id;
 
-
       option.textContent =
         `${subject.name} · ${friendlyCategory(subject.category)}`;
-
 
       select.appendChild(
         option
@@ -2822,7 +2198,7 @@ async function loadSubjects() {
     select.innerHTML =
       `
         <option value="">
-          Unable to load products
+          Unable to load
         </option>
       `;
 
@@ -2831,9 +2207,9 @@ async function loadSubjects() {
 }
 
 
-/* =========================
-   COMMUNITIES
-   ========================= */
+/*
+COMMUNITIES
+*/
 
 async function loadCommunities() {
 
@@ -2842,24 +2218,13 @@ async function loadCommunities() {
       "communityListStatus"
     );
 
-
   const list =
     document.getElementById(
       "communityList"
     );
 
-
-  status.innerHTML =
-    `
-      <span class="muted">
-        Loading community intelligence...
-      </span>
-    `;
-
-
   list.innerHTML =
     "";
-
 
   try {
 
@@ -2868,16 +2233,13 @@ async function loadCommunities() {
         `${API_BASE}/api/v1/servers`
       );
 
-
     status.innerHTML =
       `
         <span class="success">
           ${servers.length}
-          known
-          ${servers.length === 1 ? "community" : "communities"}
+          known communities
         </span>
       `;
-
 
     for (
       const server
@@ -2889,10 +2251,8 @@ async function loadCommunities() {
           "div"
         );
 
-
       card.className =
         "community-card";
-
 
       card.innerHTML =
         `
@@ -2900,35 +2260,29 @@ async function loadCommunities() {
 
             <div>
 
-              <h3 style="margin-bottom:4px;">
+              <h3>
                 ${escapeHtml(server.name)}
               </h3>
 
-              <div class="muted">
+              <span class="muted">
                 ${escapeHtml(server.subject?.name || "Unknown Product")}
-              </div>
+              </span>
 
             </div>
 
-
-            ${
+            <span class="status-pill ${
               server.active
-
-              ? `
-                <span class="status-pill status-active">
-                  Active
-                </span>
-              `
-
-              : `
-                <span class="status-pill status-history">
-                  Historical
-                </span>
-              `
-            }
+              ? "status-active"
+              : "status-history"
+            }">
+              ${
+                server.active
+                ? "Active"
+                : "Historical"
+              }
+            </span>
 
           </div>
-
 
           <div
             class="data-grid"
@@ -2942,20 +2296,10 @@ async function loadCommunities() {
               </div>
 
               <div class="data-value">
-
                 ${escapeHtml(server.discordId)}
-
-                <button
-                  class="copy-btn"
-                  onclick="copyText('${escapeHtml(server.discordId)}')"
-                >
-                  COPY
-                </button>
-
               </div>
 
             </div>
-
 
             <div class="data-item">
 
@@ -2968,7 +2312,6 @@ async function loadCommunities() {
               </div>
 
             </div>
-
 
             <div class="data-item">
 
@@ -2984,7 +2327,6 @@ async function loadCommunities() {
 
           </div>
         `;
-
 
       list.appendChild(
         card
@@ -3007,10 +2349,6 @@ async function loadCommunities() {
 }
 
 
-/* =========================
-   ADD COMMUNITY
-   ========================= */
-
 async function addCommunity() {
 
   const status =
@@ -3018,32 +2356,20 @@ async function addCommunity() {
       "communityStatus"
     );
 
-
   const subjectId =
-    document
-      .getElementById(
-        "communitySubject"
-      )
-      .value;
-
+    document.getElementById(
+      "communitySubject"
+    ).value;
 
   const discordId =
-    document
-      .getElementById(
-        "communityDiscordId"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "communityDiscordId"
+    ).value.trim();
 
   const name =
-    document
-      .getElementById(
-        "communityName"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "communityName"
+    ).value.trim();
 
   if (
     !subjectId ||
@@ -3054,7 +2380,7 @@ async function addCommunity() {
     status.innerHTML =
       `
         <span class="error">
-          Product, Guild ID, and Discord server name are required.
+          Product, Guild ID and server name are required.
         </span>
       `;
 
@@ -3062,40 +2388,26 @@ async function addCommunity() {
 
   }
 
-
   const body = {
-
     subjectId,
-
     discordId,
-
     name,
 
     confidence:
-      document
-        .getElementById(
-          "communityConfidence"
-        )
-        .value,
+      document.getElementById(
+        "communityConfidence"
+      ).value,
 
     active:
-      document
-        .getElementById(
-          "communityActive"
-        )
-        .value === "true"
-
+      document.getElementById(
+        "communityActive"
+      ).value === "true"
   };
 
-
   const source =
-    document
-      .getElementById(
-        "communitySourceUrl"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "communitySourceUrl"
+    ).value.trim();
 
   if (source) {
 
@@ -3103,7 +2415,6 @@ async function addCommunity() {
       source;
 
   }
-
 
   try {
 
@@ -3115,10 +2426,8 @@ async function addCommunity() {
           "POST",
 
         headers: {
-
           "Content-Type":
             "application/json"
-
         },
 
         body:
@@ -3127,38 +2436,12 @@ async function addCommunity() {
       }
     );
 
-
     status.innerHTML =
       `
         <span class="success">
-          Community successfully registered.
+          Community registered.
         </span>
       `;
-
-
-    document
-      .getElementById(
-        "communityDiscordId"
-      )
-      .value =
-        "";
-
-
-    document
-      .getElementById(
-        "communityName"
-      )
-      .value =
-        "";
-
-
-    document
-      .getElementById(
-        "communitySourceUrl"
-      )
-      .value =
-        "";
-
 
     loadCommunities();
 
@@ -3167,11 +2450,7 @@ async function addCommunity() {
 
     status.innerHTML =
       `
-        <span class="${
-          error.status === 409
-          ? "warning"
-          : "error"
-        }">
+        <span class="error">
           ${escapeHtml(error.message)}
         </span>
       `;
@@ -3181,9 +2460,9 @@ async function addCommunity() {
 }
 
 
-/* =========================
-   STAFF DIRECTORY
-   ========================= */
+/*
+STAFF
+*/
 
 async function loadStaff() {
 
@@ -3192,24 +2471,13 @@ async function loadStaff() {
       "staffListStatus"
     );
 
-
   const list =
     document.getElementById(
       "staffList"
     );
 
-
-  status.innerHTML =
-    `
-      <span class="muted">
-        Loading staff directory...
-      </span>
-    `;
-
-
   list.innerHTML =
     "";
-
 
   try {
 
@@ -3218,15 +2486,13 @@ async function loadStaff() {
         `${API_BASE}/api/v1/staff`
       );
 
-
     status.innerHTML =
       `
         <span class="success">
           ${staff.length}
-          staff account${staff.length === 1 ? "" : "s"}
+          staff accounts
         </span>
       `;
-
 
     for (
       const user
@@ -3238,10 +2504,8 @@ async function loadStaff() {
           "div"
         );
 
-
       card.className =
         "staff-card";
-
 
       card.innerHTML =
         `
@@ -3259,22 +2523,54 @@ async function loadStaff() {
 
             </div>
 
-
-            ${
+            <span class="status-pill ${
               user.active
+              ? "status-active"
+              : "status-disabled"
+            }">
+              ${
+                user.active
+                  ? "Active"
+                  : "Disabled"
+              }
+            </span>
 
-              ? `
-                <span class="status-pill status-active">
-                  Active
-                </span>
-              `
+          </div>
 
-              : `
-                <span class="status-pill status-disabled">
-                  Disabled
-                </span>
-              `
-            }
+
+          <div
+            class="data-grid"
+            style="margin-top:16px;"
+          >
+
+            <div class="data-item">
+
+              <div class="data-label">
+                Last Login
+              </div>
+
+              <div class="data-value">
+                ${
+                  user.lastLoginAt
+                    ? formatDate(user.lastLoginAt)
+                    : "Never"
+                }
+              </div>
+
+            </div>
+
+
+            <div class="data-item">
+
+              <div class="data-label">
+                Account Created
+              </div>
+
+              <div class="data-value">
+                ${formatDate(user.createdAt)}
+              </div>
+
+            </div>
 
           </div>
 
@@ -3296,7 +2592,6 @@ async function loadStaff() {
                 Read Only
               </option>
 
-
               <option
                 value="ANALYST"
                 ${
@@ -3307,7 +2602,6 @@ async function loadStaff() {
               >
                 Analyst
               </option>
-
 
               <option
                 value="ADMIN"
@@ -3338,7 +2632,6 @@ async function loadStaff() {
                 Active
               </option>
 
-
               <option
                 value="false"
                 ${
@@ -3363,7 +2656,6 @@ async function loadStaff() {
           </div>
         `;
 
-
       list.appendChild(
         card
       );
@@ -3385,59 +2677,27 @@ async function loadStaff() {
 }
 
 
-/* =========================
-   CREATE STAFF
-   ========================= */
-
 async function createStaff() {
 
   const username =
-    document
-      .getElementById(
-        "newStaffUsername"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "newStaffUsername"
+    ).value.trim();
 
   const password =
-    document
-      .getElementById(
-        "newStaffPassword"
-      )
-      .value;
-
+    document.getElementById(
+      "newStaffPassword"
+    ).value;
 
   const role =
-    document
-      .getElementById(
-        "newStaffRole"
-      )
-      .value;
-
+    document.getElementById(
+      "newStaffRole"
+    ).value;
 
   const status =
     document.getElementById(
       "createStaffStatus"
     );
-
-
-  if (
-    !username ||
-    !password
-  ) {
-
-    status.innerHTML =
-      `
-        <span class="error">
-          Username and password are required.
-        </span>
-      `;
-
-    return;
-
-  }
-
 
   try {
 
@@ -3449,10 +2709,8 @@ async function createStaff() {
           "POST",
 
         headers: {
-
           "Content-Type":
             "application/json"
-
         },
 
         body:
@@ -3465,30 +2723,20 @@ async function createStaff() {
       }
     );
 
-
     status.innerHTML =
       `
         <span class="success">
-          Staff account created.
+          Account created.
         </span>
       `;
 
+    document.getElementById(
+      "newStaffUsername"
+    ).value = "";
 
-    document
-      .getElementById(
-        "newStaffUsername"
-      )
-      .value =
-        "";
-
-
-    document
-      .getElementById(
-        "newStaffPassword"
-      )
-      .value =
-        "";
-
+    document.getElementById(
+      "newStaffPassword"
+    ).value = "";
 
     loadStaff();
 
@@ -3507,29 +2755,19 @@ async function createStaff() {
 }
 
 
-/* =========================
-   UPDATE STAFF
-   ========================= */
-
 async function updateStaff(
   id
 ) {
 
   const role =
-    document
-      .getElementById(
-        `role-${id}`
-      )
-      .value;
-
+    document.getElementById(
+      `role-${id}`
+    ).value;
 
   const active =
-    document
-      .getElementById(
-        `active-${id}`
-      )
-      .value === "true";
-
+    document.getElementById(
+      `active-${id}`
+    ).value === "true";
 
   try {
 
@@ -3541,10 +2779,8 @@ async function updateStaff(
           "PATCH",
 
         headers: {
-
           "Content-Type":
             "application/json"
-
         },
 
         body:
@@ -3555,7 +2791,6 @@ async function updateStaff(
 
       }
     );
-
 
     loadStaff();
 
@@ -3571,16 +2806,15 @@ async function updateStaff(
 }
 
 
-/* =========================
-   UTILITIES
-   ========================= */
+/*
+UTILITIES
+*/
 
 function friendlyRole(
   value
 ) {
 
-  const roles = {
-
+  return {
     ADMIN:
       "Admin",
 
@@ -3589,12 +2823,7 @@ function friendlyRole(
 
     READ_ONLY:
       "Read Only"
-
-  };
-
-
-  return roles[value] ||
-    value;
+  }[value] || value;
 
 }
 
@@ -3608,7 +2837,6 @@ function friendlyCategory(
     return "Unknown";
 
   }
-
 
   return String(value)
 
@@ -3634,15 +2862,13 @@ function formatDate(
 
   if (!value) {
 
-    return "Unknown";
+    return "Never";
 
   }
 
-
   return new Date(
     value
-  )
-  .toLocaleString();
+  ).toLocaleString();
 
 }
 
@@ -3653,11 +2879,9 @@ async function copyText(
 
   try {
 
-    await navigator
-      .clipboard
-      .writeText(
-        value
-      );
+    await navigator.clipboard.writeText(
+      value
+    );
 
   }
   catch {}
@@ -3677,7 +2901,6 @@ function escapeHtml(
     return "";
 
   }
-
 
   return String(value)
 
