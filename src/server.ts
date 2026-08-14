@@ -250,6 +250,20 @@ app.post(
       });
     }
 
+    /*
+      Record the successful login time.
+    */
+
+    await prisma.staffUser.update({
+      where: {
+        id: user.id
+      },
+
+      data: {
+        lastLoginAt: new Date()
+      }
+    });
+
     const token =
       await reply.jwtSign(
         {
@@ -276,6 +290,7 @@ app.post(
 
     return {
       ok: true,
+
       user: {
         id: user.id,
         username: user.username,
@@ -331,11 +346,13 @@ app.get(
       orderBy: {
         username: "asc"
       },
+
       select: {
         id: true,
         username: true,
         role: true,
         active: true,
+        lastLoginAt: true,
         createdAt: true,
         updatedAt: true
       }
@@ -417,6 +434,7 @@ app.post(
           username: true,
           role: true,
           active: true,
+          lastLoginAt: true,
           createdAt: true
         }
       });
@@ -497,6 +515,8 @@ app.patch(
           username: true,
           role: true,
           active: true,
+          lastLoginAt: true,
+          createdAt: true,
           updatedAt: true
         }
       });
@@ -525,6 +545,7 @@ app.get(
       orderBy: {
         name: "asc"
       },
+
       include: {
         servers: true
       }
@@ -625,6 +646,7 @@ app.get(
       orderBy: {
         name: "asc"
       },
+
       include: {
         subject: true
       }
@@ -689,9 +711,26 @@ app.post(
       });
     }
 
+    if (body.subjectId) {
+      const subject =
+        await prisma.subject.findUnique({
+          where: {
+            id: body.subjectId
+          }
+        });
+
+      if (!subject) {
+        return reply.code(400).send({
+          error:
+            "Unknown subjectId"
+        });
+      }
+    }
+
     const server =
       await prisma.discordServer.create({
         data: body,
+
         include: {
           subject: true
         }
@@ -765,6 +804,7 @@ app.get(
       discordId,
       evidenceCount:
         user.evidence.length,
+
       evidence:
         user.evidence
     };
