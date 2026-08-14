@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FiveM Intelligence Lookup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: #f3f4f6;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #4b5563;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    .match {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .match h3 {
+      margin-top: 0;
+    }
+
+    .muted {
+      color: #9ca3af;
+    }
+
+    .error {
+      color: #fca5a5;
+    }
+
+    .success {
+      color: #86efac;
+    }
+
+    code {
+      background: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FiveM Intelligence Lookup</h1>
+    <div class="subtitle">
+      Search stored moderation evidence by Discord user ID.
+    </div>
+
+    <div class="card">
+      <label for="apiKey">API Key</label>
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="Enter API key"
+      />
+
+      <label for="discordId">Discord User ID</label>
+      <input
+        type="text"
+        id="discordId"
+        placeholder="Example: 198165163172429824"
+      />
+
+      <button onclick="searchUser()">Search</button>
+
+      <div id="status" class="result"></div>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin;
+
+    async function searchUser() {
+      const apiKey = document.getElementById("apiKey").value.trim();
+      const discordId = document.getElementById("discordId").value.trim();
+      const status = document.getElementById("status");
+      const results = document.getElementById("results");
+
+      results.innerHTML = "";
+      status.innerHTML = "";
+
+      if (!apiKey) {
+        status.innerHTML = '<span class="error">API key is required.</span>';
+        return;
+      }
+
+      if (!discordId) {
+        status.innerHTML = '<span class="error">Discord ID is required.</span>';
+        return;
+      }
+
+      status.innerHTML = '<span class="muted">Searching...</span>';
+
+      try {
+        const response = await fetch(
+          `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
+          {
+            method: "GET",
+            headers: {
+              "x-api-key": apiKey
+            }
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+          status.innerHTML = '<span class="error">Unauthorized. Check your API key.</span>';
+          return;
+        }
+
+        if (response.status === 404 || data.found === false) {
+          status.innerHTML = '<span class="muted">No evidence found for this Discord ID.</span>';
+          return;
+        }
+
+        if (!response.ok) {
+          status.innerHTML = `<span class="error">Request failed: ${data.error || response.status}</span>`;
+          return;
+        }
+
+        status.innerHTML =
+          `<span class="success">Found ${data.evidenceCount} evidence record(s).</span>`;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "card";
+
+        wrapper.innerHTML = `
+          <h2>Discord ID: ${escapeHtml(data.discordId)}</h2>
+          <p class="muted">
+            Association evidence is not proof that the user cheated.
+          </p>
+        `;
+
+        for (const evidence of data.evidence) {
+          const server = evidence.server;
+          const subject = server?.subject;
+
+          const match = document.createElement("div");
+          match.className = "match";
+
+          match.innerHTML = `
+            <h3>${escapeHtml(server?.name || "Unknown Server")}</h3>
+
+            <p>
+              <strong>Guild ID:</strong>
+              <code>${escapeHtml(server?.discordId || "Unknown")}</code>
+            </p>
+
+            <p>
+              <strong>Category:</strong>
+              ${escapeHtml(subject?.category || "Unknown")}
+            </p>
+
+            <p>
+              <strong>Confidence:</strong>
+              ${escapeHtml(evidence.confidence || "Unknown")}
+            </p>
+
+            <p>
+              <strong>Observed:</strong>
+              ${formatDate(evidence.observedAt)}
+            </p>
+
+            <p>
+              <strong>Ended:</strong>
+              ${evidence.endedAt ? formatDate(evidence.endedAt) : "Still active / unknown"}
+            </p>
+
+            <p>
+              <strong>Roles:</strong>
+              ${
+                evidence.roleNames?.length
+                  ? evidence.roleNames.map(escapeHtml).join(", ")
+                  : "None recorded"
+              }
+            </p>
+
+            <p>
+              <strong>Evidence Source:</strong>
+              ${escapeHtml(evidence.sourceType || "Unknown")}
+            </p>
+
+            <p>
+              <strong>Reference:</strong>
+              ${escapeHtml(evidence.sourceRef || "None")}
+            </p>
+
+            ${
+              evidence.notes
+                ? `<p><strong>Notes:</strong> ${escapeHtml(evidence.notes)}</p>`
+                : ""
+            }
+          `;
+
+          wrapper.appendChild(match);
+        }
+
+        results.appendChild(wrapper);
+
+      } catch (error) {
+        status.innerHTML =
+          '<span class="error">Could not reach the API.</span>';
+      }
+    }
+
+    function formatDate(value) {
+      if (!value) return "Unknown";
+      const date = new Date(value);
+      return date.toLocaleString();
+    }
+
+    function escapeHtml(value) {
+      if (value === null || value === undefined) return "";
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
