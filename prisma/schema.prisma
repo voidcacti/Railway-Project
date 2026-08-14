@@ -47,6 +47,7 @@ model StaffUser {
   passwordHash String
   role         StaffRole @default(READ_ONLY)
   active       Boolean   @default(true)
+  lastLoginAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -88,24 +89,24 @@ model DiscordUser {
 }
 
 model Evidence {
-  id          String             @id @default(cuid())
-  userId      String
-  user        DiscordUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String             @id @default(cuid())
+  userId     String
+  user       DiscordUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  serverId    String?
-  server      DiscordServer?     @relation(fields: [serverId], references: [id], onDelete: SetNull)
+  serverId   String?
+  server     DiscordServer?     @relation(fields: [serverId], references: [id], onDelete: SetNull)
 
-  sourceType  EvidenceSourceType
-  sourceRef   String
-  observedAt  DateTime
-  endedAt     DateTime?
-  confidence  Confidence         @default(UNVERIFIED)
+  sourceType EvidenceSourceType
+  sourceRef  String
+  observedAt DateTime
+  endedAt    DateTime?
+  confidence Confidence         @default(UNVERIFIED)
 
-  roleNames   String[]
-  notes       String?
-  createdBy   String?
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  roleNames  String[]
+  notes      String?
+  createdBy  String?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
 
   @@index([userId])
   @@index([serverId])
