@@ -65,6 +65,22 @@
       margin-bottom: 20px;
     }
 
+    .match {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .community {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
     label {
       display: block;
       margin-bottom: 6px;
@@ -72,8 +88,7 @@
     }
 
     input,
-    select,
-    textarea {
+    select {
       width: 100%;
       box-sizing: border-box;
       padding: 11px;
@@ -82,11 +97,6 @@
       border-radius: 8px;
       background: #111827;
       color: white;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
     }
 
     button {
@@ -102,11 +112,6 @@
       color: black;
     }
 
-    .danger {
-      background: #7f1d1d;
-      color: white;
-    }
-
     .muted {
       color: #9ca3af;
     }
@@ -119,18 +124,14 @@
       color: #fca5a5;
     }
 
-    .match {
-      background: #111827;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 16px;
-      margin-top: 12px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #374151;
+      margin-right: 6px;
+      margin-bottom: 4px;
+      font-size: 13px;
     }
 
     code {
@@ -148,14 +149,20 @@
       color: #9ca3af;
       font-size: 14px;
     }
+
+    .small {
+      font-size: 13px;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <h1>FiveM Intelligence Dashboard</h1>
+
     <div class="subtitle">
-      Search and manage stored moderation evidence by Discord ID.
+      Search Discord IDs against stored cheating and leaking community associations.
     </div>
 
     <div class="card">
@@ -168,207 +175,267 @@
     </div>
 
     <div class="tabs">
-      <button class="tab-button active" onclick="showTab('lookup', this)">
+      <button
+        class="tab-button active"
+        onclick="showTab('lookup', this)"
+      >
         User Lookup
       </button>
 
-      <button class="tab-button" onclick="showTab('servers', this)">
-        Add Server
-      </button>
-
-      <button class="tab-button" onclick="showTab('evidence', this)">
-        Add Evidence
+      <button
+        class="tab-button"
+        onclick="showTab('communities', this)"
+      >
+        Manage Communities
       </button>
     </div>
 
+    <!-- USER LOOKUP -->
+
     <div id="lookup" class="tab active">
+
       <div class="card">
         <h2 class="section-title">User Lookup</h2>
 
         <label for="lookupDiscordId">Discord User ID</label>
+
         <input
           type="text"
           id="lookupDiscordId"
           placeholder="Example: 198165163172429824"
         />
 
-        <button class="primary" onclick="searchUser()">Search</button>
+        <button
+          class="primary"
+          onclick="searchUser()"
+        >
+          Search
+        </button>
 
-        <div id="lookupStatus" style="margin-top:16px;"></div>
+        <div
+          id="lookupStatus"
+          style="margin-top:16px;"
+        ></div>
+
       </div>
 
       <div id="lookupResults"></div>
+
     </div>
 
-    <div id="servers" class="tab">
+    <!-- MANAGE COMMUNITIES -->
+
+    <div id="communities" class="tab">
+
       <div class="card">
-        <h2 class="section-title">Add Discord Server</h2>
+        <h2 class="section-title">
+          Add Discord Community
+        </h2>
 
-        <label for="serverDiscordId">Discord Guild ID</label>
-        <input id="serverDiscordId" type="text" />
+        <label for="communitySubject">
+          Product / Community
+        </label>
 
-        <label for="serverName">Server Name</label>
-        <input id="serverName" type="text" />
-
-        <label for="serverSubjectId">Subject ID</label>
-        <input
-          id="serverSubjectId"
-          type="text"
-          placeholder="Internal subject ID from /api/v1/subjects"
-        />
-
-        <label for="serverConfidence">Confidence</label>
-        <select id="serverConfidence">
-          <option>UNVERIFIED</option>
-          <option>LOW</option>
-          <option>MEDIUM</option>
-          <option>HIGH</option>
-          <option>CONFIRMED</option>
+        <select id="communitySubject">
+          <option value="">
+            Load subjects first
+          </option>
         </select>
 
-        <label for="serverSourceUrl">Source URL (optional)</label>
-        <input id="serverSourceUrl" type="text" />
+        <label for="communityDiscordId">
+          Discord Guild ID
+        </label>
 
-        <label for="serverActive">Active</label>
-        <select id="serverActive">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
-
-        <button class="primary" onclick="addServer()">Add Server</button>
-
-        <div id="serverStatus" style="margin-top:16px;"></div>
-      </div>
-    </div>
-
-    <div id="evidence" class="tab">
-      <div class="card">
-        <h2 class="section-title">Add User Evidence</h2>
-
-        <label for="evidenceUserId">Discord User ID</label>
-        <input id="evidenceUserId" type="text" />
-
-        <label for="evidenceServerId">Server Discord ID</label>
         <input
-          id="evidenceServerId"
+          id="communityDiscordId"
           type="text"
           placeholder="Example: 1136029776080023563"
         />
 
-        <label for="evidenceSourceType">Source Type</label>
-        <select id="evidenceSourceType">
-          <option>MANUAL</option>
-          <option>PUBLIC_SOURCE</option>
-          <option>AUTHORIZED_EXPORT</option>
-          <option>INTERNAL_MODERATION_RECORD</option>
-          <option>USER_SUBMITTED</option>
-        </select>
+        <label for="communityName">
+          Discord Server Name
+        </label>
 
-        <label for="evidenceSourceRef">Source Reference</label>
         <input
-          id="evidenceSourceRef"
+          id="communityName"
           type="text"
-          placeholder="Case number, ticket number, URL, etc."
+          placeholder="Example: Eulen"
         />
 
-        <label for="evidenceObservedAt">Observed At</label>
-        <input
-          id="evidenceObservedAt"
-          type="datetime-local"
-        />
+        <label for="communityConfidence">
+          Confidence
+        </label>
 
-        <label for="evidenceEndedAt">Ended At (optional)</label>
-        <input
-          id="evidenceEndedAt"
-          type="datetime-local"
-        />
-
-        <label for="evidenceConfidence">Confidence</label>
-        <select id="evidenceConfidence">
+        <select id="communityConfidence">
           <option>UNVERIFIED</option>
           <option>LOW</option>
           <option>MEDIUM</option>
-          <option selected>HIGH</option>
-          <option>CONFIRMED</option>
+          <option>HIGH</option>
+          <option selected>CONFIRMED</option>
         </select>
 
-        <label for="evidenceRoles">Roles</label>
+        <label for="communitySourceUrl">
+          Source URL (optional)
+        </label>
+
         <input
-          id="evidenceRoles"
+          id="communitySourceUrl"
           type="text"
-          placeholder="Comma separated: Member, Customer, FiveM"
+          placeholder="Public source confirming the community"
         />
 
-        <label for="evidenceNotes">Notes</label>
-        <textarea id="evidenceNotes"></textarea>
+        <label for="communityActive">
+          Status
+        </label>
 
-        <label for="evidenceCreatedBy">Created By</label>
-        <input
-          id="evidenceCreatedBy"
-          type="text"
-          placeholder="Staff name / ID"
-        />
+        <select id="communityActive">
+          <option value="true">Active</option>
+          <option value="false">Inactive / Historical</option>
+        </select>
 
-        <button class="primary" onclick="addEvidence()">Add Evidence</button>
+        <button
+          class="primary"
+          onclick="addCommunity()"
+        >
+          Add Community
+        </button>
 
-        <div id="evidenceStatus" style="margin-top:16px;"></div>
-
-        <div class="disclaimer">
-          Association evidence is not proof that a user cheated.
-        </div>
+        <div
+          id="communityStatus"
+          style="margin-top:16px;"
+        ></div>
       </div>
+
+      <div class="card">
+        <h2 class="section-title">
+          Known Communities
+        </h2>
+
+        <button
+          class="primary"
+          onclick="loadCommunities()"
+        >
+          Refresh List
+        </button>
+
+        <div
+          id="communityListStatus"
+          style="margin-top:16px;"
+        ></div>
+
+        <div id="communityList"></div>
+      </div>
+
     </div>
+
   </div>
 
   <script>
     const API_BASE = window.location.origin;
 
     function getApiKey() {
-      return document.getElementById("apiKey").value.trim();
+      return document
+        .getElementById("apiKey")
+        .value
+        .trim();
     }
 
     function showTab(tabId, button) {
-      document.querySelectorAll(".tab").forEach(tab => {
-        tab.classList.remove("active");
-      });
 
-      document.querySelectorAll(".tab-button").forEach(btn => {
-        btn.classList.remove("active");
-      });
+      document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+          tab.classList.remove("active");
+        });
 
-      document.getElementById(tabId).classList.add("active");
+      document
+        .querySelectorAll(".tab-button")
+        .forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+      document
+        .getElementById(tabId)
+        .classList.add("active");
+
       button.classList.add("active");
+
+      if (tabId === "communities") {
+        loadSubjects();
+        loadCommunities();
+      }
+    }
+
+    async function apiRequest(url, options = {}) {
+
+      const apiKey = getApiKey();
+
+      if (!apiKey) {
+        throw new Error("API key is required.");
+      }
+
+      options.headers = {
+        ...(options.headers || {}),
+        "x-api-key": apiKey
+      };
+
+      const response = await fetch(url, options);
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (response.status === 401) {
+        throw new Error("Unauthorized. Check your API key.");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data?.error ||
+          `Request failed with status ${response.status}`
+        );
+      }
+
+      return data;
     }
 
     async function searchUser() {
-      const apiKey = getApiKey();
-      const discordId = document.getElementById("lookupDiscordId").value.trim();
 
-      const status = document.getElementById("lookupStatus");
-      const results = document.getElementById("lookupResults");
+      const discordId = document
+        .getElementById("lookupDiscordId")
+        .value
+        .trim();
 
-      results.innerHTML = "";
+      const status =
+        document.getElementById("lookupStatus");
+
+      const results =
+        document.getElementById("lookupResults");
+
       status.innerHTML = "";
-
-      if (!apiKey) {
-        status.innerHTML = '<span class="error">API key is required.</span>';
-        return;
-      }
+      results.innerHTML = "";
 
       if (!discordId) {
-        status.innerHTML = '<span class="error">Discord ID is required.</span>';
+        status.innerHTML =
+          '<span class="error">Discord ID is required.</span>';
         return;
       }
 
-      status.innerHTML = '<span class="muted">Searching...</span>';
+      status.innerHTML =
+        '<span class="muted">Searching...</span>';
 
       try {
+
         const response = await fetch(
           `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
           {
             method: "GET",
             headers: {
-              "x-api-key": apiKey
+              "x-api-key": getApiKey()
             }
           }
         );
@@ -381,86 +448,137 @@
           return;
         }
 
-        if (response.status === 404 || data.found === false) {
+        if (
+          response.status === 404 ||
+          data.found === false
+        ) {
           status.innerHTML =
-            '<span class="muted">No evidence found for this Discord ID.</span>';
+            '<span class="muted">No known community associations found.</span>';
           return;
         }
 
         if (!response.ok) {
           status.innerHTML =
-            `<span class="error">${escapeHtml(data.error || "Request failed")}</span>`;
+            `<span class="error">${escapeHtml(
+              data.error || "Lookup failed"
+            )}</span>`;
           return;
         }
 
         status.innerHTML =
-          `<span class="success">Found ${data.evidenceCount} evidence record(s).</span>`;
+          `<span class="success">
+            ${data.evidenceCount} association record(s) found.
+          </span>`;
 
-        const wrapper = document.createElement("div");
+        const wrapper =
+          document.createElement("div");
+
         wrapper.className = "card";
 
         wrapper.innerHTML = `
-          <h2>Discord ID: ${escapeHtml(data.discordId)}</h2>
-          <p class="muted">
-            Association evidence is not proof that the user cheated.
+          <h2>
+            Discord ID:
+            ${escapeHtml(data.discordId)}
+          </h2>
+
+          <p class="disclaimer">
+            Community membership alone is not proof that a user cheated.
           </p>
         `;
 
         for (const evidence of data.evidence) {
+
           const server = evidence.server;
           const subject = server?.subject;
 
-          const match = document.createElement("div");
+          const match =
+            document.createElement("div");
+
           match.className = "match";
 
+          const roles =
+            evidence.roleNames?.length
+              ? evidence.roleNames
+                  .map(
+                    role =>
+                      `<span class="badge">
+                        ${escapeHtml(role)}
+                      </span>`
+                  )
+                  .join("")
+              : '<span class="muted">None recorded</span>';
+
+          const statusText =
+            evidence.endedAt
+              ? "Historical"
+              : "Current / Last Known";
+
           match.innerHTML = `
-            <h3>${escapeHtml(server?.name || "Unknown Server")}</h3>
+            <h3>
+              ${escapeHtml(
+                server?.name || "Unknown Community"
+              )}
+            </h3>
 
-            <p><strong>Guild ID:</strong>
-              <code>${escapeHtml(server?.discordId || "Unknown")}</code>
+            <p>
+              <strong>Product:</strong>
+              ${escapeHtml(
+                subject?.name || "Unknown"
+              )}
             </p>
 
-            <p><strong>Category:</strong>
-              ${escapeHtml(subject?.category || "Unknown")}
+            <p>
+              <strong>Guild ID:</strong>
+              <code>
+                ${escapeHtml(
+                  server?.discordId || "Unknown"
+                )}
+              </code>
             </p>
 
-            <p><strong>Confidence:</strong>
-              ${escapeHtml(evidence.confidence || "Unknown")}
+            <p>
+              <strong>Category:</strong>
+              ${friendlyCategory(
+                subject?.category
+              )}
             </p>
 
-            <p><strong>Observed:</strong>
-              ${formatDate(evidence.observedAt)}
+            <p>
+              <strong>Status:</strong>
+              ${statusText}
             </p>
 
-            <p><strong>Ended:</strong>
-              ${
-                evidence.endedAt
-                  ? formatDate(evidence.endedAt)
-                  : "Still active / unknown"
-              }
+            <p>
+              <strong>Confidence:</strong>
+              ${escapeHtml(
+                evidence.confidence || "Unknown"
+              )}
             </p>
 
-            <p><strong>Roles:</strong>
-              ${
-                evidence.roleNames?.length
-                  ? evidence.roleNames.map(escapeHtml).join(", ")
-                  : "None recorded"
-              }
-            </p>
-
-            <p><strong>Evidence Source:</strong>
-              ${escapeHtml(evidence.sourceType || "Unknown")}
-            </p>
-
-            <p><strong>Reference:</strong>
-              ${escapeHtml(evidence.sourceRef || "None")}
+            <p>
+              <strong>Observed:</strong>
+              ${formatDate(
+                evidence.observedAt
+              )}
             </p>
 
             ${
-              evidence.notes
-                ? `<p><strong>Notes:</strong> ${escapeHtml(evidence.notes)}</p>`
+              evidence.endedAt
+                ? `
+                  <p>
+                    <strong>Last Seen:</strong>
+                    ${formatDate(
+                      evidence.endedAt
+                    )}
+                  </p>
+                `
                 : ""
             }
+
+            <p>
+              <strong>Roles:</strong><br>
+              ${roles}
+            </p>
           `;
 
           wrapper.appendChild(match);
@@ -469,165 +587,317 @@
         results.appendChild(wrapper);
 
       } catch (error) {
+
         status.innerHTML =
-          '<span class="error">Could not reach the API.</span>';
+          `<span class="error">
+            ${escapeHtml(error.message)}
+          </span>`;
       }
     }
 
-    async function addServer() {
-      const apiKey = getApiKey();
-      const status = document.getElementById("serverStatus");
+    async function loadSubjects() {
 
-      if (!apiKey) {
-        status.innerHTML = '<span class="error">API key is required.</span>';
+      const select =
+        document.getElementById(
+          "communitySubject"
+        );
+
+      select.innerHTML =
+        '<option value="">Loading...</option>';
+
+      try {
+
+        const subjects = await apiRequest(
+          `${API_BASE}/api/v1/subjects`
+        );
+
+        select.innerHTML =
+          '<option value="">Select product/community</option>';
+
+        for (const subject of subjects) {
+
+          const option =
+            document.createElement("option");
+
+          option.value = subject.id;
+
+          option.textContent =
+            `${subject.name} — ${friendlyCategory(
+              subject.category
+            )}`;
+
+          select.appendChild(option);
+        }
+
+      } catch (error) {
+
+        select.innerHTML =
+          '<option value="">Could not load subjects</option>';
+      }
+    }
+
+    async function loadCommunities() {
+
+      const status =
+        document.getElementById(
+          "communityListStatus"
+        );
+
+      const list =
+        document.getElementById(
+          "communityList"
+        );
+
+      status.innerHTML =
+        '<span class="muted">Loading...</span>';
+
+      list.innerHTML = "";
+
+      try {
+
+        const servers = await apiRequest(
+          `${API_BASE}/api/v1/servers`
+        );
+
+        if (!servers.length) {
+
+          status.innerHTML =
+            '<span class="muted">No communities stored.</span>';
+
+          return;
+        }
+
+        status.innerHTML =
+          `<span class="success">
+            ${servers.length} known Discord community(s).
+          </span>`;
+
+        for (const server of servers) {
+
+          const item =
+            document.createElement("div");
+
+          item.className = "community";
+
+          item.innerHTML = `
+            <h3>
+              ${escapeHtml(server.name)}
+            </h3>
+
+            <p>
+              <strong>Product:</strong>
+              ${escapeHtml(
+                server.subject?.name || "Unknown"
+              )}
+            </p>
+
+            <p>
+              <strong>Guild ID:</strong>
+              <code>
+                ${escapeHtml(
+                  server.discordId
+                )}
+              </code>
+            </p>
+
+            <p>
+              <strong>Category:</strong>
+              ${friendlyCategory(
+                server.subject?.category
+              )}
+            </p>
+
+            <p>
+              <strong>Confidence:</strong>
+              ${escapeHtml(
+                server.confidence
+              )}
+            </p>
+
+            <p>
+              <strong>Status:</strong>
+              ${
+                server.active
+                  ? "Active"
+                  : "Inactive / Historical"
+              }
+            </p>
+
+            ${
+              server.sourceUrl
+                ? `
+                  <p class="small">
+                    <strong>Source:</strong>
+                    ${escapeHtml(
+                      server.sourceUrl
+                    )}
+                  </p>
+                `
+                : ""
+            }
+          `;
+
+          list.appendChild(item);
+        }
+
+      } catch (error) {
+
+        status.innerHTML =
+          `<span class="error">
+            ${escapeHtml(error.message)}
+          </span>`;
+      }
+    }
+
+    async function addCommunity() {
+
+      const status =
+        document.getElementById(
+          "communityStatus"
+        );
+
+      status.innerHTML = "";
+
+      const discordId =
+        document
+          .getElementById(
+            "communityDiscordId"
+          )
+          .value
+          .trim();
+
+      const name =
+        document
+          .getElementById(
+            "communityName"
+          )
+          .value
+          .trim();
+
+      const subjectId =
+        document
+          .getElementById(
+            "communitySubject"
+          )
+          .value;
+
+      if (!discordId) {
+        status.innerHTML =
+          '<span class="error">Discord Guild ID is required.</span>';
+        return;
+      }
+
+      if (!name) {
+        status.innerHTML =
+          '<span class="error">Server name is required.</span>';
+        return;
+      }
+
+      if (!subjectId) {
+        status.innerHTML =
+          '<span class="error">Select a product/community.</span>';
         return;
       }
 
       const body = {
-        discordId: document.getElementById("serverDiscordId").value.trim(),
-        name: document.getElementById("serverName").value.trim(),
-        subjectId: document.getElementById("serverSubjectId").value.trim() || undefined,
-        confidence: document.getElementById("serverConfidence").value,
-        active: document.getElementById("serverActive").value === "true"
+        discordId,
+        name,
+        subjectId,
+
+        confidence:
+          document.getElementById(
+            "communityConfidence"
+          ).value,
+
+        active:
+          document.getElementById(
+            "communityActive"
+          ).value === "true"
       };
 
-      const sourceUrl = document.getElementById("serverSourceUrl").value.trim();
+      const sourceUrl =
+        document
+          .getElementById(
+            "communitySourceUrl"
+          )
+          .value
+          .trim();
 
       if (sourceUrl) {
         body.sourceUrl = sourceUrl;
       }
 
       try {
-        const response = await fetch(`${API_BASE}/api/v1/servers`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey
-          },
-          body: JSON.stringify(body)
-        });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          status.innerHTML =
-            `<span class="error">${escapeHtml(data.error || "Failed to add server")}</span>`;
-          return;
-        }
-
-        status.innerHTML =
-          `<span class="success">Server added successfully.</span>`;
-
-      } catch {
-        status.innerHTML =
-          '<span class="error">Could not reach the API.</span>';
-      }
-    }
-
-    async function addEvidence() {
-      const apiKey = getApiKey();
-      const status = document.getElementById("evidenceStatus");
-
-      const userId = document.getElementById("evidenceUserId").value.trim();
-
-      if (!apiKey) {
-        status.innerHTML =
-          '<span class="error">API key is required.</span>';
-        return;
-      }
-
-      if (!userId) {
-        status.innerHTML =
-          '<span class="error">Discord user ID is required.</span>';
-        return;
-      }
-
-      const observedAtValue =
-        document.getElementById("evidenceObservedAt").value;
-
-      if (!observedAtValue) {
-        status.innerHTML =
-          '<span class="error">Observed date/time is required.</span>';
-        return;
-      }
-
-      const roles =
-        document
-          .getElementById("evidenceRoles")
-          .value
-          .split(",")
-          .map(role => role.trim())
-          .filter(Boolean);
-
-      const body = {
-        serverDiscordId:
-          document.getElementById("evidenceServerId").value.trim() || undefined,
-
-        sourceType:
-          document.getElementById("evidenceSourceType").value,
-
-        sourceRef:
-          document.getElementById("evidenceSourceRef").value.trim(),
-
-        observedAt:
-          new Date(observedAtValue).toISOString(),
-
-        confidence:
-          document.getElementById("evidenceConfidence").value,
-
-        roleNames: roles,
-
-        notes:
-          document.getElementById("evidenceNotes").value.trim() || undefined,
-
-        createdBy:
-          document.getElementById("evidenceCreatedBy").value.trim() || undefined
-      };
-
-      const endedAtValue =
-        document.getElementById("evidenceEndedAt").value;
-
-      if (endedAtValue) {
-        body.endedAt = new Date(endedAtValue).toISOString();
-      }
-
-      try {
-        const response = await fetch(
-          `${API_BASE}/api/v1/users/${encodeURIComponent(userId)}/evidence`,
+        await apiRequest(
+          `${API_BASE}/api/v1/servers`,
           {
             method: "POST",
+
             headers: {
-              "Content-Type": "application/json",
-              "x-api-key": apiKey
+              "Content-Type":
+                "application/json"
             },
-            body: JSON.stringify(body)
+
+            body:
+              JSON.stringify(body)
           }
         );
 
-        const data = await response.json();
+        status.innerHTML =
+          '<span class="success">Community added successfully.</span>';
 
-        if (!response.ok) {
-          status.innerHTML =
-            `<span class="error">${escapeHtml(data.error || "Failed to add evidence")}</span>`;
-          return;
-        }
+        document.getElementById(
+          "communityDiscordId"
+        ).value = "";
+
+        document.getElementById(
+          "communityName"
+        ).value = "";
+
+        document.getElementById(
+          "communitySourceUrl"
+        ).value = "";
+
+        loadCommunities();
+
+      } catch (error) {
 
         status.innerHTML =
-          '<span class="success">Evidence added successfully.</span>';
-
-      } catch {
-        status.innerHTML =
-          '<span class="error">Could not reach the API.</span>';
+          `<span class="error">
+            ${escapeHtml(error.message)}
+          </span>`;
       }
     }
 
-    function formatDate(value) {
+    function friendlyCategory(value) {
+
       if (!value) return "Unknown";
-      return new Date(value).toLocaleString();
+
+      return String(value)
+        .replaceAll("_", " ")
+        .toLowerCase()
+        .replace(/\b\w/g, char =>
+          char.toUpperCase()
+        );
+    }
+
+    function formatDate(value) {
+
+      if (!value) return "Unknown";
+
+      return new Date(value)
+        .toLocaleString();
     }
 
     function escapeHtml(value) {
-      if (value === null || value === undefined) return "";
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
 
       return String(value)
         .replaceAll("&", "&amp;")
@@ -636,6 +906,8 @@
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
     }
+
   </script>
+
 </body>
 </html>
