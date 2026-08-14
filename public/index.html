@@ -9,7 +9,7 @@
     :root {
       --bg: #0f172a;
       --panel: #111827;
-      --panel-2: #1f2937;
+      --panel2: #1f2937;
       --border: #374151;
       --text: #f9fafb;
       --muted: #9ca3af;
@@ -17,6 +17,7 @@
       --error: #fca5a5;
       --warning: #fde68a;
       --accent: #e5e7eb;
+      --danger: #991b1b;
     }
 
     * {
@@ -31,19 +32,48 @@
     }
 
     .container {
-      max-width: 1150px;
+      width: min(1150px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 34px 20px 60px;
+      padding: 34px 0 60px;
     }
 
-    h1,
-    h2,
-    h3,
-    p {
+    h1, h2, h3, p {
       margin-top: 0;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    .error {
+      color: var(--error);
+    }
+
+    .warning {
+      color: var(--warning);
+    }
+
+    .card {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
     .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
       margin-bottom: 24px;
     }
 
@@ -52,87 +82,35 @@
       margin-bottom: 0;
     }
 
-    .card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .auth-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      align-items: end;
-    }
-
-    .auth-status {
-      min-width: 140px;
+    .user-box {
       text-align: right;
-      padding-bottom: 13px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #374151;
+      font-size: 12px;
       font-weight: bold;
-    }
-
-    .remember-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: -4px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .remember-row input {
-      width: auto;
-      margin: 0;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .tab-button {
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      border-radius: 9px;
-      padding: 11px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .tab-button.active {
-      background: var(--accent);
-      color: #111827;
-    }
-
-    .tab {
-      display: none;
-    }
-
-    .tab.active {
-      display: block;
+      margin-top: 5px;
     }
 
     label {
       display: block;
-      margin-bottom: 6px;
       font-weight: bold;
+      margin-bottom: 6px;
     }
 
     input,
     select {
       width: 100%;
-      background: var(--panel);
-      color: var(--text);
-      border: 1px solid #4b5563;
-      border-radius: 9px;
       padding: 12px;
       margin-bottom: 14px;
+      border: 1px solid #4b5563;
+      border-radius: 9px;
+      background: var(--panel);
+      color: white;
     }
 
     button {
@@ -153,47 +131,103 @@
       color: white;
     }
 
-    .copy-btn {
-      padding: 5px 8px;
-      font-size: 12px;
-      margin-left: 6px;
-      background: #374151;
+    .danger {
+      background: var(--danger);
       color: white;
+    }
+
+    .small-button {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .login-wrapper {
+      max-width: 480px;
+      margin: 80px auto;
+    }
+
+    .login-title {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 25px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      background: var(--panel2);
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .tab-button.active {
+      background: white;
+      color: #111827;
+    }
+
+    .tab {
+      display: none;
+    }
+
+    .tab.active {
+      display: block;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 14px;
-    }
-
-    .match,
-    .community-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
-      margin-top: 14px;
     }
 
     .status-box {
       margin-top: 14px;
     }
 
-    .muted {
-      color: var(--muted);
+    .result-banner {
+      padding: 13px 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      margin-bottom: 16px;
     }
 
-    .success {
-      color: var(--success);
+    .match-found {
+      background: #14532d;
     }
 
-    .error {
-      color: var(--error);
+    .no-match {
+      background: #374151;
     }
 
-    .warning {
-      color: var(--warning);
+    .error-banner {
+      background: #7f1d1d;
+    }
+
+    .match,
+    .community-card,
+    .staff-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 17px;
+      margin-top: 14px;
+    }
+
+    .community-top,
+    .staff-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
     }
 
     .badge {
@@ -206,23 +240,12 @@
       font-size: 13px;
     }
 
-    .result-banner {
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      font-weight: bold;
-    }
-
-    .result-banner.match-found {
-      background: #14532d;
-    }
-
-    .result-banner.no-match {
+    .copy-btn {
       background: #374151;
-    }
-
-    .result-banner.error-banner {
-      background: #7f1d1d;
+      color: white;
+      padding: 5px 8px;
+      font-size: 12px;
+      margin-left: 5px;
     }
 
     code {
@@ -231,20 +254,16 @@
       border-radius: 5px;
     }
 
-    .section-title {
-      margin-bottom: 16px;
+    .staff-actions {
+      display: grid;
+      grid-template-columns: 180px 140px auto;
+      gap: 8px;
+      margin-top: 15px;
+      align-items: center;
     }
 
-    .community-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .community-status {
-      font-size: 13px;
-      font-weight: bold;
+    .staff-actions select {
+      margin: 0;
     }
 
     .footer-note {
@@ -254,56 +273,120 @@
     }
 
     @media (max-width: 700px) {
-      .auth-row {
-        grid-template-columns: 1fr;
+      .page-header {
+        display: block;
       }
 
-      .auth-status {
+      .user-box {
         text-align: left;
-        padding-bottom: 0;
+        margin-top: 15px;
+      }
+
+      .staff-actions {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
 
-    <div class="page-header">
-      <h1>FiveM Intelligence Dashboard</h1>
-      <p class="subtitle">
-        Search stored Discord community associations and manage known communities.
-      </p>
-    </div>
+  <!-- LOGIN -->
+
+  <div id="loginScreen" class="login-wrapper">
+
+    <h1 class="login-title">FiveM Intelligence</h1>
+
+    <p class="login-subtitle">
+      Authorized Staff Access
+    </p>
 
     <div class="card">
-      <div class="auth-row">
-        <div>
-          <label for="apiKey">API Key</label>
-          <input
-            type="password"
-            id="apiKey"
-            placeholder="Enter API key"
-            oninput="handleApiKeyChange()"
-          />
 
-          <label class="remember-row">
-            <input
-              type="checkbox"
-              id="rememberApiKey"
-              onchange="handleRememberChange()"
-            />
-            Remember on this browser
-          </label>
-        </div>
+      <label for="loginUsername">
+        Username
+      </label>
 
-        <div id="authStatus" class="auth-status muted">
-          Not authenticated
-        </div>
+      <input
+        id="loginUsername"
+        autocomplete="username"
+        onkeydown="if(event.key === 'Enter') login()"
+      />
+
+      <label for="loginPassword">
+        Password
+      </label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password"
+        onkeydown="if(event.key === 'Enter') login()"
+      />
+
+      <button
+        class="primary"
+        onclick="login()"
+      >
+        Sign In
+      </button>
+
+      <div
+        id="loginStatus"
+        class="status-box"
+      ></div>
+
+    </div>
+  </div>
+
+
+  <!-- DASHBOARD -->
+
+  <div
+    id="dashboard"
+    class="container hidden"
+  >
+
+    <div class="page-header">
+
+      <div>
+        <h1>FiveM Intelligence Dashboard</h1>
+
+        <p class="subtitle">
+          Discord community intelligence and staff lookup.
+        </p>
       </div>
+
+      <div class="user-box">
+
+        <strong id="currentUsername"></strong>
+
+        <br>
+
+        <span
+          id="currentRole"
+          class="role-badge"
+        ></span>
+
+        <br><br>
+
+        <button
+          class="secondary small-button"
+          onclick="logout()"
+        >
+          Logout
+        </button>
+
+      </div>
+
     </div>
 
-    <div class="tabs">
+
+    <div
+      id="tabs"
+      class="tabs"
+    >
+
       <button
         class="tab-button active"
         onclick="showTab('lookup', this)"
@@ -312,25 +395,43 @@
       </button>
 
       <button
-        class="tab-button"
+        id="communitiesTabButton"
+        class="tab-button hidden"
         onclick="showTab('communities', this)"
       >
         Manage Communities
       </button>
+
+      <button
+        id="staffTabButton"
+        class="tab-button hidden"
+        onclick="showTab('staff', this)"
+      >
+        Manage Staff
+      </button>
+
     </div>
 
-    <div id="lookup" class="tab active">
+
+    <!-- LOOKUP -->
+
+    <div
+      id="lookup"
+      class="tab active"
+    >
 
       <div class="card">
-        <h2 class="section-title">User Lookup</h2>
 
-        <label for="lookupDiscordId">Discord User ID</label>
+        <h2>User Lookup</h2>
+
+        <label for="lookupDiscordId">
+          Discord User ID
+        </label>
 
         <input
-          type="text"
           id="lookupDiscordId"
           placeholder="Example: 198165163172429824"
-          onkeydown="if (event.key === 'Enter') searchUser()"
+          onkeydown="if(event.key === 'Enter') searchUser()"
         />
 
         <button
@@ -340,55 +441,77 @@
           Search
         </button>
 
-        <div id="lookupStatus" class="status-box"></div>
+        <div
+          id="lookupStatus"
+          class="status-box"
+        ></div>
+
       </div>
 
       <div id="lookupResults"></div>
+
     </div>
 
-    <div id="communities" class="tab">
 
-      <div class="card">
-        <h2 class="section-title">Add Community</h2>
+    <!-- COMMUNITIES -->
+
+    <div
+      id="communities"
+      class="tab"
+    >
+
+      <div
+        id="addCommunityCard"
+        class="card hidden"
+      >
+
+        <h2>Add Community</h2>
 
         <div class="grid">
 
           <div>
-            <label for="communitySubject">
+
+            <label>
               Product / Community
             </label>
 
             <select id="communitySubject">
-              <option value="">Select product/community</option>
+              <option value="">
+                Select product/community
+              </option>
             </select>
+
           </div>
 
           <div>
-            <label for="communityDiscordId">
+
+            <label>
               Discord Guild ID
             </label>
 
             <input
               id="communityDiscordId"
-              type="text"
-              placeholder="Example: 1136029776080023563"
+              placeholder="1136029776080023563"
             />
+
           </div>
 
           <div>
-            <label for="communityName">
+
+            <label>
               Discord Server Name
             </label>
 
             <input
               id="communityName"
-              type="text"
-              placeholder="Example: Eulen"
+              placeholder="Eulen"
             />
+
           </div>
 
           <div>
-            <label for="communityConfidence">
+
+            <label>
               Confidence
             </label>
 
@@ -399,10 +522,12 @@
               <option>HIGH</option>
               <option selected>CONFIRMED</option>
             </select>
+
           </div>
 
           <div>
-            <label for="communityActive">
+
+            <label>
               Status
             </label>
 
@@ -410,18 +535,20 @@
               <option value="true">Active</option>
               <option value="false">Inactive / Historical</option>
             </select>
+
           </div>
 
           <div>
-            <label for="communitySourceUrl">
+
+            <label>
               Source URL
             </label>
 
             <input
               id="communitySourceUrl"
-              type="text"
               placeholder="Optional"
             />
+
           </div>
 
         </div>
@@ -433,23 +560,29 @@
           Add Community
         </button>
 
-        <div id="communityStatus" class="status-box"></div>
+        <div
+          id="communityStatus"
+          class="status-box"
+        ></div>
+
       </div>
 
+
       <div class="card">
+
         <div class="community-top">
-          <div>
-            <h2 class="section-title">
-              Known Communities
-            </h2>
-          </div>
+
+          <h2>
+            Known Communities
+          </h2>
 
           <button
-            class="secondary"
+            class="secondary small-button"
             onclick="loadCommunities()"
           >
             Refresh
           </button>
+
         </div>
 
         <div
@@ -458,149 +591,170 @@
         ></div>
 
         <div id="communityList"></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STAFF -->
+
+    <div
+      id="staff"
+      class="tab"
+    >
+
+      <div class="card">
+
+        <h2>Create Staff Account</h2>
+
+        <div class="grid">
+
+          <div>
+
+            <label>
+              Username
+            </label>
+
+            <input id="newStaffUsername" />
+
+          </div>
+
+          <div>
+
+            <label>
+              Temporary Password
+            </label>
+
+            <input
+              id="newStaffPassword"
+              type="password"
+              placeholder="Minimum 12 characters"
+            />
+
+          </div>
+
+          <div>
+
+            <label>
+              Role
+            </label>
+
+            <select id="newStaffRole">
+
+              <option value="READ_ONLY">
+                Read Only
+              </option>
+
+              <option value="ANALYST">
+                Analyst
+              </option>
+
+              <option value="ADMIN">
+                Admin
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <button
+          class="primary"
+          onclick="createStaff()"
+        >
+          Create Account
+        </button>
+
+        <div
+          id="createStaffStatus"
+          class="status-box"
+        ></div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="staff-top">
+
+          <h2>Staff Accounts</h2>
+
+          <button
+            class="secondary small-button"
+            onclick="loadStaff()"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+        <div
+          id="staffListStatus"
+          class="status-box"
+        ></div>
+
+        <div id="staffList"></div>
+
       </div>
 
     </div>
 
   </div>
 
+
   <script>
-    const API_BASE = window.location.origin;
 
-    const SESSION_KEY = "fivem_intel_api_key";
-    const LOCAL_KEY = "fivem_intel_api_key_remembered";
+    const API_BASE =
+      window.location.origin;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      restoreApiKey();
-    });
+    let currentUser = null;
 
-    function restoreApiKey() {
-      const remembered = localStorage.getItem(LOCAL_KEY);
-      const session = sessionStorage.getItem(SESSION_KEY);
 
-      const apiKeyInput = document.getElementById("apiKey");
-      const rememberBox = document.getElementById("rememberApiKey");
+    document.addEventListener(
+      "DOMContentLoaded",
+      checkSession
+    );
 
-      if (remembered) {
-        apiKeyInput.value = remembered;
-        rememberBox.checked = true;
-      } else if (session) {
-        apiKeyInput.value = session;
-      }
 
-      updateAuthStatus();
-    }
+    async function apiRequest(
+      url,
+      options = {}
+    ) {
 
-    function handleApiKeyChange() {
-      const apiKey = getApiKey();
-      const remember = document.getElementById("rememberApiKey").checked;
+      options.credentials =
+        "same-origin";
 
-      if (apiKey) {
-        sessionStorage.setItem(SESSION_KEY, apiKey);
-
-        if (remember) {
-          localStorage.setItem(LOCAL_KEY, apiKey);
-        }
-      } else {
-        sessionStorage.removeItem(SESSION_KEY);
-        localStorage.removeItem(LOCAL_KEY);
-      }
-
-      updateAuthStatus();
-    }
-
-    function handleRememberChange() {
-      const apiKey = getApiKey();
-      const remember = document.getElementById("rememberApiKey").checked;
-
-      if (remember && apiKey) {
-        localStorage.setItem(LOCAL_KEY, apiKey);
-      } else {
-        localStorage.removeItem(LOCAL_KEY);
-      }
-
-      updateAuthStatus();
-    }
-
-    function updateAuthStatus() {
-      const status = document.getElementById("authStatus");
-
-      if (getApiKey()) {
-        status.innerHTML =
-          '<span class="success">API key loaded</span>';
-      } else {
-        status.innerHTML =
-          '<span class="muted">Not authenticated</span>';
-      }
-    }
-
-    function getApiKey() {
-      return document
-        .getElementById("apiKey")
-        .value
-        .trim();
-    }
-
-    function showTab(tabId, button) {
-      document
-        .querySelectorAll(".tab")
-        .forEach(tab => {
-          tab.classList.remove("active");
-        });
-
-      document
-        .querySelectorAll(".tab-button")
-        .forEach(btn => {
-          btn.classList.remove("active");
-        });
-
-      document
-        .getElementById(tabId)
-        .classList.add("active");
-
-      button.classList.add("active");
-
-      if (tabId === "communities") {
-        loadSubjects();
-        loadCommunities();
-      }
-    }
-
-    async function apiRequest(url, options = {}) {
-      const apiKey = getApiKey();
-
-      if (!apiKey) {
-        throw new Error("API key is required.");
-      }
-
-      options.headers = {
-        ...(options.headers || {}),
-        "x-api-key": apiKey
-      };
-
-      const response = await fetch(url, options);
+      const response =
+        await fetch(
+          url,
+          options
+        );
 
       let data = null;
 
       try {
-        data = await response.json();
+        data =
+          await response.json();
       } catch {
         data = null;
       }
 
-      if (response.status === 401) {
-        throw new Error("Unauthorized. Check your API key.");
-      }
-
       if (!response.ok) {
-        const error = new Error(
-          data?.message ||
-          data?.error ||
-          `Request failed with status ${response.status}`
-        );
 
-        error.status = response.status;
-        error.data = data;
+        const error =
+          new Error(
+            data?.message ||
+            data?.error ||
+            `Request failed (${response.status})`
+          );
+
+        error.status =
+          response.status;
+
+        error.data =
+          data;
 
         throw error;
       }
@@ -608,101 +762,381 @@
       return data;
     }
 
-    async function searchUser() {
-      const discordId = document
-        .getElementById("lookupDiscordId")
-        .value
-        .trim();
 
-      const status =
-        document.getElementById("lookupStatus");
-
-      const results =
-        document.getElementById("lookupResults");
-
-      status.innerHTML = "";
-      results.innerHTML = "";
-
-      if (!getApiKey()) {
-        status.innerHTML =
-          '<div class="result-banner error-banner">API key is required.</div>';
-        return;
-      }
-
-      if (!discordId) {
-        status.innerHTML =
-          '<div class="result-banner error-banner">Discord ID is required.</div>';
-        return;
-      }
-
-      status.innerHTML =
-        '<span class="muted">Searching...</span>';
+    async function checkSession() {
 
       try {
-        const response = await fetch(
-          `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
-          {
-            method: "GET",
-            headers: {
-              "x-api-key": getApiKey()
+
+        const data =
+          await apiRequest(
+            `${API_BASE}/api/v1/auth/me`
+          );
+
+        currentUser =
+          data.user;
+
+        showDashboard();
+
+      } catch {
+
+        showLogin();
+
+      }
+    }
+
+
+    async function login() {
+
+      const username =
+        document
+          .getElementById(
+            "loginUsername"
+          )
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById(
+            "loginPassword"
+          )
+          .value;
+
+      const status =
+        document.getElementById(
+          "loginStatus"
+        );
+
+      status.innerHTML = "";
+
+      if (!username || !password) {
+
+        status.innerHTML =
+          '<span class="error">Username and password are required.</span>';
+
+        return;
+      }
+
+      try {
+
+        const data =
+          await apiRequest(
+            `${API_BASE}/api/v1/auth/login`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  username,
+                  password
+                })
             }
+          );
+
+        currentUser =
+          data.user;
+
+        document.getElementById(
+          "loginPassword"
+        ).value = "";
+
+        showDashboard();
+
+      } catch (error) {
+
+        status.innerHTML =
+          `<span class="error">
+            ${escapeHtml(error.message)}
+          </span>`;
+      }
+    }
+
+
+    async function logout() {
+
+      try {
+
+        await apiRequest(
+          `${API_BASE}/api/v1/auth/logout`,
+          {
+            method: "POST"
           }
         );
 
-        const data = await response.json();
+      } catch {}
 
-        if (response.status === 401) {
-          status.innerHTML =
-            '<div class="result-banner error-banner">Unauthorized. Check your API key.</div>';
-          return;
+      currentUser = null;
+
+      showLogin();
+    }
+
+
+    function showLogin() {
+
+      document
+        .getElementById("dashboard")
+        .classList
+        .add("hidden");
+
+      document
+        .getElementById("loginScreen")
+        .classList
+        .remove("hidden");
+    }
+
+
+    function showDashboard() {
+
+      document
+        .getElementById("loginScreen")
+        .classList
+        .add("hidden");
+
+      document
+        .getElementById("dashboard")
+        .classList
+        .remove("hidden");
+
+      document.getElementById(
+        "currentUsername"
+      ).textContent =
+        currentUser.username;
+
+      document.getElementById(
+        "currentRole"
+      ).textContent =
+        friendlyRole(
+          currentUser.role
+        );
+
+      configureRoleAccess();
+    }
+
+
+    function configureRoleAccess() {
+
+      const communitiesButton =
+        document.getElementById(
+          "communitiesTabButton"
+        );
+
+      const staffButton =
+        document.getElementById(
+          "staffTabButton"
+        );
+
+      const addCommunityCard =
+        document.getElementById(
+          "addCommunityCard"
+        );
+
+      communitiesButton
+        .classList
+        .add("hidden");
+
+      staffButton
+        .classList
+        .add("hidden");
+
+      addCommunityCard
+        .classList
+        .add("hidden");
+
+
+      if (
+        currentUser.role ===
+        "ANALYST"
+      ) {
+
+        communitiesButton
+          .classList
+          .remove("hidden");
+      }
+
+
+      if (
+        currentUser.role ===
+        "ADMIN"
+      ) {
+
+        communitiesButton
+          .classList
+          .remove("hidden");
+
+        staffButton
+          .classList
+          .remove("hidden");
+
+        addCommunityCard
+          .classList
+          .remove("hidden");
+      }
+    }
+
+
+    function showTab(
+      tabId,
+      button
+    ) {
+
+      document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+          tab.classList.remove(
+            "active"
+          );
+        });
+
+
+      document
+        .querySelectorAll(
+          ".tab-button"
+        )
+        .forEach(btn => {
+
+          btn.classList.remove(
+            "active"
+          );
+        });
+
+
+      document
+        .getElementById(tabId)
+        .classList
+        .add("active");
+
+      button.classList.add(
+        "active"
+      );
+
+
+      if (
+        tabId ===
+        "communities"
+      ) {
+
+        loadCommunities();
+
+        if (
+          currentUser.role ===
+          "ADMIN"
+        ) {
+
+          loadSubjects();
         }
+      }
+
+
+      if (
+        tabId ===
+        "staff"
+      ) {
+
+        loadStaff();
+      }
+    }
+
+
+    async function searchUser() {
+
+      const discordId =
+        document
+          .getElementById(
+            "lookupDiscordId"
+          )
+          .value
+          .trim();
+
+      const status =
+        document.getElementById(
+          "lookupStatus"
+        );
+
+      const results =
+        document.getElementById(
+          "lookupResults"
+        );
+
+      status.innerHTML = "";
+
+      results.innerHTML = "";
+
+
+      if (!discordId) {
+
+        status.innerHTML =
+          '<div class="result-banner error-banner">Discord ID is required.</div>';
+
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
+            {
+              credentials:
+                "same-origin"
+            }
+          );
+
+        const data =
+          await response.json();
+
 
         if (
           response.status === 404 ||
           data.found === false
         ) {
+
           status.innerHTML =
             '<div class="result-banner no-match">NO MATCH FOUND</div>';
 
-          results.innerHTML = `
-            <div class="card">
-              <h2>${escapeHtml(discordId)}</h2>
-              <p class="muted">
-                No known community associations are stored for this Discord ID.
-              </p>
-            </div>
-          `;
-
           return;
         }
+
 
         if (!response.ok) {
-          status.innerHTML =
-            `<div class="result-banner error-banner">
-              ${escapeHtml(data.error || "Lookup failed")}
-            </div>`;
 
-          return;
+          throw new Error(
+            data.error ||
+            "Lookup failed"
+          );
         }
+
 
         status.innerHTML =
           `<div class="result-banner match-found">
-            MATCH FOUND — ${data.evidenceCount} association record(s)
+            MATCH FOUND — ${data.evidenceCount} association(s)
           </div>`;
 
-        const wrapper =
-          document.createElement("div");
 
-        wrapper.className = "card";
+        const wrapper =
+          document.createElement(
+            "div"
+          );
+
+        wrapper.className =
+          "card";
+
 
         wrapper.innerHTML = `
-          <h2>
-            Discord User
-          </h2>
+          <h2>Discord User</h2>
 
           <p>
             <strong>ID:</strong>
-            <code>${escapeHtml(data.discordId)}</code>
+
+            <code>
+              ${escapeHtml(data.discordId)}
+            </code>
 
             <button
               class="copy-btn"
@@ -717,29 +1151,40 @@
           </p>
         `;
 
-        for (const evidence of data.evidence) {
-          const server = evidence.server;
-          const subject = server?.subject;
 
-          const match =
-            document.createElement("div");
+        for (
+          const evidence
+          of data.evidence
+        ) {
 
-          match.className = "match";
+          const server =
+            evidence.server;
+
+          const subject =
+            server?.subject;
+
 
           const roles =
             evidence.roleNames?.length
+
               ? evidence.roleNames
                   .map(
                     role =>
                       `<span class="badge">${escapeHtml(role)}</span>`
                   )
                   .join("")
+
               : '<span class="muted">None recorded</span>';
 
-          const statusText =
-            evidence.endedAt
-              ? "Historical"
-              : "Current / Last Known";
+
+          const match =
+            document.createElement(
+              "div"
+            );
+
+          match.className =
+            "match";
+
 
           match.innerHTML = `
             <h3>
@@ -778,30 +1223,14 @@
             </p>
 
             <p>
-              <strong>Status:</strong>
-              ${statusText}
-            </p>
-
-            <p>
               <strong>Confidence:</strong>
               ${escapeHtml(evidence.confidence || "Unknown")}
             </p>
 
             <p>
-              <strong>First / Last Observed:</strong>
+              <strong>Observed:</strong>
               ${formatDate(evidence.observedAt)}
             </p>
-
-            ${
-              evidence.endedAt
-                ? `
-                  <p>
-                    <strong>Ended:</strong>
-                    ${formatDate(evidence.endedAt)}
-                  </p>
-                `
-                : ""
-            }
 
             <p>
               <strong>Roles:</strong><br>
@@ -809,12 +1238,18 @@
             </p>
           `;
 
-          wrapper.appendChild(match);
+          wrapper.appendChild(
+            match
+          );
         }
 
-        results.appendChild(wrapper);
+
+        results.appendChild(
+          wrapper
+        );
 
       } catch (error) {
+
         status.innerHTML =
           `<div class="result-banner error-banner">
             ${escapeHtml(error.message)}
@@ -822,74 +1257,103 @@
       }
     }
 
+
     async function loadSubjects() {
+
       const select =
-        document.getElementById("communitySubject");
+        document.getElementById(
+          "communitySubject"
+        );
 
       select.innerHTML =
         '<option value="">Loading...</option>';
 
+
       try {
-        const subjects = await apiRequest(
-          `${API_BASE}/api/v1/subjects`
-        );
+
+        const subjects =
+          await apiRequest(
+            `${API_BASE}/api/v1/subjects`
+          );
 
         select.innerHTML =
           '<option value="">Select product/community</option>';
 
-        for (const subject of subjects) {
-          const option =
-            document.createElement("option");
 
-          option.value = subject.id;
+        for (
+          const subject
+          of subjects
+        ) {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            subject.id;
 
           option.textContent =
             `${subject.name} — ${friendlyCategory(subject.category)}`;
 
-          select.appendChild(option);
+          select.appendChild(
+            option
+          );
         }
 
-      } catch (error) {
+      } catch {
+
         select.innerHTML =
-          '<option value="">Could not load subjects</option>';
+          '<option value="">Could not load products</option>';
       }
     }
 
+
     async function loadCommunities() {
+
       const status =
-        document.getElementById("communityListStatus");
+        document.getElementById(
+          "communityListStatus"
+        );
 
       const list =
-        document.getElementById("communityList");
+        document.getElementById(
+          "communityList"
+        );
 
       status.innerHTML =
         '<span class="muted">Loading...</span>';
 
       list.innerHTML = "";
 
+
       try {
-        const servers = await apiRequest(
-          `${API_BASE}/api/v1/servers`
-        );
 
-        if (!servers.length) {
-          status.innerHTML =
-            '<span class="muted">No communities stored.</span>';
+        const servers =
+          await apiRequest(
+            `${API_BASE}/api/v1/servers`
+          );
 
-          return;
-        }
 
         status.innerHTML =
           `<span class="success">
-            ${servers.length} known Discord community(s).
+            ${servers.length} known community(s)
           </span>`;
 
-        for (const server of servers) {
+
+        for (
+          const server
+          of servers
+        ) {
+
           const item =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           item.className =
             "community-card";
+
 
           item.innerHTML = `
             <div class="community-top">
@@ -904,11 +1368,13 @@
                 </p>
               </div>
 
-              <div class="community-status">
+              <div>
                 ${
                   server.active
-                    ? '<span class="success">ACTIVE</span>'
-                    : '<span class="warning">HISTORICAL</span>'
+
+                    ? '<span class="success"><strong>ACTIVE</strong></span>'
+
+                    : '<span class="warning"><strong>HISTORICAL</strong></span>'
                 }
               </div>
 
@@ -938,23 +1404,16 @@
               <strong>Confidence:</strong>
               ${escapeHtml(server.confidence)}
             </p>
-
-            ${
-              server.sourceUrl
-                ? `
-                  <p>
-                    <strong>Source:</strong>
-                    ${escapeHtml(server.sourceUrl)}
-                  </p>
-                `
-                : ""
-            }
           `;
 
-          list.appendChild(item);
+
+          list.appendChild(
+            item
+          );
         }
 
       } catch (error) {
+
         status.innerHTML =
           `<span class="error">
             ${escapeHtml(error.message)}
@@ -962,52 +1421,53 @@
       }
     }
 
+
     async function addCommunity() {
+
       const status =
-        document.getElementById("communityStatus");
+        document.getElementById(
+          "communityStatus"
+        );
 
-      status.innerHTML = "";
-
-      if (!getApiKey()) {
-        status.innerHTML =
-          '<span class="error">API key is required.</span>';
-        return;
-      }
 
       const discordId =
         document
-          .getElementById("communityDiscordId")
+          .getElementById(
+            "communityDiscordId"
+          )
           .value
           .trim();
+
 
       const name =
         document
-          .getElementById("communityName")
+          .getElementById(
+            "communityName"
+          )
           .value
           .trim();
 
+
       const subjectId =
         document
-          .getElementById("communitySubject")
+          .getElementById(
+            "communitySubject"
+          )
           .value;
 
-      if (!discordId) {
+
+      if (
+        !discordId ||
+        !name ||
+        !subjectId
+      ) {
+
         status.innerHTML =
-          '<span class="error">Discord Guild ID is required.</span>';
+          '<span class="error">Product, Guild ID, and server name are required.</span>';
+
         return;
       }
 
-      if (!name) {
-        status.innerHTML =
-          '<span class="error">Discord server name is required.</span>';
-        return;
-      }
-
-      if (!subjectId) {
-        status.innerHTML =
-          '<span class="error">Select a product/community.</span>';
-        return;
-      }
 
       const body = {
         discordId,
@@ -1015,30 +1475,43 @@
         subjectId,
 
         confidence:
-          document.getElementById("communityConfidence").value,
+          document.getElementById(
+            "communityConfidence"
+          ).value,
 
         active:
-          document.getElementById("communityActive").value === "true"
+          document.getElementById(
+            "communityActive"
+          ).value === "true"
       };
+
 
       const sourceUrl =
         document
-          .getElementById("communitySourceUrl")
+          .getElementById(
+            "communitySourceUrl"
+          )
           .value
           .trim();
 
+
       if (sourceUrl) {
-        body.sourceUrl = sourceUrl;
+        body.sourceUrl =
+          sourceUrl;
       }
 
+
       try {
+
         await apiRequest(
           `${API_BASE}/api/v1/servers`,
           {
-            method: "POST",
+            method:
+              "POST",
 
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type":
+                "application/json"
             },
 
             body:
@@ -1046,36 +1519,179 @@
           }
         );
 
+
         status.innerHTML =
           '<span class="success">Community added successfully.</span>';
-
-        document.getElementById(
-          "communityDiscordId"
-        ).value = "";
-
-        document.getElementById(
-          "communityName"
-        ).value = "";
-
-        document.getElementById(
-          "communitySourceUrl"
-        ).value = "";
-
-        document.getElementById(
-          "communitySubject"
-        ).value = "";
 
         loadCommunities();
 
       } catch (error) {
-        if (error.status === 409) {
-          status.innerHTML =
-            `<span class="warning">
-              ${escapeHtml(error.message)}
-            </span>`;
 
-          return;
+        status.innerHTML =
+          `<span class="${
+            error.status === 409
+              ? "warning"
+              : "error"
+          }">
+            ${escapeHtml(error.message)}
+          </span>`;
+      }
+    }
+
+
+    async function loadStaff() {
+
+      const status =
+        document.getElementById(
+          "staffListStatus"
+        );
+
+      const list =
+        document.getElementById(
+          "staffList"
+        );
+
+      status.innerHTML =
+        '<span class="muted">Loading...</span>';
+
+      list.innerHTML = "";
+
+
+      try {
+
+        const staff =
+          await apiRequest(
+            `${API_BASE}/api/v1/staff`
+          );
+
+
+        status.innerHTML =
+          `<span class="success">
+            ${staff.length} staff account(s)
+          </span>`;
+
+
+        for (
+          const user
+          of staff
+        ) {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+          item.className =
+            "staff-card";
+
+
+          item.innerHTML = `
+            <div class="staff-top">
+
+              <div>
+                <h3>
+                  ${escapeHtml(user.username)}
+                </h3>
+
+                <span class="role-badge">
+                  ${friendlyRole(user.role)}
+                </span>
+              </div>
+
+              <div>
+                ${
+                  user.active
+
+                    ? '<span class="success"><strong>ACTIVE</strong></span>'
+
+                    : '<span class="error"><strong>DISABLED</strong></span>'
+                }
+              </div>
+
+            </div>
+
+            <div class="staff-actions">
+
+              <select id="role-${user.id}">
+
+                <option
+                  value="READ_ONLY"
+                  ${
+                    user.role === "READ_ONLY"
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  Read Only
+                </option>
+
+                <option
+                  value="ANALYST"
+                  ${
+                    user.role === "ANALYST"
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  Analyst
+                </option>
+
+                <option
+                  value="ADMIN"
+                  ${
+                    user.role === "ADMIN"
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  Admin
+                </option>
+
+              </select>
+
+              <select id="active-${user.id}">
+
+                <option
+                  value="true"
+                  ${
+                    user.active
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  Active
+                </option>
+
+                <option
+                  value="false"
+                  ${
+                    !user.active
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  Disabled
+                </option>
+
+              </select>
+
+              <button
+                class="secondary small-button"
+                onclick="updateStaff('${user.id}')"
+              >
+                Save Changes
+              </button>
+
+            </div>
+          `;
+
+
+          list.appendChild(
+            item
+          );
         }
+
+      } catch (error) {
 
         status.innerHTML =
           `<span class="error">
@@ -1084,7 +1700,174 @@
       }
     }
 
-    function friendlyCategory(value) {
+
+    async function createStaff() {
+
+      const username =
+        document
+          .getElementById(
+            "newStaffUsername"
+          )
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById(
+            "newStaffPassword"
+          )
+          .value;
+
+
+      const role =
+        document
+          .getElementById(
+            "newStaffRole"
+          )
+          .value;
+
+
+      const status =
+        document.getElementById(
+          "createStaffStatus"
+        );
+
+
+      if (
+        !username ||
+        !password
+      ) {
+
+        status.innerHTML =
+          '<span class="error">Username and password are required.</span>';
+
+        return;
+      }
+
+
+      try {
+
+        await apiRequest(
+          `${API_BASE}/api/v1/staff`,
+          {
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                username,
+                password,
+                role
+              })
+          }
+        );
+
+
+        status.innerHTML =
+          '<span class="success">Staff account created.</span>';
+
+
+        document.getElementById(
+          "newStaffUsername"
+        ).value = "";
+
+
+        document.getElementById(
+          "newStaffPassword"
+        ).value = "";
+
+
+        loadStaff();
+
+      } catch (error) {
+
+        status.innerHTML =
+          `<span class="error">
+            ${escapeHtml(error.message)}
+          </span>`;
+      }
+    }
+
+
+    async function updateStaff(
+      id
+    ) {
+
+      const role =
+        document.getElementById(
+          `role-${id}`
+        ).value;
+
+
+      const active =
+        document.getElementById(
+          `active-${id}`
+        ).value === "true";
+
+
+      try {
+
+        await apiRequest(
+          `${API_BASE}/api/v1/staff/${id}`,
+          {
+            method:
+              "PATCH",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                role,
+                active
+              })
+          }
+        );
+
+
+        loadStaff();
+
+      } catch (error) {
+
+        alert(
+          error.message
+        );
+      }
+    }
+
+
+    function friendlyRole(
+      value
+    ) {
+
+      const map = {
+        ADMIN:
+          "Admin",
+
+        ANALYST:
+          "Analyst",
+
+        READ_ONLY:
+          "Read Only"
+      };
+
+      return map[value] ||
+        value;
+    }
+
+
+    function friendlyCategory(
+      value
+    ) {
+
       if (!value) {
         return "Unknown";
       }
@@ -1092,43 +1875,84 @@
       return String(value)
         .replaceAll("_", " ")
         .toLowerCase()
-        .replace(/\b\w/g, char =>
-          char.toUpperCase()
+        .replace(
+          /\b\w/g,
+          char =>
+            char.toUpperCase()
         );
     }
 
-    function formatDate(value) {
+
+    function formatDate(
+      value
+    ) {
+
       if (!value) {
         return "Unknown";
       }
 
-      return new Date(value)
-        .toLocaleString();
+      return new Date(
+        value
+      ).toLocaleString();
     }
 
-    async function copyText(value) {
+
+    async function copyText(
+      value
+    ) {
+
       try {
-        await navigator.clipboard.writeText(value);
-      } catch {
-        console.warn("Clipboard write failed");
-      }
+
+        await navigator
+          .clipboard
+          .writeText(value);
+
+      } catch {}
     }
 
-    function escapeHtml(value) {
+
+    function escapeHtml(
+      value
+    ) {
+
       if (
         value === null ||
         value === undefined
       ) {
+
         return "";
       }
 
+
       return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
     }
+
   </script>
+
 </body>
 </html>
