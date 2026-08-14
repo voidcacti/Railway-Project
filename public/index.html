@@ -4,46 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>FiveM Intelligence</title>
+  <title>BadlandsRP Cheater Dashboard</title>
 
   <style>
     :root {
       --bg: #070b14;
-      --bg-soft: #0b1120;
-      --panel: rgba(15, 23, 42, 0.82);
-      --panel-strong: rgba(17, 24, 39, 0.94);
-
+      --bg2: #0a1020;
+      --panel: rgba(15, 23, 42, 0.84);
+      --panel2: rgba(10, 17, 32, 0.92);
       --border: rgba(148, 163, 184, 0.15);
-      --border-strong: rgba(148, 163, 184, 0.28);
+      --border-hover: rgba(56, 189, 248, 0.28);
 
       --text: #f8fafc;
       --muted: #94a3b8;
+      --muted2: #64748b;
 
       --accent: #38bdf8;
-      --accent-2: #818cf8;
+      --accent2: #818cf8;
 
       --success: #4ade80;
       --warning: #facc15;
       --danger: #f87171;
 
-      --shadow:
-        0 24px 80px rgba(0, 0, 0, 0.35);
-
-      --radius: 18px;
+      --radius: 16px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
+    html,
+    body {
       min-height: 100%;
-      background: var(--bg);
     }
 
     body {
       margin: 0;
-      min-height: 100vh;
 
       color: var(--text);
 
@@ -62,16 +58,12 @@
           rgba(56, 189, 248, 0.08),
           transparent 35%
         ),
-
         radial-gradient(
           circle at 85% 20%,
           rgba(129, 140, 248, 0.08),
           transparent 35%
         ),
-
         var(--bg);
-
-      overflow-x: hidden;
     }
 
     body::before {
@@ -84,13 +76,12 @@
 
       background-image:
         linear-gradient(
-          rgba(255, 255, 255, 0.025) 1px,
+          rgba(255,255,255,0.025) 1px,
           transparent 1px
         ),
-
         linear-gradient(
           90deg,
-          rgba(255, 255, 255, 0.025) 1px,
+          rgba(255,255,255,0.025) 1px,
           transparent 1px
         );
 
@@ -99,7 +90,7 @@
       mask-image:
         linear-gradient(
           to bottom,
-          rgba(0, 0, 0, 0.8),
+          rgba(0,0,0,0.8),
           transparent 90%
         );
     }
@@ -117,13 +108,37 @@
     h1,
     h2,
     h3,
-    h4,
     p {
       margin-top: 0;
     }
 
+    code {
+      color: #e2e8f0;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+    }
+
     .hidden {
       display: none !important;
+    }
+
+    /*
+      IMPORTANT:
+      This prevents every dashboard page from
+      displaying simultaneously.
+    */
+
+    .tab {
+      display: none;
+    }
+
+    .tab.active {
+      display: block;
     }
 
     .muted {
@@ -142,13 +157,9 @@
       color: var(--danger);
     }
 
-    .app {
-      min-height: 100vh;
-    }
-
-    /* -----------------------------------------
+    /* =========================
        LOGIN
-    ------------------------------------------ */
+       ========================= */
 
     .login-screen {
       min-height: 100vh;
@@ -165,6 +176,7 @@
 
     .brand-lockup {
       text-align: center;
+
       margin-bottom: 28px;
     }
 
@@ -182,15 +194,15 @@
       background:
         linear-gradient(
           135deg,
-          rgba(56, 189, 248, 0.2),
-          rgba(129, 140, 248, 0.18)
+          rgba(56,189,248,.20),
+          rgba(129,140,248,.18)
         );
 
       border:
-        1px solid rgba(56, 189, 248, 0.3);
+        1px solid rgba(56,189,248,.30);
 
       box-shadow:
-        0 0 50px rgba(56, 189, 248, 0.12);
+        0 0 50px rgba(56,189,248,.12);
 
       font-size: 30px;
     }
@@ -198,12 +210,14 @@
     .brand-lockup h1 {
       margin-bottom: 7px;
 
-      font-size: 29px;
-      letter-spacing: -0.03em;
+      font-size: 30px;
+
+      letter-spacing: -0.04em;
     }
 
     .brand-lockup p {
       margin-bottom: 0;
+
       color: var(--muted);
     }
 
@@ -218,19 +232,19 @@
       padding: 6px 10px;
 
       border:
-        1px solid rgba(74, 222, 128, 0.18);
+        1px solid rgba(74,222,128,.18);
 
       background:
-        rgba(74, 222, 128, 0.07);
+        rgba(74,222,128,.07);
 
       border-radius: 999px;
 
       color: #bbf7d0;
 
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
 
-      letter-spacing: 0.06em;
+      letter-spacing: .08em;
     }
 
     .status-dot {
@@ -242,22 +256,24 @@
       border-radius: 50%;
 
       box-shadow:
-        0 0 12px rgba(74, 222, 128, 0.9);
+        0 0 12px rgba(74,222,128,.9);
     }
 
     .glass-card {
       background:
         linear-gradient(
           180deg,
-          rgba(17, 24, 39, 0.92),
-          rgba(15, 23, 42, 0.9)
+          rgba(17,24,39,.94),
+          rgba(15,23,42,.90)
         );
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
-      border-radius: var(--radius);
+      border-radius: 18px;
 
-      box-shadow: var(--shadow);
+      box-shadow:
+        0 24px 80px rgba(0,0,0,.35);
 
       backdrop-filter: blur(18px);
     }
@@ -276,252 +292,17 @@
 
       color: var(--muted);
 
-      font-size: 12px;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.12em;
-    }
-
-    /* -----------------------------------------
-       DASHBOARD LAYOUT
-    ------------------------------------------ */
-
-    .dashboard-layout {
-      display: grid;
-
-      grid-template-columns: 250px 1fr;
-
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 0;
-
-      height: 100vh;
-
-      padding: 26px 18px;
-
-      background:
-        rgba(5, 9, 18, 0.86);
-
-      border-right:
-        1px solid var(--border);
-
-      backdrop-filter:
-        blur(20px);
-
-      z-index: 20;
-    }
-
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-
-      gap: 12px;
-
-      padding: 0 8px 26px;
-
-      border-bottom:
-        1px solid var(--border);
-
-      margin-bottom: 20px;
-    }
-
-    .sidebar-logo {
-      width: 42px;
-      height: 42px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.18),
-          rgba(129, 140, 248, 0.18)
-        );
-
-      border:
-        1px solid rgba(56, 189, 248, 0.22);
-    }
-
-    .sidebar-brand strong {
-      display: block;
-      font-size: 15px;
-    }
-
-    .sidebar-brand span {
-      display: block;
-      margin-top: 2px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.1em;
-    }
-
-    .nav-section-label {
-      padding: 0 10px;
-
-      margin-bottom: 8px;
-
-      color: #64748b;
-
       font-size: 11px;
       font-weight: 700;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
     }
 
-    .nav-button {
-      width: 100%;
-
-      display: flex;
-      align-items: center;
-
-      gap: 11px;
-
-      padding: 11px 12px;
-
-      margin-bottom: 6px;
-
-      border: none;
-
-      border-radius: 11px;
-
-      color: #cbd5e1;
-
-      background: transparent;
-
-      text-align: left;
-
-      transition:
-        background 0.15s ease,
-        color 0.15s ease,
-        transform 0.15s ease;
-    }
-
-    .nav-button:hover {
-      background:
-        rgba(148, 163, 184, 0.07);
-
-      color: white;
-
-      transform:
-        translateX(2px);
-    }
-
-    .nav-button.active {
-      background:
-        linear-gradient(
-          90deg,
-          rgba(56, 189, 248, 0.14),
-          rgba(129, 140, 248, 0.07)
-        );
-
-      border:
-        1px solid rgba(56, 189, 248, 0.12);
-
-      color: white;
-    }
-
-    .nav-icon {
-      width: 25px;
-      text-align: center;
-    }
-
-    .sidebar-user {
-      position: absolute;
-
-      bottom: 20px;
-      left: 18px;
-      right: 18px;
-
-      padding: 14px;
-
-      background:
-        rgba(15, 23, 42, 0.7);
-
-      border:
-        1px solid var(--border);
-
-      border-radius: 13px;
-    }
-
-    .user-name {
-      font-weight: 700;
-    }
-
-    .role-pill {
-      display: inline-flex;
-
-      margin-top: 7px;
-
-      padding: 4px 8px;
-
-      border-radius: 999px;
-
-      background:
-        rgba(56, 189, 248, 0.1);
-
-      color: #bae6fd;
-
-      border:
-        1px solid rgba(56, 189, 248, 0.14);
-
-      font-size: 11px;
-      font-weight: 700;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.06em;
-    }
-
-    .main {
-      min-width: 0;
-
-      padding:
-        34px clamp(24px, 4vw, 58px) 60px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: flex-start;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      margin-bottom: 30px;
-    }
-
-    .page-title {
-      margin-bottom: 6px;
-
-      font-size:
-        clamp(28px, 3vw, 38px);
-
-      letter-spacing:
-        -0.045em;
-    }
-
-    .page-description {
-      color: var(--muted);
-      margin-bottom: 0;
-    }
-
-    /* -----------------------------------------
+    /* =========================
        FORMS
-    ------------------------------------------ */
+       ========================= */
 
     label {
       display: block;
@@ -545,31 +326,35 @@
       color: white;
 
       background:
-        rgba(3, 7, 18, 0.58);
+        rgba(3,7,18,.58);
 
       border:
-        1px solid rgba(148, 163, 184, 0.18);
+        1px solid rgba(148,163,184,.18);
 
       border-radius: 10px;
 
       outline: none;
 
       transition:
-        border 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
+        border .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+    }
+
+    input::placeholder {
+      color: #475569;
     }
 
     input:focus,
     select:focus {
       border-color:
-        rgba(56, 189, 248, 0.55);
+        rgba(56,189,248,.55);
 
       background:
-        rgba(15, 23, 42, 0.82);
+        rgba(15,23,42,.82);
 
       box-shadow:
-        0 0 0 3px rgba(56, 189, 248, 0.08);
+        0 0 0 3px rgba(56,189,248,.08);
     }
 
     button {
@@ -593,19 +378,17 @@
       font-weight: 800;
 
       box-shadow:
-        0 10px 30px rgba(56, 189, 248, 0.14);
+        0 10px 30px rgba(56,189,248,.14);
 
       transition:
-        transform 0.15s ease,
-        filter 0.15s ease;
+        transform .15s ease,
+        filter .15s ease;
     }
 
     .primary-btn:hover {
-      transform:
-        translateY(-1px);
+      transform: translateY(-1px);
 
-      filter:
-        brightness(1.08);
+      filter: brightness(1.08);
     }
 
     .secondary-btn {
@@ -614,31 +397,279 @@
       color: white;
 
       background:
-        rgba(148, 163, 184, 0.1);
+        rgba(148,163,184,.10);
 
       border:
         1px solid var(--border);
 
       border-radius: 9px;
+
+      transition:
+        background .15s ease;
     }
 
-    .danger-btn {
-      padding: 10px 13px;
+    .secondary-btn:hover {
+      background:
+        rgba(148,163,184,.16);
+    }
 
+    /* =========================
+       DASHBOARD
+       ========================= */
+
+    .dashboard-layout {
+      display: grid;
+
+      grid-template-columns:
+        260px minmax(0, 1fr);
+
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+
+      height: 100vh;
+
+      padding: 26px 18px;
+
+      background:
+        rgba(5,9,18,.88);
+
+      border-right:
+        1px solid var(--border);
+
+      backdrop-filter: blur(20px);
+
+      z-index: 20;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      padding:
+        0 8px 25px;
+
+      margin-bottom: 20px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .sidebar-logo {
+      width: 43px;
+      height: 43px;
+
+      flex-shrink: 0;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(56,189,248,.18),
+          rgba(129,140,248,.18)
+        );
+
+      border:
+        1px solid rgba(56,189,248,.22);
+
+      font-size: 19px;
+    }
+
+    .sidebar-brand strong {
+      display: block;
+
+      font-size: 14px;
+    }
+
+    .sidebar-brand span {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 9px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .09em;
+    }
+
+    .nav-section-label {
+      padding: 0 10px;
+
+      margin-bottom: 8px;
+
+      color: #64748b;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+    }
+
+    .nav-button {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
+      padding: 11px 12px;
+
+      margin-bottom: 6px;
+
+      color: #cbd5e1;
+
+      background: transparent;
+
+      border:
+        1px solid transparent;
+
+      border-radius: 11px;
+
+      text-align: left;
+
+      transition:
+        background .15s ease,
+        color .15s ease,
+        transform .15s ease;
+    }
+
+    .nav-button:hover {
       color: white;
 
       background:
-        rgba(248, 113, 113, 0.13);
+        rgba(148,163,184,.07);
 
-      border:
-        1px solid rgba(248, 113, 113, 0.2);
-
-      border-radius: 9px;
+      transform:
+        translateX(2px);
     }
 
-    /* -----------------------------------------
-       GENERAL PANELS
-    ------------------------------------------ */
+    .nav-button.active {
+      color: white;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(56,189,248,.14),
+          rgba(129,140,248,.07)
+        );
+
+      border:
+        1px solid rgba(56,189,248,.12);
+    }
+
+    .nav-icon {
+      width: 25px;
+
+      text-align: center;
+
+      color: var(--accent);
+    }
+
+    .sidebar-user {
+      position: absolute;
+
+      bottom: 20px;
+      left: 18px;
+      right: 18px;
+
+      padding: 14px;
+
+      background:
+        rgba(15,23,42,.70);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+    }
+
+    .authenticated-label {
+      color: var(--muted2);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: .10em;
+    }
+
+    .user-name {
+      margin-top: 5px;
+
+      font-weight: 700;
+    }
+
+    .role-pill {
+      display: inline-flex;
+
+      margin-top: 7px;
+
+      padding: 4px 8px;
+
+      color: #bae6fd;
+
+      background:
+        rgba(56,189,248,.10);
+
+      border:
+        1px solid rgba(56,189,248,.14);
+
+      border-radius: 999px;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: .06em;
+    }
+
+    .main {
+      min-width: 0;
+
+      padding:
+        34px clamp(24px,4vw,58px) 60px;
+    }
+
+    .topbar {
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      margin-bottom: 6px;
+
+      font-size:
+        clamp(28px,3vw,38px);
+
+      letter-spacing: -.045em;
+    }
+
+    .page-description {
+      margin-bottom: 0;
+
+      color: var(--muted);
+    }
+
+    /* =========================
+       PANELS
+       ========================= */
 
     .panel {
       padding: 22px;
@@ -648,8 +679,8 @@
       background:
         linear-gradient(
           180deg,
-          rgba(15, 23, 42, 0.8),
-          rgba(8, 15, 29, 0.84)
+          rgba(15,23,42,.82),
+          rgba(8,15,29,.86)
         );
 
       border:
@@ -658,7 +689,7 @@
       border-radius: var(--radius);
 
       box-shadow:
-        0 18px 50px rgba(0, 0, 0, 0.18);
+        0 18px 50px rgba(0,0,0,.18);
 
       backdrop-filter: blur(14px);
     }
@@ -681,7 +712,8 @@
     }
 
     .panel-heading p {
-      margin: 4px 0 0;
+      margin:
+        5px 0 0;
 
       color: var(--muted);
 
@@ -692,17 +724,20 @@
       display: grid;
 
       grid-template-columns:
-        repeat(auto-fit, minmax(240px, 1fr));
+        repeat(
+          auto-fit,
+          minmax(240px,1fr)
+        );
 
       gap: 15px;
     }
 
-    /* -----------------------------------------
+    /* =========================
        LOOKUP
-    ------------------------------------------ */
+       ========================= */
 
     .lookup-shell {
-      max-width: 850px;
+      max-width: 900px;
     }
 
     .lookup-input-row {
@@ -733,26 +768,27 @@
 
       border-radius: 11px;
 
+      font-size: 13px;
       font-weight: 800;
 
-      letter-spacing: 0.02em;
+      letter-spacing: .04em;
     }
 
     .match-banner {
       color: #bbf7d0;
 
       background:
-        rgba(34, 197, 94, 0.09);
+        rgba(34,197,94,.09);
 
       border:
-        1px solid rgba(74, 222, 128, 0.18);
+        1px solid rgba(74,222,128,.18);
     }
 
     .no-match-banner {
       color: #cbd5e1;
 
       background:
-        rgba(148, 163, 184, 0.06);
+        rgba(148,163,184,.06);
 
       border:
         1px solid var(--border);
@@ -762,10 +798,10 @@
       color: #fecaca;
 
       background:
-        rgba(248, 113, 113, 0.08);
+        rgba(248,113,113,.08);
 
       border:
-        1px solid rgba(248, 113, 113, 0.18);
+        1px solid rgba(248,113,113,.18);
     }
 
     .result-card {
@@ -776,8 +812,8 @@
       background:
         linear-gradient(
           180deg,
-          rgba(15, 23, 42, 0.92),
-          rgba(8, 15, 29, 0.95)
+          rgba(15,23,42,.92),
+          rgba(8,15,29,.95)
         );
 
       border:
@@ -789,21 +825,22 @@
     .result-header {
       padding: 20px;
 
+      background:
+        rgba(56,189,248,.025);
+
       border-bottom:
         1px solid var(--border);
-
-      background:
-        rgba(56, 189, 248, 0.025);
     }
 
     .result-header small {
       color: var(--muted);
 
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: 800;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
     }
 
     .result-id {
@@ -814,7 +851,7 @@
 
       flex-wrap: wrap;
 
-      margin-top: 6px;
+      margin-top: 7px;
 
       font-family:
         ui-monospace,
@@ -850,7 +887,7 @@
     }
 
     .association-name {
-      margin-bottom: 5px;
+      margin-bottom: 6px;
 
       font-size: 20px;
     }
@@ -863,34 +900,35 @@
       color: #bae6fd;
 
       background:
-        rgba(56, 189, 248, 0.08);
+        rgba(56,189,248,.08);
 
       border:
-        1px solid rgba(56, 189, 248, 0.13);
+        1px solid rgba(56,189,248,.13);
 
       border-radius: 999px;
 
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: 700;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.06em;
+      letter-spacing: .06em;
     }
 
     .confidence {
       padding: 6px 10px;
 
+      color: #fde68a;
+
       background:
-        rgba(250, 204, 21, 0.08);
+        rgba(250,204,21,.08);
 
       border:
-        1px solid rgba(250, 204, 21, 0.13);
+        1px solid rgba(250,204,21,.13);
 
       border-radius: 999px;
 
-      color: #fde68a;
-
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
 
       text-transform: uppercase;
@@ -900,7 +938,10 @@
       display: grid;
 
       grid-template-columns:
-        repeat(auto-fit, minmax(190px, 1fr));
+        repeat(
+          auto-fit,
+          minmax(190px,1fr)
+        );
 
       gap: 14px;
     }
@@ -909,10 +950,10 @@
       padding: 13px 14px;
 
       background:
-        rgba(3, 7, 18, 0.35);
+        rgba(3,7,18,.35);
 
       border:
-        1px solid rgba(148, 163, 184, 0.08);
+        1px solid rgba(148,163,184,.08);
 
       border-radius: 10px;
     }
@@ -922,18 +963,18 @@
 
       color: #64748b;
 
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
     }
 
     .data-value {
       color: #e2e8f0;
 
-      font-size: 14px;
+      font-size: 13px;
 
       word-break: break-word;
     }
@@ -946,38 +987,40 @@
       margin:
         3px 4px 3px 0;
 
+      color: #c7d2fe;
+
       background:
-        rgba(129, 140, 248, 0.08);
+        rgba(129,140,248,.08);
 
       border:
-        1px solid rgba(129, 140, 248, 0.12);
+        1px solid rgba(129,140,248,.12);
 
       border-radius: 999px;
 
-      color: #c7d2fe;
-
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .copy-btn {
       padding: 5px 8px;
 
+      margin-left: 4px;
+
       color: #cbd5e1;
 
       background:
-        rgba(148, 163, 184, 0.08);
+        rgba(148,163,184,.08);
 
       border:
         1px solid var(--border);
 
       border-radius: 7px;
 
-      font-size: 11px;
+      font-size: 10px;
     }
 
-    /* -----------------------------------------
-       COMMUNITIES
-    ------------------------------------------ */
+    /* =========================
+       COMMUNITIES + STAFF
+       ========================= */
 
     .community-card,
     .staff-card {
@@ -986,16 +1029,16 @@
       margin-top: 13px;
 
       background:
-        rgba(3, 7, 18, 0.36);
+        rgba(3,7,18,.36);
 
       border:
-        1px solid rgba(148, 163, 184, 0.1);
+        1px solid rgba(148,163,184,.10);
 
       border-radius: 13px;
 
       transition:
-        transform 0.15s ease,
-        border-color 0.15s ease;
+        transform .15s ease,
+        border-color .15s ease;
     }
 
     .community-card:hover,
@@ -1004,7 +1047,7 @@
         translateY(-1px);
 
       border-color:
-        rgba(56, 189, 248, 0.18);
+        var(--border-hover);
     }
 
     .community-top,
@@ -1025,47 +1068,43 @@
 
       border-radius: 999px;
 
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
     }
 
     .status-active {
       color: #bbf7d0;
 
       background:
-        rgba(74, 222, 128, 0.08);
+        rgba(74,222,128,.08);
 
       border:
-        1px solid rgba(74, 222, 128, 0.14);
+        1px solid rgba(74,222,128,.14);
     }
 
     .status-disabled {
       color: #fecaca;
 
       background:
-        rgba(248, 113, 113, 0.08);
+        rgba(248,113,113,.08);
 
       border:
-        1px solid rgba(248, 113, 113, 0.14);
+        1px solid rgba(248,113,113,.14);
     }
 
     .status-history {
       color: #fde68a;
 
       background:
-        rgba(250, 204, 21, 0.08);
+        rgba(250,204,21,.08);
 
       border:
-        1px solid rgba(250, 204, 21, 0.14);
+        1px solid rgba(250,204,21,.14);
     }
-
-    /* -----------------------------------------
-       STAFF
-    ------------------------------------------ */
 
     .staff-actions {
       display: grid;
@@ -1084,9 +1123,9 @@
       margin: 0;
     }
 
-    /* -----------------------------------------
+    /* =========================
        RESPONSIVE
-    ------------------------------------------ */
+       ========================= */
 
     @media (max-width: 850px) {
 
@@ -1122,7 +1161,8 @@
       .nav-button {
         width: auto;
 
-        flex: 1 1 160px;
+        flex:
+          1 1 160px;
       }
     }
 
@@ -1141,644 +1181,670 @@
         width: 100%;
       }
 
-      .topbar {
-        display: block;
-      }
-
       .staff-actions {
         grid-template-columns: 1fr;
       }
     }
+
   </style>
 </head>
 
-
 <body>
 
-<div class="app">
+<!-- =========================
+     LOGIN
+     ========================= -->
 
-  <!-- LOGIN SCREEN -->
+<div
+  id="loginScreen"
+  class="login-screen"
+>
 
-  <div
-    id="loginScreen"
-    class="login-screen"
-  >
+  <div class="login-shell">
 
-    <div class="login-shell">
+    <div class="brand-lockup">
 
-      <div class="brand-lockup">
-
-        <div class="brand-icon">
-          ◈
-        </div>
-
-        <h1>
-          FiveM Intelligence
-        </h1>
-
-        <p>
-          Community Intelligence Platform
-        </p>
-
-        <div class="system-status">
-          <span class="status-dot"></span>
-          SYSTEM ONLINE
-        </div>
-
+      <div class="brand-icon">
+        ◈
       </div>
 
-      <div class="glass-card login-card">
+      <h1>
+        BadlandsRP Cheater Dashboard
+      </h1>
 
-        <div class="security-label">
-          🔐 Authorized Personnel Only
-        </div>
+      <p>
+        Discord Community Intelligence Platform
+      </p>
 
-        <label for="loginUsername">
-          Username
-        </label>
+      <div class="system-status">
 
-        <input
-          id="loginUsername"
-          autocomplete="username"
-          placeholder="Enter username"
-          onkeydown="
-            if(event.key === 'Enter') login()
-          "
-        />
+        <span class="status-dot"></span>
 
-        <label for="loginPassword">
-          Password
-        </label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Enter password"
-          onkeydown="
-            if(event.key === 'Enter') login()
-          "
-        />
-
-        <button
-          class="primary-btn"
-          style="width:100%;"
-          onclick="login()"
-        >
-          Authenticate
-        </button>
-
-        <div
-          id="loginStatus"
-          class="status-box"
-        ></div>
+        SYSTEM ONLINE
 
       </div>
 
     </div>
 
+
+    <div class="glass-card login-card">
+
+      <div class="security-label">
+        🔐 Authorized Staff Access
+      </div>
+
+      <label for="loginUsername">
+        Username
+      </label>
+
+      <input
+        id="loginUsername"
+        autocomplete="username"
+        placeholder="Enter username"
+        onkeydown="if(event.key === 'Enter') login()"
+      />
+
+
+      <label for="loginPassword">
+        Password
+      </label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter password"
+        onkeydown="if(event.key === 'Enter') login()"
+      />
+
+
+      <button
+        class="primary-btn"
+        style="width:100%;"
+        onclick="login()"
+      >
+        Authenticate
+      </button>
+
+
+      <div
+        id="loginStatus"
+        class="status-box"
+      ></div>
+
+    </div>
+
   </div>
 
+</div>
 
-  <!-- DASHBOARD -->
 
-  <div
-    id="dashboard"
-    class="dashboard-layout hidden"
-  >
+<!-- =========================
+     DASHBOARD
+     ========================= -->
 
-    <!-- SIDEBAR -->
+<div
+  id="dashboard"
+  class="dashboard-layout hidden"
+>
 
-    <aside class="sidebar">
+  <!-- SIDEBAR -->
 
-      <div class="sidebar-brand">
+  <aside class="sidebar">
 
-        <div class="sidebar-logo">
-          ◈
-        </div>
+    <div class="sidebar-brand">
 
-        <div>
-          <strong>
-            FiveM Intel
-          </strong>
+      <div class="sidebar-logo">
+        ◈
+      </div>
 
-          <span>
-            Intelligence
-          </span>
-        </div>
+      <div>
+
+        <strong>
+          BadlandsRP
+        </strong>
+
+        <span>
+          Cheater Dashboard
+        </span>
 
       </div>
 
-      <div class="nav-section-label">
-        Workspace
-      </div>
-
-      <div class="nav-group">
-
-        <button
-          class="nav-button active"
-          onclick="
-            showTab('lookup', this)
-          "
-        >
-          <span class="nav-icon">
-            ⌕
-          </span>
-
-          User Lookup
-        </button>
+    </div>
 
 
-        <button
-          id="communitiesTabButton"
-          class="nav-button hidden"
-          onclick="
-            showTab('communities', this)
-          "
-        >
-          <span class="nav-icon">
-            ◫
-          </span>
-
-          Communities
-        </button>
+    <div class="nav-section-label">
+      Intelligence
+    </div>
 
 
-        <button
-          id="staffTabButton"
-          class="nav-button hidden"
-          onclick="
-            showTab('staff', this)
-          "
-        >
-          <span class="nav-icon">
-            ◉
-          </span>
+    <div class="nav-group">
 
-          Staff
-        </button>
-
-      </div>
-
-
-      <div class="sidebar-user">
-
-        <div class="muted"
-             style="
-               font-size:11px;
-               text-transform:uppercase;
-               letter-spacing:.09em;
-             ">
-          Authenticated As
-        </div>
-
-        <div
-          id="currentUsername"
-          class="user-name"
-          style="margin-top:5px;"
-        ></div>
-
-        <div
-          id="currentRole"
-          class="role-pill"
-        ></div>
-
-        <button
-          class="secondary-btn"
-          style="
-            width:100%;
-            margin-top:12px;
-          "
-          onclick="logout()"
-        >
-          Sign Out
-        </button>
-
-      </div>
-
-    </aside>
-
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-      <div class="topbar">
-
-        <div>
-          <h1
-            id="pageTitle"
-            class="page-title"
-          >
-            User Intelligence
-          </h1>
-
-          <p
-            id="pageDescription"
-            class="page-description"
-          >
-            Search a Discord ID against stored community intelligence.
-          </p>
-        </div>
-
-      </div>
-
-
-      <!-- USER LOOKUP -->
-
-      <section
-        id="lookup"
-        class="tab active"
+      <button
+        class="nav-button active"
+        onclick="showTab('lookup', this)"
       >
 
-        <div
-          class="panel lookup-shell"
+        <span class="nav-icon">
+          ⌕
+        </span>
+
+        User Lookup
+
+      </button>
+
+
+      <button
+        id="communitiesTabButton"
+        class="nav-button hidden"
+        onclick="showTab('communities', this)"
+      >
+
+        <span class="nav-icon">
+          ◫
+        </span>
+
+        Communities
+
+      </button>
+
+
+      <button
+        id="staffTabButton"
+        class="nav-button hidden"
+        onclick="showTab('staff', this)"
+      >
+
+        <span class="nav-icon">
+          ◉
+        </span>
+
+        Staff
+
+      </button>
+
+    </div>
+
+
+    <div class="sidebar-user">
+
+      <div class="authenticated-label">
+        Authenticated As
+      </div>
+
+      <div
+        id="currentUsername"
+        class="user-name"
+      ></div>
+
+      <div
+        id="currentRole"
+        class="role-pill"
+      ></div>
+
+
+      <button
+        class="secondary-btn"
+        style="
+          width:100%;
+          margin-top:12px;
+        "
+        onclick="logout()"
+      >
+        Sign Out
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div>
+
+        <h1
+          id="pageTitle"
+          class="page-title"
         >
+          User Intelligence
+        </h1>
 
-          <div class="panel-heading">
+        <p
+          id="pageDescription"
+          class="page-description"
+        >
+          Search a Discord ID against stored community intelligence.
+        </p>
 
-            <div>
-              <h2>
-                Discord Intelligence Search
-              </h2>
+      </div>
 
-              <p>
-                Enter a Discord user ID to search known associations.
-              </p>
-            </div>
-
-          </div>
-
-
-          <div class="lookup-input-row">
-
-            <div>
-              <label for="lookupDiscordId">
-                Discord User ID
-              </label>
-
-              <input
-                id="lookupDiscordId"
-                placeholder="198165163172429824"
-                onkeydown="
-                  if(event.key === 'Enter') searchUser()
-                "
-              />
-            </div>
+    </div>
 
 
-            <button
-              class="primary-btn"
-              onclick="searchUser()"
-            >
-              Search Intelligence
-            </button>
+    <!-- =========================
+         USER LOOKUP PAGE
+         ========================= -->
+
+    <section
+      id="lookup"
+      class="tab active"
+    >
+
+      <div class="panel lookup-shell">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              Discord Intelligence Search
+            </h2>
+
+            <p>
+              Enter a Discord user ID to search known community associations.
+            </p>
 
           </div>
-
-
-          <div
-            id="lookupStatus"
-            class="status-box"
-          ></div>
 
         </div>
 
 
-        <div
-          id="lookupResults"
-          class="lookup-shell"
-        ></div>
+        <div class="lookup-input-row">
 
-      </section>
+          <div>
 
+            <label for="lookupDiscordId">
+              Discord User ID
+            </label>
 
-      <!-- COMMUNITIES -->
-
-      <section
-        id="communities"
-        class="tab"
-      >
-
-        <div
-          id="addCommunityCard"
-          class="panel hidden"
-        >
-
-          <div class="panel-heading">
-
-            <div>
-              <h2>
-                Register Community
-              </h2>
-
-              <p>
-                Add a confirmed or historical Discord community to the intelligence catalog.
-              </p>
-            </div>
-
-          </div>
-
-
-          <div class="grid">
-
-            <div>
-              <label>
-                Product / Community
-              </label>
-
-              <select id="communitySubject">
-                <option value="">
-                  Select product
-                </option>
-              </select>
-            </div>
-
-
-            <div>
-              <label>
-                Discord Guild ID
-              </label>
-
-              <input
-                id="communityDiscordId"
-                placeholder="1136029776080023563"
-              />
-            </div>
-
-
-            <div>
-              <label>
-                Discord Server Name
-              </label>
-
-              <input
-                id="communityName"
-                placeholder="Eulen"
-              />
-            </div>
-
-
-            <div>
-              <label>
-                Confidence
-              </label>
-
-              <select id="communityConfidence">
-
-                <option>
-                  UNVERIFIED
-                </option>
-
-                <option>
-                  LOW
-                </option>
-
-                <option>
-                  MEDIUM
-                </option>
-
-                <option>
-                  HIGH
-                </option>
-
-                <option selected>
-                  CONFIRMED
-                </option>
-
-              </select>
-            </div>
-
-
-            <div>
-              <label>
-                Status
-              </label>
-
-              <select id="communityActive">
-
-                <option value="true">
-                  Active
-                </option>
-
-                <option value="false">
-                  Historical
-                </option>
-
-              </select>
-            </div>
-
-
-            <div>
-              <label>
-                Source URL
-              </label>
-
-              <input
-                id="communitySourceUrl"
-                placeholder="Optional"
-              />
-            </div>
+            <input
+              id="lookupDiscordId"
+              placeholder="198165163172429824"
+              onkeydown="if(event.key === 'Enter') searchUser()"
+            />
 
           </div>
 
 
           <button
             class="primary-btn"
-            onclick="addCommunity()"
+            onclick="searchUser()"
           >
-            Register Community
+            Search Intelligence
           </button>
 
-
-          <div
-            id="communityStatus"
-            class="status-box"
-          ></div>
-
         </div>
 
 
-        <div class="panel">
+        <div
+          id="lookupStatus"
+          class="status-box"
+        ></div>
 
-          <div class="panel-heading">
-
-            <div>
-              <h2>
-                Known Communities
-              </h2>
-
-              <p>
-                Discord servers currently stored in the intelligence database.
-              </p>
-            </div>
+      </div>
 
 
-            <button
-              class="secondary-btn"
-              onclick="loadCommunities()"
-            >
-              Refresh
-            </button>
+      <div
+        id="lookupResults"
+        class="lookup-shell"
+      ></div>
 
-          </div>
+    </section>
 
 
-          <div
-            id="communityListStatus"
-          ></div>
+    <!-- =========================
+         COMMUNITIES PAGE
+         ========================= -->
 
+    <section
+      id="communities"
+      class="tab"
+    >
 
-          <div
-            id="communityList"
-          ></div>
-
-        </div>
-
-      </section>
-
-
-      <!-- STAFF -->
-
-      <section
-        id="staff"
-        class="tab"
+      <div
+        id="addCommunityCard"
+        class="panel hidden"
       >
 
-        <div class="panel">
+        <div class="panel-heading">
 
-          <div class="panel-heading">
+          <div>
 
-            <div>
-              <h2>
-                Create Staff Account
-              </h2>
+            <h2>
+              Register Community
+            </h2>
 
-              <p>
-                Provision individual access to the intelligence platform.
-              </p>
-            </div>
+            <p>
+              Add a Discord community to the intelligence database.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="grid">
+
+          <div>
+
+            <label>
+              Product / Community
+            </label>
+
+            <select id="communitySubject">
+
+              <option value="">
+                Select product
+              </option>
+
+            </select>
 
           </div>
 
 
-          <div class="grid">
+          <div>
 
-            <div>
+            <label>
+              Discord Guild ID
+            </label>
 
-              <label>
-                Username
-              </label>
+            <input
+              id="communityDiscordId"
+              placeholder="1136029776080023563"
+            />
 
-              <input
-                id="newStaffUsername"
-                placeholder="staff.username"
-              />
-
-            </div>
+          </div>
 
 
-            <div>
+          <div>
 
-              <label>
-                Temporary Password
-              </label>
+            <label>
+              Discord Server Name
+            </label>
 
-              <input
-                id="newStaffPassword"
-                type="password"
-                placeholder="Minimum 12 characters"
-              />
+            <input
+              id="communityName"
+              placeholder="Eulen"
+            />
 
-            </div>
+          </div>
 
 
-            <div>
+          <div>
 
-              <label>
-                Access Role
-              </label>
+            <label>
+              Confidence
+            </label>
 
-              <select id="newStaffRole">
+            <select id="communityConfidence">
 
-                <option value="READ_ONLY">
-                  Read Only
-                </option>
+              <option>
+                UNVERIFIED
+              </option>
 
-                <option value="ANALYST">
-                  Analyst
-                </option>
+              <option>
+                LOW
+              </option>
 
-                <option value="ADMIN">
-                  Admin
-                </option>
+              <option>
+                MEDIUM
+              </option>
 
-              </select>
+              <option>
+                HIGH
+              </option>
 
-            </div>
+              <option selected>
+                CONFIRMED
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Status
+            </label>
+
+            <select id="communityActive">
+
+              <option value="true">
+                Active
+              </option>
+
+              <option value="false">
+                Historical
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Source URL
+            </label>
+
+            <input
+              id="communitySourceUrl"
+              placeholder="Optional"
+            />
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="primary-btn"
+          onclick="addCommunity()"
+        >
+          Register Community
+        </button>
+
+
+        <div
+          id="communityStatus"
+          class="status-box"
+        ></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              Known Communities
+            </h2>
+
+            <p>
+              Discord communities currently stored in the intelligence database.
+            </p>
 
           </div>
 
 
           <button
-            class="primary-btn"
-            onclick="createStaff()"
+            class="secondary-btn"
+            onclick="loadCommunities()"
           >
-            Create Account
+            Refresh
           </button>
-
-
-          <div
-            id="createStaffStatus"
-            class="status-box"
-          ></div>
 
         </div>
 
 
-        <div class="panel">
-
-          <div class="panel-heading">
-
-            <div>
-
-              <h2>
-                Staff Directory
-              </h2>
-
-              <p>
-                Manage roles and account access.
-              </p>
-
-            </div>
+        <div
+          id="communityListStatus"
+        ></div>
 
 
-            <button
-              class="secondary-btn"
-              onclick="loadStaff()"
-            >
-              Refresh
-            </button>
+        <div
+          id="communityList"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         STAFF PAGE
+         ========================= -->
+
+    <section
+      id="staff"
+      class="tab"
+    >
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              Create Staff Account
+            </h2>
+
+            <p>
+              Provision individual access to the BadlandsRP Cheater Dashboard.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="grid">
+
+          <div>
+
+            <label>
+              Username
+            </label>
+
+            <input
+              id="newStaffUsername"
+              placeholder="staff.username"
+            />
 
           </div>
 
 
-          <div
-            id="staffListStatus"
-          ></div>
+          <div>
+
+            <label>
+              Temporary Password
+            </label>
+
+            <input
+              id="newStaffPassword"
+              type="password"
+              placeholder="Minimum 12 characters"
+            />
+
+          </div>
 
 
-          <div
-            id="staffList"
-          ></div>
+          <div>
+
+            <label>
+              Access Role
+            </label>
+
+            <select id="newStaffRole">
+
+              <option value="READ_ONLY">
+                Read Only
+              </option>
+
+              <option value="ANALYST">
+                Analyst
+              </option>
+
+              <option value="ADMIN">
+                Admin
+              </option>
+
+            </select>
+
+          </div>
 
         </div>
 
-      </section>
 
-    </main>
+        <button
+          class="primary-btn"
+          onclick="createStaff()"
+        >
+          Create Account
+        </button>
 
-  </div>
+
+        <div
+          id="createStaffStatus"
+          class="status-box"
+        ></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              Staff Directory
+            </h2>
+
+            <p>
+              Manage dashboard roles and account access.
+            </p>
+
+          </div>
+
+
+          <button
+            class="secondary-btn"
+            onclick="loadStaff()"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="staffListStatus"
+        ></div>
+
+
+        <div
+          id="staffList"
+        ></div>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
 
@@ -1788,18 +1854,13 @@
 const API_BASE =
   window.location.origin;
 
-let currentUser = null;
+let currentUser =
+  null;
 
 
-/* -------------------------------------------
-   SESSION
--------------------------------------------- */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  checkSession
-);
-
+/* =========================
+   API REQUEST
+   ========================= */
 
 async function apiRequest(
   url,
@@ -1809,20 +1870,29 @@ async function apiRequest(
   options.credentials =
     "same-origin";
 
+
   const response =
     await fetch(
       url,
       options
     );
 
-  let data = null;
+
+  let data =
+    null;
+
 
   try {
+
     data =
       await response.json();
+
   }
   catch {
-    data = null;
+
+    data =
+      null;
+
   }
 
 
@@ -1835,18 +1905,33 @@ async function apiRequest(
         `Request failed (${response.status})`
       );
 
+
     error.status =
       response.status;
+
 
     error.data =
       data;
 
+
     throw error;
+
   }
 
 
   return data;
+
 }
+
+
+/* =========================
+   SESSION
+   ========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  checkSession
+);
 
 
 async function checkSession() {
@@ -1858,8 +1943,10 @@ async function checkSession() {
         `${API_BASE}/api/v1/auth/me`
       );
 
+
     currentUser =
       data.user;
+
 
     showDashboard();
 
@@ -1869,12 +1956,13 @@ async function checkSession() {
     showLogin();
 
   }
+
 }
 
 
-/* -------------------------------------------
-   AUTH
--------------------------------------------- */
+/* =========================
+   LOGIN
+   ========================= */
 
 async function login() {
 
@@ -1901,7 +1989,8 @@ async function login() {
     );
 
 
-  status.innerHTML = "";
+  status.innerHTML =
+    "";
 
 
   if (
@@ -1910,9 +1999,14 @@ async function login() {
   ) {
 
     status.innerHTML =
-      '<div class="result-banner error-banner">Username and password are required.</div>';
+      `
+        <div class="result-banner error-banner">
+          Username and password are required.
+        </div>
+      `;
 
     return;
+
   }
 
 
@@ -1927,8 +2021,10 @@ async function login() {
             "POST",
 
           headers: {
+
             "Content-Type":
               "application/json"
+
           },
 
           body:
@@ -1949,7 +2045,8 @@ async function login() {
       .getElementById(
         "loginPassword"
       )
-      .value = "";
+      .value =
+        "";
 
 
     showDashboard();
@@ -1965,8 +2062,13 @@ async function login() {
       `;
 
   }
+
 }
 
+
+/* =========================
+   LOGOUT
+   ========================= */
 
 async function logout() {
 
@@ -1989,6 +2091,7 @@ async function logout() {
 
 
   showLogin();
+
 }
 
 
@@ -2008,6 +2111,7 @@ function showLogin() {
     )
     .classList
     .remove("hidden");
+
 }
 
 
@@ -2048,16 +2152,17 @@ function showDashboard() {
 
 
   configureRoleAccess();
+
 }
 
 
-/* -------------------------------------------
-   NAVIGATION
--------------------------------------------- */
+/* =========================
+   ROLE ACCESS
+   ========================= */
 
 function configureRoleAccess() {
 
-  const communityButton =
+  const communitiesButton =
     document.getElementById(
       "communitiesTabButton"
     );
@@ -2069,13 +2174,13 @@ function configureRoleAccess() {
     );
 
 
-  const addCommunity =
+  const addCommunityCard =
     document.getElementById(
       "addCommunityCard"
     );
 
 
-  communityButton
+  communitiesButton
     .classList
     .add("hidden");
 
@@ -2085,7 +2190,7 @@ function configureRoleAccess() {
     .add("hidden");
 
 
-  addCommunity
+  addCommunityCard
     .classList
     .add("hidden");
 
@@ -2095,7 +2200,7 @@ function configureRoleAccess() {
     "ANALYST"
   ) {
 
-    communityButton
+    communitiesButton
       .classList
       .remove("hidden");
 
@@ -2107,7 +2212,7 @@ function configureRoleAccess() {
     "ADMIN"
   ) {
 
-    communityButton
+    communitiesButton
       .classList
       .remove("hidden");
 
@@ -2117,13 +2222,18 @@ function configureRoleAccess() {
       .remove("hidden");
 
 
-    addCommunity
+    addCommunityCard
       .classList
       .remove("hidden");
 
   }
+
 }
 
+
+/* =========================
+   PAGE NAVIGATION
+   ========================= */
 
 function showTab(
   tabId,
@@ -2131,12 +2241,17 @@ function showTab(
 ) {
 
   document
-    .querySelectorAll(".tab")
+    .querySelectorAll(
+      ".tab"
+    )
     .forEach(
-      tab =>
+      tab => {
+
         tab.classList.remove(
           "active"
-        )
+        );
+
+      }
     );
 
 
@@ -2145,10 +2260,13 @@ function showTab(
       ".nav-button"
     )
     .forEach(
-      btn =>
+      btn => {
+
         btn.classList.remove(
           "active"
-        )
+        );
+
+      }
     );
 
 
@@ -2157,12 +2275,14 @@ function showTab(
       tabId
     )
     .classList
-    .add("active");
+    .add(
+      "active"
+    );
 
 
-  button
-    .classList
-    .add("active");
+  button.classList.add(
+    "active"
+  );
 
 
   const title =
@@ -2202,7 +2322,7 @@ function showTab(
 
 
     description.textContent =
-      "Manage known cheat, exploit, leak, and related Discord communities.";
+      "View and manage known Discord communities.";
 
 
     loadCommunities();
@@ -2230,18 +2350,19 @@ function showTab(
 
 
     description.textContent =
-      "Manage individual dashboard access and staff permissions.";
+      "Manage BadlandsRP staff dashboard access and permissions.";
 
 
     loadStaff();
 
   }
+
 }
 
 
-/* -------------------------------------------
+/* =========================
    USER LOOKUP
--------------------------------------------- */
+   ========================= */
 
 async function searchUser() {
 
@@ -2266,9 +2387,12 @@ async function searchUser() {
     );
 
 
-  status.innerHTML = "";
+  status.innerHTML =
+    "";
 
-  results.innerHTML = "";
+
+  results.innerHTML =
+    "";
 
 
   if (!discordId) {
@@ -2281,11 +2405,16 @@ async function searchUser() {
       `;
 
     return;
+
   }
 
 
   status.innerHTML =
-    '<span class="muted">Querying intelligence database...</span>';
+    `
+      <span class="muted">
+        Querying intelligence database...
+      </span>
+    `;
 
 
   try {
@@ -2294,19 +2423,35 @@ async function searchUser() {
       await fetch(
         `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
         {
+
           credentials:
             "same-origin"
+
         }
       );
 
 
-    const data =
-      await response.json();
+    let data =
+      null;
+
+
+    try {
+
+      data =
+        await response.json();
+
+    }
+    catch {
+
+      data =
+        null;
+
+    }
 
 
     if (
       response.status === 404 ||
-      data.found === false
+      data?.found === false
     ) {
 
       status.innerHTML =
@@ -2320,22 +2465,25 @@ async function searchUser() {
       results.innerHTML =
         `
           <div class="panel">
-            <div class="muted">
+
+            <span class="muted">
               No known community associations are currently stored for
               <code>${escapeHtml(discordId)}</code>.
-            </div>
+            </span>
+
           </div>
         `;
 
 
       return;
+
     }
 
 
     if (!response.ok) {
 
       throw new Error(
-        data.error ||
+        data?.error ||
         "Lookup failed"
       );
 
@@ -2345,7 +2493,9 @@ async function searchUser() {
     status.innerHTML =
       `
         <div class="result-banner match-banner">
-          MATCH FOUND · ${data.evidenceCount} ASSOCIATION${data.evidenceCount === 1 ? "" : "S"}
+          MATCH FOUND ·
+          ${data.evidenceCount}
+          ASSOCIATION${data.evidenceCount === 1 ? "" : "S"}
         </div>
       `;
 
@@ -2365,7 +2515,7 @@ async function searchUser() {
         <div class="result-header">
 
           <small>
-            Discord Subject
+            Discord User
           </small>
 
           <div class="result-id">
@@ -2402,17 +2552,21 @@ async function searchUser() {
         evidence.roleNames?.length
 
         ? evidence.roleNames
-          .map(
-            role =>
-              `
-                <span class="badge">
-                  ${escapeHtml(role)}
-                </span>
-              `
-          )
-          .join("")
+            .map(
+              role =>
+                `
+                  <span class="badge">
+                    ${escapeHtml(role)}
+                  </span>
+                `
+            )
+            .join("")
 
-        : '<span class="muted">None recorded</span>';
+        : `
+            <span class="muted">
+              None recorded
+            </span>
+          `;
 
 
       const association =
@@ -2427,7 +2581,6 @@ async function searchUser() {
 
       association.innerHTML =
         `
-
           <div class="association-top">
 
             <div>
@@ -2511,15 +2664,19 @@ async function searchUser() {
             <div class="data-item">
 
               <div class="data-label">
-                Status
+                Membership
               </div>
 
               <div class="data-value">
+
                 ${
                   evidence.endedAt
+
                   ? "Historical"
+
                   : "Current / Last Known"
                 }
+
               </div>
 
             </div>
@@ -2538,7 +2695,6 @@ async function searchUser() {
             </div>
 
           </div>
-
         `;
 
 
@@ -2595,12 +2751,13 @@ async function searchUser() {
       `;
 
   }
+
 }
 
 
-/* -------------------------------------------
-   SUBJECTS
--------------------------------------------- */
+/* =========================
+   LOAD PRODUCTS
+   ========================= */
 
 async function loadSubjects() {
 
@@ -2611,7 +2768,11 @@ async function loadSubjects() {
 
 
   select.innerHTML =
-    '<option value="">Loading...</option>';
+    `
+      <option value="">
+        Loading...
+      </option>
+    `;
 
 
   try {
@@ -2666,12 +2827,13 @@ async function loadSubjects() {
       `;
 
   }
+
 }
 
 
-/* -------------------------------------------
+/* =========================
    COMMUNITIES
--------------------------------------------- */
+   ========================= */
 
 async function loadCommunities() {
 
@@ -2688,10 +2850,15 @@ async function loadCommunities() {
 
 
   status.innerHTML =
-    '<span class="muted">Loading community intelligence...</span>';
+    `
+      <span class="muted">
+        Loading community intelligence...
+      </span>
+    `;
 
 
-  list.innerHTML = "";
+  list.innerHTML =
+    "";
 
 
   try {
@@ -2705,7 +2872,9 @@ async function loadCommunities() {
     status.innerHTML =
       `
         <span class="success">
-          ${servers.length} known communit${servers.length === 1 ? "y" : "ies"}
+          ${servers.length}
+          known
+          ${servers.length === 1 ? "community" : "communities"}
         </span>
       `;
 
@@ -2727,7 +2896,6 @@ async function loadCommunities() {
 
       card.innerHTML =
         `
-
           <div class="community-top">
 
             <div>
@@ -2815,7 +2983,6 @@ async function loadCommunities() {
             </div>
 
           </div>
-
         `;
 
 
@@ -2836,8 +3003,13 @@ async function loadCommunities() {
       `;
 
   }
+
 }
 
+
+/* =========================
+   ADD COMMUNITY
+   ========================= */
 
 async function addCommunity() {
 
@@ -2887,6 +3059,7 @@ async function addCommunity() {
       `;
 
     return;
+
   }
 
 
@@ -2942,8 +3115,10 @@ async function addCommunity() {
           "POST",
 
         headers: {
+
           "Content-Type":
             "application/json"
+
         },
 
         body:
@@ -2965,21 +3140,24 @@ async function addCommunity() {
       .getElementById(
         "communityDiscordId"
       )
-      .value = "";
+      .value =
+        "";
 
 
     document
       .getElementById(
         "communityName"
       )
-      .value = "";
+      .value =
+        "";
 
 
     document
       .getElementById(
         "communitySourceUrl"
       )
-      .value = "";
+      .value =
+        "";
 
 
     loadCommunities();
@@ -2999,12 +3177,13 @@ async function addCommunity() {
       `;
 
   }
+
 }
 
 
-/* -------------------------------------------
-   STAFF
--------------------------------------------- */
+/* =========================
+   STAFF DIRECTORY
+   ========================= */
 
 async function loadStaff() {
 
@@ -3021,10 +3200,15 @@ async function loadStaff() {
 
 
   status.innerHTML =
-    '<span class="muted">Loading staff directory...</span>';
+    `
+      <span class="muted">
+        Loading staff directory...
+      </span>
+    `;
 
 
-  list.innerHTML = "";
+  list.innerHTML =
+    "";
 
 
   try {
@@ -3038,7 +3222,8 @@ async function loadStaff() {
     status.innerHTML =
       `
         <span class="success">
-          ${staff.length} staff account${staff.length === 1 ? "" : "s"}
+          ${staff.length}
+          staff account${staff.length === 1 ? "" : "s"}
         </span>
       `;
 
@@ -3060,7 +3245,6 @@ async function loadStaff() {
 
       card.innerHTML =
         `
-
           <div class="staff-top">
 
             <div>
@@ -3104,9 +3288,7 @@ async function loadStaff() {
               <option
                 value="READ_ONLY"
                 ${
-                  user.role ===
-                  "READ_ONLY"
-
+                  user.role === "READ_ONLY"
                   ? "selected"
                   : ""
                 }
@@ -3118,9 +3300,7 @@ async function loadStaff() {
               <option
                 value="ANALYST"
                 ${
-                  user.role ===
-                  "ANALYST"
-
+                  user.role === "ANALYST"
                   ? "selected"
                   : ""
                 }
@@ -3132,9 +3312,7 @@ async function loadStaff() {
               <option
                 value="ADMIN"
                 ${
-                  user.role ===
-                  "ADMIN"
-
+                  user.role === "ADMIN"
                   ? "selected"
                   : ""
                 }
@@ -3177,15 +3355,12 @@ async function loadStaff() {
 
             <button
               class="secondary-btn"
-              onclick="
-                updateStaff('${user.id}')
-              "
+              onclick="updateStaff('${user.id}')"
             >
               Save Changes
             </button>
 
           </div>
-
         `;
 
 
@@ -3206,8 +3381,13 @@ async function loadStaff() {
       `;
 
   }
+
 }
 
+
+/* =========================
+   CREATE STAFF
+   ========================= */
 
 async function createStaff() {
 
@@ -3255,6 +3435,7 @@ async function createStaff() {
       `;
 
     return;
+
   }
 
 
@@ -3268,8 +3449,10 @@ async function createStaff() {
           "POST",
 
         headers: {
+
           "Content-Type":
             "application/json"
+
         },
 
         body:
@@ -3295,14 +3478,16 @@ async function createStaff() {
       .getElementById(
         "newStaffUsername"
       )
-      .value = "";
+      .value =
+        "";
 
 
     document
       .getElementById(
         "newStaffPassword"
       )
-      .value = "";
+      .value =
+        "";
 
 
     loadStaff();
@@ -3318,8 +3503,13 @@ async function createStaff() {
       `;
 
   }
+
 }
 
+
+/* =========================
+   UPDATE STAFF
+   ========================= */
 
 async function updateStaff(
   id
@@ -3351,8 +3541,10 @@ async function updateStaff(
           "PATCH",
 
         headers: {
+
           "Content-Type":
             "application/json"
+
         },
 
         body:
@@ -3375,12 +3567,13 @@ async function updateStaff(
     );
 
   }
+
 }
 
 
-/* -------------------------------------------
+/* =========================
    UTILITIES
--------------------------------------------- */
+   ========================= */
 
 function friendlyRole(
   value
@@ -3402,6 +3595,7 @@ function friendlyRole(
 
   return roles[value] ||
     value;
+
 }
 
 
@@ -3430,6 +3624,7 @@ function friendlyCategory(
       char =>
         char.toUpperCase()
     );
+
 }
 
 
@@ -3448,6 +3643,7 @@ function formatDate(
     value
   )
   .toLocaleString();
+
 }
 
 
@@ -3459,7 +3655,9 @@ async function copyText(
 
     await navigator
       .clipboard
-      .writeText(value);
+      .writeText(
+        value
+      );
 
   }
   catch {}
@@ -3507,6 +3705,7 @@ function escapeHtml(
       "'",
       "&#039;"
     );
+
 }
 
 </script>
