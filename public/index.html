@@ -3,28 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FiveM Intelligence Lookup</title>
+  <title>FiveM Intelligence Dashboard</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #111827;
       color: #f3f4f6;
       margin: 0;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
-    h1 {
-      margin-bottom: 8px;
+    h1, h2, h3 {
+      margin-top: 0;
     }
 
     .subtitle {
       color: #9ca3af;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      background: #1f2937;
+      color: white;
+      border: 1px solid #374151;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab-button.active {
+      background: #374151;
+    }
+
+    .tab {
+      display: none;
+    }
+
+    .tab.active {
+      display: block;
     }
 
     .card {
@@ -41,27 +71,52 @@
       font-weight: bold;
     }
 
-    input {
+    input,
+    select,
+    textarea {
       width: 100%;
       box-sizing: border-box;
-      padding: 12px;
-      margin-bottom: 16px;
+      padding: 11px;
+      margin-bottom: 14px;
       border: 1px solid #4b5563;
       border-radius: 8px;
       background: #111827;
       color: white;
     }
 
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
     button {
-      padding: 12px 18px;
+      padding: 11px 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
     }
 
-    .result {
-      margin-top: 20px;
+    .primary {
+      background: white;
+      color: black;
+    }
+
+    .danger {
+      background: #7f1d1d;
+      color: white;
+    }
+
+    .muted {
+      color: #9ca3af;
+    }
+
+    .success {
+      color: #86efac;
+    }
+
+    .error {
+      color: #fca5a5;
     }
 
     .match {
@@ -72,20 +127,10 @@
       margin-top: 12px;
     }
 
-    .match h3 {
-      margin-top: 0;
-    }
-
-    .muted {
-      color: #9ca3af;
-    }
-
-    .error {
-      color: #fca5a5;
-    }
-
-    .success {
-      color: #86efac;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
     }
 
     code {
@@ -93,13 +138,24 @@
       padding: 2px 5px;
       border-radius: 4px;
     }
+
+    .section-title {
+      margin-bottom: 14px;
+    }
+
+    .disclaimer {
+      margin-top: 10px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <h1>FiveM Intelligence Lookup</h1>
+    <h1>FiveM Intelligence Dashboard</h1>
     <div class="subtitle">
-      Search stored moderation evidence by Discord user ID.
+      Search and manage stored moderation evidence by Discord ID.
     </div>
 
     <div class="card">
@@ -109,30 +165,187 @@
         id="apiKey"
         placeholder="Enter API key"
       />
-
-      <label for="discordId">Discord User ID</label>
-      <input
-        type="text"
-        id="discordId"
-        placeholder="Example: 198165163172429824"
-      />
-
-      <button onclick="searchUser()">Search</button>
-
-      <div id="status" class="result"></div>
     </div>
 
-    <div id="results"></div>
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('lookup', this)">
+        User Lookup
+      </button>
+
+      <button class="tab-button" onclick="showTab('servers', this)">
+        Add Server
+      </button>
+
+      <button class="tab-button" onclick="showTab('evidence', this)">
+        Add Evidence
+      </button>
+    </div>
+
+    <div id="lookup" class="tab active">
+      <div class="card">
+        <h2 class="section-title">User Lookup</h2>
+
+        <label for="lookupDiscordId">Discord User ID</label>
+        <input
+          type="text"
+          id="lookupDiscordId"
+          placeholder="Example: 198165163172429824"
+        />
+
+        <button class="primary" onclick="searchUser()">Search</button>
+
+        <div id="lookupStatus" style="margin-top:16px;"></div>
+      </div>
+
+      <div id="lookupResults"></div>
+    </div>
+
+    <div id="servers" class="tab">
+      <div class="card">
+        <h2 class="section-title">Add Discord Server</h2>
+
+        <label for="serverDiscordId">Discord Guild ID</label>
+        <input id="serverDiscordId" type="text" />
+
+        <label for="serverName">Server Name</label>
+        <input id="serverName" type="text" />
+
+        <label for="serverSubjectId">Subject ID</label>
+        <input
+          id="serverSubjectId"
+          type="text"
+          placeholder="Internal subject ID from /api/v1/subjects"
+        />
+
+        <label for="serverConfidence">Confidence</label>
+        <select id="serverConfidence">
+          <option>UNVERIFIED</option>
+          <option>LOW</option>
+          <option>MEDIUM</option>
+          <option>HIGH</option>
+          <option>CONFIRMED</option>
+        </select>
+
+        <label for="serverSourceUrl">Source URL (optional)</label>
+        <input id="serverSourceUrl" type="text" />
+
+        <label for="serverActive">Active</label>
+        <select id="serverActive">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+        <button class="primary" onclick="addServer()">Add Server</button>
+
+        <div id="serverStatus" style="margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <div id="evidence" class="tab">
+      <div class="card">
+        <h2 class="section-title">Add User Evidence</h2>
+
+        <label for="evidenceUserId">Discord User ID</label>
+        <input id="evidenceUserId" type="text" />
+
+        <label for="evidenceServerId">Server Discord ID</label>
+        <input
+          id="evidenceServerId"
+          type="text"
+          placeholder="Example: 1136029776080023563"
+        />
+
+        <label for="evidenceSourceType">Source Type</label>
+        <select id="evidenceSourceType">
+          <option>MANUAL</option>
+          <option>PUBLIC_SOURCE</option>
+          <option>AUTHORIZED_EXPORT</option>
+          <option>INTERNAL_MODERATION_RECORD</option>
+          <option>USER_SUBMITTED</option>
+        </select>
+
+        <label for="evidenceSourceRef">Source Reference</label>
+        <input
+          id="evidenceSourceRef"
+          type="text"
+          placeholder="Case number, ticket number, URL, etc."
+        />
+
+        <label for="evidenceObservedAt">Observed At</label>
+        <input
+          id="evidenceObservedAt"
+          type="datetime-local"
+        />
+
+        <label for="evidenceEndedAt">Ended At (optional)</label>
+        <input
+          id="evidenceEndedAt"
+          type="datetime-local"
+        />
+
+        <label for="evidenceConfidence">Confidence</label>
+        <select id="evidenceConfidence">
+          <option>UNVERIFIED</option>
+          <option>LOW</option>
+          <option>MEDIUM</option>
+          <option selected>HIGH</option>
+          <option>CONFIRMED</option>
+        </select>
+
+        <label for="evidenceRoles">Roles</label>
+        <input
+          id="evidenceRoles"
+          type="text"
+          placeholder="Comma separated: Member, Customer, FiveM"
+        />
+
+        <label for="evidenceNotes">Notes</label>
+        <textarea id="evidenceNotes"></textarea>
+
+        <label for="evidenceCreatedBy">Created By</label>
+        <input
+          id="evidenceCreatedBy"
+          type="text"
+          placeholder="Staff name / ID"
+        />
+
+        <button class="primary" onclick="addEvidence()">Add Evidence</button>
+
+        <div id="evidenceStatus" style="margin-top:16px;"></div>
+
+        <div class="disclaimer">
+          Association evidence is not proof that a user cheated.
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     const API_BASE = window.location.origin;
 
+    function getApiKey() {
+      return document.getElementById("apiKey").value.trim();
+    }
+
+    function showTab(tabId, button) {
+      document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.remove("active");
+      });
+
+      document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.getElementById(tabId).classList.add("active");
+      button.classList.add("active");
+    }
+
     async function searchUser() {
-      const apiKey = document.getElementById("apiKey").value.trim();
-      const discordId = document.getElementById("discordId").value.trim();
-      const status = document.getElementById("status");
-      const results = document.getElementById("results");
+      const apiKey = getApiKey();
+      const discordId = document.getElementById("lookupDiscordId").value.trim();
+
+      const status = document.getElementById("lookupStatus");
+      const results = document.getElementById("lookupResults");
 
       results.innerHTML = "";
       status.innerHTML = "";
@@ -163,17 +376,20 @@
         const data = await response.json();
 
         if (response.status === 401) {
-          status.innerHTML = '<span class="error">Unauthorized. Check your API key.</span>';
+          status.innerHTML =
+            '<span class="error">Unauthorized. Check your API key.</span>';
           return;
         }
 
         if (response.status === 404 || data.found === false) {
-          status.innerHTML = '<span class="muted">No evidence found for this Discord ID.</span>';
+          status.innerHTML =
+            '<span class="muted">No evidence found for this Discord ID.</span>';
           return;
         }
 
         if (!response.ok) {
-          status.innerHTML = `<span class="error">Request failed: ${data.error || response.status}</span>`;
+          status.innerHTML =
+            `<span class="error">${escapeHtml(data.error || "Request failed")}</span>`;
           return;
         }
 
@@ -200,33 +416,31 @@
           match.innerHTML = `
             <h3>${escapeHtml(server?.name || "Unknown Server")}</h3>
 
-            <p>
-              <strong>Guild ID:</strong>
+            <p><strong>Guild ID:</strong>
               <code>${escapeHtml(server?.discordId || "Unknown")}</code>
             </p>
 
-            <p>
-              <strong>Category:</strong>
+            <p><strong>Category:</strong>
               ${escapeHtml(subject?.category || "Unknown")}
             </p>
 
-            <p>
-              <strong>Confidence:</strong>
+            <p><strong>Confidence:</strong>
               ${escapeHtml(evidence.confidence || "Unknown")}
             </p>
 
-            <p>
-              <strong>Observed:</strong>
+            <p><strong>Observed:</strong>
               ${formatDate(evidence.observedAt)}
             </p>
 
-            <p>
-              <strong>Ended:</strong>
-              ${evidence.endedAt ? formatDate(evidence.endedAt) : "Still active / unknown"}
+            <p><strong>Ended:</strong>
+              ${
+                evidence.endedAt
+                  ? formatDate(evidence.endedAt)
+                  : "Still active / unknown"
+              }
             </p>
 
-            <p>
-              <strong>Roles:</strong>
+            <p><strong>Roles:</strong>
               ${
                 evidence.roleNames?.length
                   ? evidence.roleNames.map(escapeHtml).join(", ")
@@ -234,13 +448,11 @@
               }
             </p>
 
-            <p>
-              <strong>Evidence Source:</strong>
+            <p><strong>Evidence Source:</strong>
               ${escapeHtml(evidence.sourceType || "Unknown")}
             </p>
 
-            <p>
-              <strong>Reference:</strong>
+            <p><strong>Reference:</strong>
               ${escapeHtml(evidence.sourceRef || "None")}
             </p>
 
@@ -262,10 +474,156 @@
       }
     }
 
+    async function addServer() {
+      const apiKey = getApiKey();
+      const status = document.getElementById("serverStatus");
+
+      if (!apiKey) {
+        status.innerHTML = '<span class="error">API key is required.</span>';
+        return;
+      }
+
+      const body = {
+        discordId: document.getElementById("serverDiscordId").value.trim(),
+        name: document.getElementById("serverName").value.trim(),
+        subjectId: document.getElementById("serverSubjectId").value.trim() || undefined,
+        confidence: document.getElementById("serverConfidence").value,
+        active: document.getElementById("serverActive").value === "true"
+      };
+
+      const sourceUrl = document.getElementById("serverSourceUrl").value.trim();
+
+      if (sourceUrl) {
+        body.sourceUrl = sourceUrl;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/servers`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          status.innerHTML =
+            `<span class="error">${escapeHtml(data.error || "Failed to add server")}</span>`;
+          return;
+        }
+
+        status.innerHTML =
+          `<span class="success">Server added successfully.</span>`;
+
+      } catch {
+        status.innerHTML =
+          '<span class="error">Could not reach the API.</span>';
+      }
+    }
+
+    async function addEvidence() {
+      const apiKey = getApiKey();
+      const status = document.getElementById("evidenceStatus");
+
+      const userId = document.getElementById("evidenceUserId").value.trim();
+
+      if (!apiKey) {
+        status.innerHTML =
+          '<span class="error">API key is required.</span>';
+        return;
+      }
+
+      if (!userId) {
+        status.innerHTML =
+          '<span class="error">Discord user ID is required.</span>';
+        return;
+      }
+
+      const observedAtValue =
+        document.getElementById("evidenceObservedAt").value;
+
+      if (!observedAtValue) {
+        status.innerHTML =
+          '<span class="error">Observed date/time is required.</span>';
+        return;
+      }
+
+      const roles =
+        document
+          .getElementById("evidenceRoles")
+          .value
+          .split(",")
+          .map(role => role.trim())
+          .filter(Boolean);
+
+      const body = {
+        serverDiscordId:
+          document.getElementById("evidenceServerId").value.trim() || undefined,
+
+        sourceType:
+          document.getElementById("evidenceSourceType").value,
+
+        sourceRef:
+          document.getElementById("evidenceSourceRef").value.trim(),
+
+        observedAt:
+          new Date(observedAtValue).toISOString(),
+
+        confidence:
+          document.getElementById("evidenceConfidence").value,
+
+        roleNames: roles,
+
+        notes:
+          document.getElementById("evidenceNotes").value.trim() || undefined,
+
+        createdBy:
+          document.getElementById("evidenceCreatedBy").value.trim() || undefined
+      };
+
+      const endedAtValue =
+        document.getElementById("evidenceEndedAt").value;
+
+      if (endedAtValue) {
+        body.endedAt = new Date(endedAtValue).toISOString();
+      }
+
+      try {
+        const response = await fetch(
+          `${API_BASE}/api/v1/users/${encodeURIComponent(userId)}/evidence`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": apiKey
+            },
+            body: JSON.stringify(body)
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          status.innerHTML =
+            `<span class="error">${escapeHtml(data.error || "Failed to add evidence")}</span>`;
+          return;
+        }
+
+        status.innerHTML =
+          '<span class="success">Evidence added successfully.</span>';
+
+      } catch {
+        status.innerHTML =
+          '<span class="error">Could not reach the API.</span>';
+      }
+    }
+
     function formatDate(value) {
       if (!value) return "Unknown";
-      const date = new Date(value);
-      return date.toLocaleString();
+      return new Date(value).toLocaleString();
     }
 
     function escapeHtml(value) {
