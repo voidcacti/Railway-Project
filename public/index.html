@@ -6,26 +6,86 @@
   <title>FiveM Intelligence Dashboard</title>
 
   <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --border: #374151;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --success: #86efac;
+      --error: #fca5a5;
+      --warning: #fde68a;
+      --accent: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: #f3f4f6;
       margin: 0;
-      padding: 30px 20px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
+      padding: 34px 20px 60px;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3,
+    p {
       margin-top: 0;
     }
 
-    .subtitle {
-      color: #9ca3af;
+    .page-header {
       margin-bottom: 24px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .auth-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .auth-status {
+      min-width: 140px;
+      text-align: right;
+      padding-bottom: 13px;
+      font-weight: bold;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: -4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .remember-row input {
+      width: auto;
+      margin: 0;
     }
 
     .tabs {
@@ -36,17 +96,18 @@
     }
 
     .tab-button {
-      background: #1f2937;
-      color: white;
-      border: 1px solid #374151;
-      padding: 10px 16px;
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 9px;
+      padding: 11px 16px;
       cursor: pointer;
       font-weight: bold;
     }
 
     .tab-button.active {
-      background: #374151;
+      background: var(--accent);
+      color: #111827;
     }
 
     .tab {
@@ -55,30 +116,6 @@
 
     .tab.active {
       display: block;
-    }
-
-    .card {
-      background: #1f2937;
-      border: 1px solid #374151;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .match {
-      background: #111827;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 16px;
-      margin-top: 12px;
-    }
-
-    .community {
-      background: #111827;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 16px;
-      margin-top: 12px;
     }
 
     label {
@@ -90,68 +127,141 @@
     input,
     select {
       width: 100%;
-      box-sizing: border-box;
-      padding: 11px;
-      margin-bottom: 14px;
+      background: var(--panel);
+      color: var(--text);
       border: 1px solid #4b5563;
-      border-radius: 8px;
-      background: #111827;
-      color: white;
+      border-radius: 9px;
+      padding: 12px;
+      margin-bottom: 14px;
     }
 
     button {
-      padding: 11px 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 9px;
+      padding: 11px 16px;
       cursor: pointer;
       font-weight: bold;
     }
 
     .primary {
       background: white;
-      color: black;
+      color: #111827;
+    }
+
+    .secondary {
+      background: #374151;
+      color: white;
+    }
+
+    .copy-btn {
+      padding: 5px 8px;
+      font-size: 12px;
+      margin-left: 6px;
+      background: #374151;
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .match,
+    .community-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .status-box {
+      margin-top: 14px;
     }
 
     .muted {
-      color: #9ca3af;
+      color: var(--muted);
     }
 
     .success {
-      color: #86efac;
+      color: var(--success);
     }
 
     .error {
-      color: #fca5a5;
+      color: var(--error);
+    }
+
+    .warning {
+      color: var(--warning);
     }
 
     .badge {
       display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
       background: #374151;
-      margin-right: 6px;
-      margin-bottom: 4px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      margin-right: 5px;
+      margin-bottom: 5px;
       font-size: 13px;
+    }
+
+    .result-banner {
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .result-banner.match-found {
+      background: #14532d;
+    }
+
+    .result-banner.no-match {
+      background: #374151;
+    }
+
+    .result-banner.error-banner {
+      background: #7f1d1d;
     }
 
     code {
-      background: #0f172a;
-      padding: 2px 5px;
-      border-radius: 4px;
+      background: #0b1120;
+      padding: 3px 6px;
+      border-radius: 5px;
     }
 
     .section-title {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
-    .disclaimer {
-      margin-top: 10px;
-      color: #9ca3af;
-      font-size: 14px;
+    .community-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
     }
 
-    .small {
+    .community-status {
       font-size: 13px;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .auth-row {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-status {
+        text-align: left;
+        padding-bottom: 0;
+      }
     }
   </style>
 </head>
@@ -159,19 +269,38 @@
 <body>
   <div class="container">
 
-    <h1>FiveM Intelligence Dashboard</h1>
-
-    <div class="subtitle">
-      Search Discord IDs against stored cheating and leaking community associations.
+    <div class="page-header">
+      <h1>FiveM Intelligence Dashboard</h1>
+      <p class="subtitle">
+        Search stored Discord community associations and manage known communities.
+      </p>
     </div>
 
     <div class="card">
-      <label for="apiKey">API Key</label>
-      <input
-        type="password"
-        id="apiKey"
-        placeholder="Enter API key"
-      />
+      <div class="auth-row">
+        <div>
+          <label for="apiKey">API Key</label>
+          <input
+            type="password"
+            id="apiKey"
+            placeholder="Enter API key"
+            oninput="handleApiKeyChange()"
+          />
+
+          <label class="remember-row">
+            <input
+              type="checkbox"
+              id="rememberApiKey"
+              onchange="handleRememberChange()"
+            />
+            Remember on this browser
+          </label>
+        </div>
+
+        <div id="authStatus" class="auth-status muted">
+          Not authenticated
+        </div>
+      </div>
     </div>
 
     <div class="tabs">
@@ -190,8 +319,6 @@
       </button>
     </div>
 
-    <!-- USER LOOKUP -->
-
     <div id="lookup" class="tab active">
 
       <div class="card">
@@ -203,6 +330,7 @@
           type="text"
           id="lookupDiscordId"
           placeholder="Example: 198165163172429824"
+          onkeydown="if (event.key === 'Enter') searchUser()"
         />
 
         <button
@@ -212,86 +340,91 @@
           Search
         </button>
 
-        <div
-          id="lookupStatus"
-          style="margin-top:16px;"
-        ></div>
-
+        <div id="lookupStatus" class="status-box"></div>
       </div>
 
       <div id="lookupResults"></div>
-
     </div>
-
-    <!-- MANAGE COMMUNITIES -->
 
     <div id="communities" class="tab">
 
       <div class="card">
-        <h2 class="section-title">
-          Add Discord Community
-        </h2>
+        <h2 class="section-title">Add Community</h2>
 
-        <label for="communitySubject">
-          Product / Community
-        </label>
+        <div class="grid">
 
-        <select id="communitySubject">
-          <option value="">
-            Load subjects first
-          </option>
-        </select>
+          <div>
+            <label for="communitySubject">
+              Product / Community
+            </label>
 
-        <label for="communityDiscordId">
-          Discord Guild ID
-        </label>
+            <select id="communitySubject">
+              <option value="">Select product/community</option>
+            </select>
+          </div>
 
-        <input
-          id="communityDiscordId"
-          type="text"
-          placeholder="Example: 1136029776080023563"
-        />
+          <div>
+            <label for="communityDiscordId">
+              Discord Guild ID
+            </label>
 
-        <label for="communityName">
-          Discord Server Name
-        </label>
+            <input
+              id="communityDiscordId"
+              type="text"
+              placeholder="Example: 1136029776080023563"
+            />
+          </div>
 
-        <input
-          id="communityName"
-          type="text"
-          placeholder="Example: Eulen"
-        />
+          <div>
+            <label for="communityName">
+              Discord Server Name
+            </label>
 
-        <label for="communityConfidence">
-          Confidence
-        </label>
+            <input
+              id="communityName"
+              type="text"
+              placeholder="Example: Eulen"
+            />
+          </div>
 
-        <select id="communityConfidence">
-          <option>UNVERIFIED</option>
-          <option>LOW</option>
-          <option>MEDIUM</option>
-          <option>HIGH</option>
-          <option selected>CONFIRMED</option>
-        </select>
+          <div>
+            <label for="communityConfidence">
+              Confidence
+            </label>
 
-        <label for="communitySourceUrl">
-          Source URL (optional)
-        </label>
+            <select id="communityConfidence">
+              <option>UNVERIFIED</option>
+              <option>LOW</option>
+              <option>MEDIUM</option>
+              <option>HIGH</option>
+              <option selected>CONFIRMED</option>
+            </select>
+          </div>
 
-        <input
-          id="communitySourceUrl"
-          type="text"
-          placeholder="Public source confirming the community"
-        />
+          <div>
+            <label for="communityActive">
+              Status
+            </label>
 
-        <label for="communityActive">
-          Status
-        </label>
+            <select id="communityActive">
+              <option value="true">Active</option>
+              <option value="false">Inactive / Historical</option>
+            </select>
+          </div>
 
-        <select id="communityActive">
-          <option value="true">Active</option>
-          <option value="false">Inactive / Historical</option>
-        </select>
+          <div>
+            <label for="communitySourceUrl">
+              Source URL
+            </label>
+
+            <input
+              id="communitySourceUrl"
+              type="text"
+              placeholder="Optional"
+            />
+          </div>
+
+        </div>
 
         <button
           class="primary"
@@ -300,27 +433,28 @@
           Add Community
         </button>
 
-        <div
-          id="communityStatus"
-          style="margin-top:16px;"
-        ></div>
+        <div id="communityStatus" class="status-box"></div>
       </div>
 
       <div class="card">
-        <h2 class="section-title">
-          Known Communities
-        </h2>
+        <div class="community-top">
+          <div>
+            <h2 class="section-title">
+              Known Communities
+            </h2>
+          </div>
 
-        <button
-          class="primary"
-          onclick="loadCommunities()"
-        >
-          Refresh List
-        </button>
+          <button
+            class="secondary"
+            onclick="loadCommunities()"
+          >
+            Refresh
+          </button>
+        </div>
 
         <div
           id="communityListStatus"
-          style="margin-top:16px;"
+          class="status-box"
         ></div>
 
         <div id="communityList"></div>
@@ -333,6 +467,73 @@
   <script>
     const API_BASE = window.location.origin;
 
+    const SESSION_KEY = "fivem_intel_api_key";
+    const LOCAL_KEY = "fivem_intel_api_key_remembered";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      restoreApiKey();
+    });
+
+    function restoreApiKey() {
+      const remembered = localStorage.getItem(LOCAL_KEY);
+      const session = sessionStorage.getItem(SESSION_KEY);
+
+      const apiKeyInput = document.getElementById("apiKey");
+      const rememberBox = document.getElementById("rememberApiKey");
+
+      if (remembered) {
+        apiKeyInput.value = remembered;
+        rememberBox.checked = true;
+      } else if (session) {
+        apiKeyInput.value = session;
+      }
+
+      updateAuthStatus();
+    }
+
+    function handleApiKeyChange() {
+      const apiKey = getApiKey();
+      const remember = document.getElementById("rememberApiKey").checked;
+
+      if (apiKey) {
+        sessionStorage.setItem(SESSION_KEY, apiKey);
+
+        if (remember) {
+          localStorage.setItem(LOCAL_KEY, apiKey);
+        }
+      } else {
+        sessionStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem(LOCAL_KEY);
+      }
+
+      updateAuthStatus();
+    }
+
+    function handleRememberChange() {
+      const apiKey = getApiKey();
+      const remember = document.getElementById("rememberApiKey").checked;
+
+      if (remember && apiKey) {
+        localStorage.setItem(LOCAL_KEY, apiKey);
+      } else {
+        localStorage.removeItem(LOCAL_KEY);
+      }
+
+      updateAuthStatus();
+    }
+
+    function updateAuthStatus() {
+      const status = document.getElementById("authStatus");
+
+      if (getApiKey()) {
+        status.innerHTML =
+          '<span class="success">API key loaded</span>';
+      } else {
+        status.innerHTML =
+          '<span class="muted">Not authenticated</span>';
+      }
+    }
+
     function getApiKey() {
       return document
         .getElementById("apiKey")
@@ -341,7 +542,6 @@
     }
 
     function showTab(tabId, button) {
-
       document
         .querySelectorAll(".tab")
         .forEach(tab => {
@@ -367,7 +567,6 @@
     }
 
     async function apiRequest(url, options = {}) {
-
       const apiKey = getApiKey();
 
       if (!apiKey) {
@@ -394,17 +593,22 @@
       }
 
       if (!response.ok) {
-        throw new Error(
+        const error = new Error(
+          data?.message ||
           data?.error ||
           `Request failed with status ${response.status}`
         );
+
+        error.status = response.status;
+        error.data = data;
+
+        throw error;
       }
 
       return data;
     }
 
     async function searchUser() {
-
       const discordId = document
         .getElementById("lookupDiscordId")
         .value
@@ -419,9 +623,15 @@
       status.innerHTML = "";
       results.innerHTML = "";
 
+      if (!getApiKey()) {
+        status.innerHTML =
+          '<div class="result-banner error-banner">API key is required.</div>';
+        return;
+      }
+
       if (!discordId) {
         status.innerHTML =
-          '<span class="error">Discord ID is required.</span>';
+          '<div class="result-banner error-banner">Discord ID is required.</div>';
         return;
       }
 
@@ -429,7 +639,6 @@
         '<span class="muted">Searching...</span>';
 
       try {
-
         const response = await fetch(
           `${API_BASE}/api/v1/users/${encodeURIComponent(discordId)}/evidence`,
           {
@@ -444,7 +653,7 @@
 
         if (response.status === 401) {
           status.innerHTML =
-            '<span class="error">Unauthorized. Check your API key.</span>';
+            '<div class="result-banner error-banner">Unauthorized. Check your API key.</div>';
           return;
         }
 
@@ -453,22 +662,33 @@
           data.found === false
         ) {
           status.innerHTML =
-            '<span class="muted">No known community associations found.</span>';
+            '<div class="result-banner no-match">NO MATCH FOUND</div>';
+
+          results.innerHTML = `
+            <div class="card">
+              <h2>${escapeHtml(discordId)}</h2>
+              <p class="muted">
+                No known community associations are stored for this Discord ID.
+              </p>
+            </div>
+          `;
+
           return;
         }
 
         if (!response.ok) {
           status.innerHTML =
-            `<span class="error">${escapeHtml(
-              data.error || "Lookup failed"
-            )}</span>`;
+            `<div class="result-banner error-banner">
+              ${escapeHtml(data.error || "Lookup failed")}
+            </div>`;
+
           return;
         }
 
         status.innerHTML =
-          `<span class="success">
-            ${data.evidenceCount} association record(s) found.
-          </span>`;
+          `<div class="result-banner match-found">
+            MATCH FOUND — ${data.evidenceCount} association record(s)
+          </div>`;
 
         const wrapper =
           document.createElement("div");
@@ -477,17 +697,27 @@
 
         wrapper.innerHTML = `
           <h2>
-            Discord ID:
-            ${escapeHtml(data.discordId)}
+            Discord User
           </h2>
 
-          <p class="disclaimer">
+          <p>
+            <strong>ID:</strong>
+            <code>${escapeHtml(data.discordId)}</code>
+
+            <button
+              class="copy-btn"
+              onclick="copyText('${escapeHtml(data.discordId)}')"
+            >
+              Copy
+            </button>
+          </p>
+
+          <p class="footer-note">
             Community membership alone is not proof that a user cheated.
           </p>
         `;
 
         for (const evidence of data.evidence) {
-
           const server = evidence.server;
           const subject = server?.subject;
 
@@ -501,9 +731,7 @@
               ? evidence.roleNames
                   .map(
                     role =>
-                      `<span class="badge">
-                        ${escapeHtml(role)}
-                      </span>`
+                      `<span class="badge">${escapeHtml(role)}</span>`
                   )
                   .join("")
               : '<span class="muted">None recorded</span>';
@@ -515,32 +743,38 @@
 
           match.innerHTML = `
             <h3>
-              ${escapeHtml(
-                server?.name || "Unknown Community"
-              )}
+              ${escapeHtml(server?.name || "Unknown Community")}
             </h3>
 
             <p>
               <strong>Product:</strong>
-              ${escapeHtml(
-                subject?.name || "Unknown"
-              )}
+              ${escapeHtml(subject?.name || "Unknown")}
             </p>
 
             <p>
               <strong>Guild ID:</strong>
+
               <code>
-                ${escapeHtml(
-                  server?.discordId || "Unknown"
-                )}
+                ${escapeHtml(server?.discordId || "Unknown")}
               </code>
+
+              ${
+                server?.discordId
+                  ? `
+                    <button
+                      class="copy-btn"
+                      onclick="copyText('${escapeHtml(server.discordId)}')"
+                    >
+                      Copy
+                    </button>
+                  `
+                  : ""
+              }
             </p>
 
             <p>
               <strong>Category:</strong>
-              ${friendlyCategory(
-                subject?.category
-              )}
+              ${friendlyCategory(subject?.category)}
             </p>
 
             <p>
@@ -550,26 +784,20 @@
 
             <p>
               <strong>Confidence:</strong>
-              ${escapeHtml(
-                evidence.confidence || "Unknown"
-              )}
+              ${escapeHtml(evidence.confidence || "Unknown")}
             </p>
 
             <p>
-              <strong>Observed:</strong>
-              ${formatDate(
-                evidence.observedAt
-              )}
+              <strong>First / Last Observed:</strong>
+              ${formatDate(evidence.observedAt)}
             </p>
 
             ${
               evidence.endedAt
                 ? `
                   <p>
-                    <strong>Last Seen:</strong>
-                    ${formatDate(
-                      evidence.endedAt
-                    )}
+                    <strong>Ended:</strong>
+                    ${formatDate(evidence.endedAt)}
                   </p>
                 `
                 : ""
@@ -587,26 +815,21 @@
         results.appendChild(wrapper);
 
       } catch (error) {
-
         status.innerHTML =
-          `<span class="error">
+          `<div class="result-banner error-banner">
             ${escapeHtml(error.message)}
-          </span>`;
+          </div>`;
       }
     }
 
     async function loadSubjects() {
-
       const select =
-        document.getElementById(
-          "communitySubject"
-        );
+        document.getElementById("communitySubject");
 
       select.innerHTML =
         '<option value="">Loading...</option>';
 
       try {
-
         const subjects = await apiRequest(
           `${API_BASE}/api/v1/subjects`
         );
@@ -615,38 +838,29 @@
           '<option value="">Select product/community</option>';
 
         for (const subject of subjects) {
-
           const option =
             document.createElement("option");
 
           option.value = subject.id;
 
           option.textContent =
-            `${subject.name} — ${friendlyCategory(
-              subject.category
-            )}`;
+            `${subject.name} — ${friendlyCategory(subject.category)}`;
 
           select.appendChild(option);
         }
 
       } catch (error) {
-
         select.innerHTML =
           '<option value="">Could not load subjects</option>';
       }
     }
 
     async function loadCommunities() {
-
       const status =
-        document.getElementById(
-          "communityListStatus"
-        );
+        document.getElementById("communityListStatus");
 
       const list =
-        document.getElementById(
-          "communityList"
-        );
+        document.getElementById("communityList");
 
       status.innerHTML =
         '<span class="muted">Loading...</span>';
@@ -654,13 +868,11 @@
       list.innerHTML = "";
 
       try {
-
         const servers = await apiRequest(
           `${API_BASE}/api/v1/servers`
         );
 
         if (!servers.length) {
-
           status.innerHTML =
             '<span class="muted">No communities stored.</span>';
 
@@ -673,64 +885,66 @@
           </span>`;
 
         for (const server of servers) {
-
           const item =
             document.createElement("div");
 
-          item.className = "community";
+          item.className =
+            "community-card";
 
           item.innerHTML = `
-            <h3>
-              ${escapeHtml(server.name)}
-            </h3>
+            <div class="community-top">
 
-            <p>
-              <strong>Product:</strong>
-              ${escapeHtml(
-                server.subject?.name || "Unknown"
-              )}
-            </p>
+              <div>
+                <h3>
+                  ${escapeHtml(server.name)}
+                </h3>
+
+                <p class="muted">
+                  ${escapeHtml(server.subject?.name || "Unknown Product")}
+                </p>
+              </div>
+
+              <div class="community-status">
+                ${
+                  server.active
+                    ? '<span class="success">ACTIVE</span>'
+                    : '<span class="warning">HISTORICAL</span>'
+                }
+              </div>
+
+            </div>
 
             <p>
               <strong>Guild ID:</strong>
+
               <code>
-                ${escapeHtml(
-                  server.discordId
-                )}
+                ${escapeHtml(server.discordId)}
               </code>
+
+              <button
+                class="copy-btn"
+                onclick="copyText('${escapeHtml(server.discordId)}')"
+              >
+                Copy
+              </button>
             </p>
 
             <p>
               <strong>Category:</strong>
-              ${friendlyCategory(
-                server.subject?.category
-              )}
+              ${friendlyCategory(server.subject?.category)}
             </p>
 
             <p>
               <strong>Confidence:</strong>
-              ${escapeHtml(
-                server.confidence
-              )}
-            </p>
-
-            <p>
-              <strong>Status:</strong>
-              ${
-                server.active
-                  ? "Active"
-                  : "Inactive / Historical"
-              }
+              ${escapeHtml(server.confidence)}
             </p>
 
             ${
               server.sourceUrl
                 ? `
-                  <p class="small">
+                  <p>
                     <strong>Source:</strong>
-                    ${escapeHtml(
-                      server.sourceUrl
-                    )}
+                    ${escapeHtml(server.sourceUrl)}
                   </p>
                 `
                 : ""
@@ -741,7 +955,6 @@
         }
 
       } catch (error) {
-
         status.innerHTML =
           `<span class="error">
             ${escapeHtml(error.message)}
@@ -750,35 +963,32 @@
     }
 
     async function addCommunity() {
-
       const status =
-        document.getElementById(
-          "communityStatus"
-        );
+        document.getElementById("communityStatus");
 
       status.innerHTML = "";
 
+      if (!getApiKey()) {
+        status.innerHTML =
+          '<span class="error">API key is required.</span>';
+        return;
+      }
+
       const discordId =
         document
-          .getElementById(
-            "communityDiscordId"
-          )
+          .getElementById("communityDiscordId")
           .value
           .trim();
 
       const name =
         document
-          .getElementById(
-            "communityName"
-          )
+          .getElementById("communityName")
           .value
           .trim();
 
       const subjectId =
         document
-          .getElementById(
-            "communitySubject"
-          )
+          .getElementById("communitySubject")
           .value;
 
       if (!discordId) {
@@ -789,7 +999,7 @@
 
       if (!name) {
         status.innerHTML =
-          '<span class="error">Server name is required.</span>';
+          '<span class="error">Discord server name is required.</span>';
         return;
       }
 
@@ -805,21 +1015,15 @@
         subjectId,
 
         confidence:
-          document.getElementById(
-            "communityConfidence"
-          ).value,
+          document.getElementById("communityConfidence").value,
 
         active:
-          document.getElementById(
-            "communityActive"
-          ).value === "true"
+          document.getElementById("communityActive").value === "true"
       };
 
       const sourceUrl =
         document
-          .getElementById(
-            "communitySourceUrl"
-          )
+          .getElementById("communitySourceUrl")
           .value
           .trim();
 
@@ -828,15 +1032,13 @@
       }
 
       try {
-
         await apiRequest(
           `${API_BASE}/api/v1/servers`,
           {
             method: "POST",
 
             headers: {
-              "Content-Type":
-                "application/json"
+              "Content-Type": "application/json"
             },
 
             body:
@@ -859,9 +1061,21 @@
           "communitySourceUrl"
         ).value = "";
 
+        document.getElementById(
+          "communitySubject"
+        ).value = "";
+
         loadCommunities();
 
       } catch (error) {
+        if (error.status === 409) {
+          status.innerHTML =
+            `<span class="warning">
+              ${escapeHtml(error.message)}
+            </span>`;
+
+          return;
+        }
 
         status.innerHTML =
           `<span class="error">
@@ -871,8 +1085,9 @@
     }
 
     function friendlyCategory(value) {
-
-      if (!value) return "Unknown";
+      if (!value) {
+        return "Unknown";
+      }
 
       return String(value)
         .replaceAll("_", " ")
@@ -883,15 +1098,23 @@
     }
 
     function formatDate(value) {
-
-      if (!value) return "Unknown";
+      if (!value) {
+        return "Unknown";
+      }
 
       return new Date(value)
         .toLocaleString();
     }
 
-    function escapeHtml(value) {
+    async function copyText(value) {
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        console.warn("Clipboard write failed");
+      }
+    }
 
+    function escapeHtml(value) {
       if (
         value === null ||
         value === undefined
@@ -906,8 +1129,6 @@
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
     }
-
   </script>
-
 </body>
 </html>
