@@ -17,20 +17,28 @@ const app = Fastify({
   logger: true
 });
 
-const jwtSecret =
-  process.env.JWT_SECRET;
+/*
+|--------------------------------------------------------------------------
+| CONFIG
+|--------------------------------------------------------------------------
+*/
 
-const flomkkToken =
-  process.env.FLOMKK_API_TOKEN;
+const jwtSecret = process.env.JWT_SECRET;
+const flomkkToken = process.env.FLOMKK_API_TOKEN;
 
-const FLOMKK_BASE_URL =
-  "https://api.flomkk.work";
+const FLOMKK_BASE_URL = "https://api.flomkk.work";
 
 if (!jwtSecret) {
   throw new Error(
     "JWT_SECRET environment variable is required."
   );
 }
+
+/*
+|--------------------------------------------------------------------------
+| PLUGINS
+|--------------------------------------------------------------------------
+*/
 
 await app.register(cors, {
   origin: false
@@ -41,41 +49,33 @@ await app.register(rateLimit, {
   timeWindow: "1 minute"
 });
 
-await app.register(
-  fastifyCookie
-);
+await app.register(fastifyCookie);
 
-await app.register(
-  fastifyJwt,
-  {
-    secret: jwtSecret,
-
-    cookie: {
-      cookieName: "intel_session",
-      signed: false
-    }
+await app.register(fastifyJwt, {
+  secret: jwtSecret,
+  cookie: {
+    cookieName: "intel_session",
+    signed: false
   }
-);
+});
 
-await app.register(
-  fastifyStatic,
-  {
-    root: path.join(
-      process.cwd(),
-      "public"
-    ),
+await app.register(fastifyStatic, {
+  root: path.join(process.cwd(), "public"),
+  prefix: "/"
+});
 
-    prefix: "/"
-  }
-);
+/*
+|--------------------------------------------------------------------------
+| TYPES / VALIDATION
+|--------------------------------------------------------------------------
+*/
 
-const discordIdSchema =
-  z
-    .string()
-    .regex(
-      /^\d{15,22}$/,
-      "Invalid Discord ID"
-    );
+const discordIdSchema = z
+  .string()
+  .regex(
+    /^\d{15,22}$/,
+    "Invalid Discord ID"
+  );
 
 type StaffRole =
   | "ADMIN"
@@ -114,20 +114,20 @@ type FlomkkResponse = {
   error?: string;
 };
 
+/*
+|--------------------------------------------------------------------------
+| BOOTSTRAP ADMIN
+|--------------------------------------------------------------------------
+*/
+
 async function bootstrapAdmin() {
   const username =
-    process.env
-      .BOOTSTRAP_ADMIN_USERNAME
-      ?.trim();
+    process.env.BOOTSTRAP_ADMIN_USERNAME?.trim();
 
   const password =
-    process.env
-      .BOOTSTRAP_ADMIN_PASSWORD;
+    process.env.BOOTSTRAP_ADMIN_PASSWORD;
 
-  if (
-    !username ||
-    !password
-  ) {
+  if (!username || !password) {
     return;
   }
 
@@ -171,6 +171,12 @@ async function bootstrapAdmin() {
   );
 }
 
+/*
+|--------------------------------------------------------------------------
+| AUTH HELPERS
+|--------------------------------------------------------------------------
+*/
+
 async function getCurrentUser(
   req: any
 ): Promise<SessionUser | null> {
@@ -187,10 +193,7 @@ async function getCurrentUser(
         }
       });
 
-    if (
-      !dbUser ||
-      !dbUser.active
-    ) {
+    if (!dbUser || !dbUser.active) {
       return null;
     }
 
@@ -219,8 +222,7 @@ async function requireLogin(
       });
   }
 
-  req.staffUser =
-    user;
+  req.staffUser = user;
 }
 
 function requireRole(
@@ -253,10 +255,15 @@ function requireRole(
         });
     }
 
-    req.staffUser =
-      user;
+    req.staffUser = user;
   };
 }
+
+/*
+|--------------------------------------------------------------------------
+| FLOMKK API
+|--------------------------------------------------------------------------
+*/
 
 async function flomkkRequest(
   endpoint: string,
@@ -270,7 +277,6 @@ async function flomkkRequest(
     return {
       ok: false,
       statusCode: 503,
-
       data: {
         success: false,
         status: "TOKEN_NOT_CONFIGURED",
@@ -293,10 +299,8 @@ async function flomkkRequest(
           headers: {
             Authorization:
               `Bearer ${flomkkToken}`,
-
             "Content-Type":
               "application/json",
-
             Accept:
               "application/json"
           },
@@ -317,16 +321,15 @@ async function flomkkRequest(
 
     try {
       data =
-        (await response.json())
-        as FlomkkResponse;
+        (await response.json()) as FlomkkResponse;
     } catch {
-      data =
-        null;
+      data = null;
     }
 
     return {
       ok: response.ok,
-      statusCode: response.status,
+      statusCode:
+        response.status,
       data
     };
   } catch (error) {
@@ -338,7 +341,6 @@ async function flomkkRequest(
     return {
       ok: false,
       statusCode: 502,
-
       data: {
         success: false,
         status:
@@ -388,7 +390,7 @@ function normalizeFlomkkServers(
               role.timestamp
                 ? new Date(
                     role.timestamp *
-                    1000
+                      1000
                   ).toISOString()
                 : null
           })
@@ -397,6 +399,12 @@ function normalizeFlomkkServers(
   );
 }
 
+/*
+|--------------------------------------------------------------------------
+| HEALTH / VERSION
+|--------------------------------------------------------------------------
+*/
+
 app.get(
   "/health",
   async () => ({
@@ -404,10 +412,19 @@ app.get(
   })
 );
 
-app.get("/version", async () => ({
-  version: "flomkk-v1",
-  intelRoute: true
-}));
+app.get(
+  "/version",
+  async () => ({
+    version: "flomkk-v1",
+    intelRoute: true
+  })
+);
+
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 
 app.post(
   "/api/v1/auth/login",
@@ -450,10 +467,7 @@ app.post(
         }
       });
 
-    if (
-      !user ||
-      !user.active
-    ) {
+    if (!user || !user.active) {
       return reply
         .code(401)
         .send({
@@ -481,7 +495,6 @@ app.post(
       where: {
         id: user.id
       },
-
       data: {
         lastLoginAt:
           new Date()
@@ -498,8 +511,7 @@ app.post(
             user.role
         },
         {
-          expiresIn:
-            "8h"
+          expiresIn: "8h"
         }
       );
 
@@ -518,7 +530,6 @@ app.post(
 
     return {
       ok: true,
-
       user: {
         id: user.id,
         username:
@@ -563,6 +574,12 @@ app.get(
       req.staffUser
   })
 );
+
+/*
+|--------------------------------------------------------------------------
+| LIVE INTELLIGENCE CHECK
+|--------------------------------------------------------------------------
+*/
 
 app.get(
   "/api/v1/intel/check/:discordId",
@@ -656,8 +673,7 @@ app.get(
       discordId,
 
       provider: {
-        name:
-          "Flomkk",
+        name: "Flomkk",
 
         configured:
           Boolean(
@@ -774,6 +790,12 @@ app.get(
   }
 );
 
+/*
+|--------------------------------------------------------------------------
+| LICENSE INFORMATION
+|--------------------------------------------------------------------------
+*/
+
 app.get(
   "/api/v1/intel/license",
   {
@@ -811,8 +833,7 @@ app.get(
       success:
         result.ok,
 
-      expired:
-        false,
+      expired: false,
 
       provider:
         "Flomkk",
@@ -822,6 +843,12 @@ app.get(
     });
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| STAFF
+|--------------------------------------------------------------------------
+*/
 
 app.get(
   "/api/v1/staff",
@@ -1061,6 +1088,12 @@ app.patch(
   }
 );
 
+/*
+|--------------------------------------------------------------------------
+| SUBJECTS
+|--------------------------------------------------------------------------
+*/
+
 app.get(
   "/api/v1/subjects",
   {
@@ -1084,6 +1117,12 @@ app.get(
     });
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| COMMUNITIES
+|--------------------------------------------------------------------------
+*/
 
 app.get(
   "/api/v1/servers",
@@ -1182,9 +1221,7 @@ app.post(
         });
     }
 
-    if (
-      body.subjectId
-    ) {
+    if (body.subjectId) {
       const subject =
         await prisma.subject.findUnique({
           where: {
@@ -1205,8 +1242,7 @@ app.post(
 
     const server =
       await prisma.discordServer.create({
-        data:
-          body,
+        data: body,
 
         include: {
           subject:
@@ -1221,6 +1257,12 @@ app.post(
       );
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| INTERNAL USER LOOKUP
+|--------------------------------------------------------------------------
+*/
 
 app.get(
   "/api/v1/users/:discordId/evidence",
@@ -1285,14 +1327,23 @@ app.get(
 
     return {
       found: true,
+
       discordId,
+
       evidenceCount:
         user.evidence.length,
+
       evidence:
         user.evidence
     };
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| ADD INTERNAL MEMBERSHIP
+|--------------------------------------------------------------------------
+*/
 
 app.post(
   "/api/v1/users/:discordId/evidence",
@@ -1456,6 +1507,12 @@ app.post(
   }
 );
 
+/*
+|--------------------------------------------------------------------------
+| ERROR HANDLER
+|--------------------------------------------------------------------------
+*/
+
 app.setErrorHandler(
   (
     err,
@@ -1477,9 +1534,7 @@ app.setErrorHandler(
         });
     }
 
-    req.log.error(
-      err
-    );
+    req.log.error(err);
 
     return reply
       .code(500)
@@ -1490,10 +1545,16 @@ app.setErrorHandler(
   }
 );
 
+/*
+|--------------------------------------------------------------------------
+| START
+|--------------------------------------------------------------------------
+*/
+
 const port =
   Number(
     process.env.PORT ??
-    3000
+      3000
   );
 
 const host =
