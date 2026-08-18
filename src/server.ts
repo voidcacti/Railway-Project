@@ -404,6 +404,11 @@ app.get(
   })
 );
 
+app.get("/version", async () => ({
+  version: "flomkk-v1",
+  intelRoute: true
+}));
+
 app.post(
   "/api/v1/auth/login",
   {
