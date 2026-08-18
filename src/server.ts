@@ -17,13 +17,32 @@ const app = Fastify({
   logger: true
 });
 
-const jwtSecret = process.env.JWT_SECRET;
+/*
+|--------------------------------------------------------------------------
+| ENVIRONMENT VARIABLES
+|--------------------------------------------------------------------------
+*/
+
+const jwtSecret =
+  process.env.JWT_SECRET;
+
+const flomkkToken =
+  process.env.FLOMKK_API_TOKEN;
+
+const FLOMKK_BASE_URL =
+  "https://api.flomkk.work";
 
 if (!jwtSecret) {
   throw new Error(
     "JWT_SECRET environment variable is required."
   );
 }
+
+/*
+|--------------------------------------------------------------------------
+| FASTIFY PLUGINS
+|--------------------------------------------------------------------------
+*/
 
 await app.register(cors, {
   origin: false
@@ -34,24 +53,50 @@ await app.register(rateLimit, {
   timeWindow: "1 minute"
 });
 
-await app.register(fastifyCookie);
+await app.register(
+  fastifyCookie
+);
 
-await app.register(fastifyJwt, {
-  secret: jwtSecret,
-  cookie: {
-    cookieName: "intel_session",
-    signed: false
+await app.register(
+  fastifyJwt,
+  {
+    secret: jwtSecret,
+
+    cookie: {
+      cookieName:
+        "intel_session",
+
+      signed: false
+    }
   }
-});
+);
 
-await app.register(fastifyStatic, {
-  root: path.join(process.cwd(), "public"),
-  prefix: "/"
-});
+await app.register(
+  fastifyStatic,
+  {
+    root:
+      path.join(
+        process.cwd(),
+        "public"
+      ),
 
-const discordIdSchema = z
-  .string()
-  .regex(/^\d{15,22}$/, "Invalid Discord ID");
+    prefix: "/"
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
+| VALIDATION
+|--------------------------------------------------------------------------
+*/
+
+const discordIdSchema =
+  z
+    .string()
+    .regex(
+      /^\d{15,22}$/,
+      "Invalid Discord ID"
+    );
 
 type StaffRole =
   | "ADMIN"
@@ -64,23 +109,68 @@ type SessionUser = {
   role: StaffRole;
 };
 
+/*
+|--------------------------------------------------------------------------
+| FLOMKK TYPES
+|--------------------------------------------------------------------------
+*/
+
+type FlomkkRole = {
+  role_id?: string;
+  role_name?: string;
+  timestamp?: number;
+};
+
+type FlomkkServer = {
+  server_id?: string;
+  server_name?: string;
+  roles?: FlomkkRole[];
+};
+
+type FlomkkResult = {
+  discord_id?: string;
+  servers?: FlomkkServer[];
+  timestamp?: number;
+};
+
+type FlomkkResponse = {
+  success: boolean;
+  status?: string;
+  message?: string;
+  result?: FlomkkResult | null;
+  error?: string;
+};
+
+/*
+|--------------------------------------------------------------------------
+| BOOTSTRAP ADMIN
+|--------------------------------------------------------------------------
+*/
+
 async function bootstrapAdmin() {
   const username =
-    process.env.BOOTSTRAP_ADMIN_USERNAME?.trim();
+    process.env
+      .BOOTSTRAP_ADMIN_USERNAME
+      ?.trim();
 
   const password =
-    process.env.BOOTSTRAP_ADMIN_PASSWORD;
+    process.env
+      .BOOTSTRAP_ADMIN_PASSWORD;
 
-  if (!username || !password) {
+  if (
+    !username ||
+    !password
+  ) {
     return;
   }
 
   const existing =
-    await prisma.staffUser.findUnique({
-      where: {
-        username
-      }
-    });
+    await prisma.staffUser
+      .findUnique({
+        where: {
+          username
+        }
+      });
 
   if (existing) {
     return;
@@ -91,26 +181,36 @@ async function bootstrapAdmin() {
     bcrypt.truncates(password)
   ) {
     throw new Error(
-      "BOOTSTRAP_ADMIN_PASSWORD must be at least 12 characters and no more than bcrypt's supported input length."
+      "BOOTSTRAP_ADMIN_PASSWORD must be at least 12 characters and within bcrypt's supported length."
     );
   }
 
   const passwordHash =
-    await bcrypt.hash(password, 12);
+    await bcrypt.hash(
+      password,
+      12
+    );
 
-  await prisma.staffUser.create({
-    data: {
-      username,
-      passwordHash,
-      role: "ADMIN",
-      active: true
-    }
-  });
+  await prisma.staffUser
+    .create({
+      data: {
+        username,
+        passwordHash,
+        role: "ADMIN",
+        active: true
+      }
+    });
 
   app.log.info(
     `Bootstrap admin '${username}' created.`
   );
 }
+
+/*
+|--------------------------------------------------------------------------
+| AUTH HELPERS
+|--------------------------------------------------------------------------
+*/
 
 async function getCurrentUser(
   req: any
@@ -122,20 +222,30 @@ async function getCurrentUser(
       req.user as SessionUser;
 
     const dbUser =
-      await prisma.staffUser.findUnique({
-        where: {
-          id: tokenUser.id
-        }
-      });
+      await prisma.staffUser
+        .findUnique({
+          where: {
+            id:
+              tokenUser.id
+          }
+        });
 
-    if (!dbUser || !dbUser.active) {
+    if (
+      !dbUser ||
+      !dbUser.active
+    ) {
       return null;
     }
 
     return {
-      id: dbUser.id,
-      username: dbUser.username,
-      role: dbUser.role
+      id:
+        dbUser.id,
+
+      username:
+        dbUser.username,
+
+      role:
+        dbUser.role
     };
   } catch {
     return null;
@@ -147,15 +257,21 @@ async function requireLogin(
   reply: any
 ) {
   const user =
-    await getCurrentUser(req);
+    await getCurrentUser(
+      req
+    );
 
   if (!user) {
-    return reply.code(401).send({
-      error: "Unauthorized"
-    });
+    return reply
+      .code(401)
+      .send({
+        error:
+          "Unauthorized"
+      });
   }
 
-  req.staffUser = user;
+  req.staffUser =
+    user;
 }
 
 function requireRole(
@@ -166,22 +282,185 @@ function requireRole(
     reply: any
   ) => {
     const user =
-      await getCurrentUser(req);
+      await getCurrentUser(
+        req
+      );
 
     if (!user) {
-      return reply.code(401).send({
-        error: "Unauthorized"
-      });
+      return reply
+        .code(401)
+        .send({
+          error:
+            "Unauthorized"
+        });
     }
 
-    if (!roles.includes(user.role)) {
-      return reply.code(403).send({
-        error: "Forbidden"
-      });
+    if (
+      !roles.includes(
+        user.role
+      )
+    ) {
+      return reply
+        .code(403)
+        .send({
+          error:
+            "Forbidden"
+        });
     }
 
-    req.staffUser = user;
+    req.staffUser =
+      user;
   };
+}
+
+/*
+|--------------------------------------------------------------------------
+| FLOMKK HELPERS
+|--------------------------------------------------------------------------
+*/
+
+async function flomkkRequest(
+  endpoint: string,
+  discordId?: string
+): Promise<{
+  ok: boolean;
+  statusCode: number;
+  data: FlomkkResponse | null;
+}> {
+  if (!flomkkToken) {
+    return {
+      ok: false,
+      statusCode: 503,
+
+      data: {
+        success: false,
+        status:
+          "TOKEN_NOT_CONFIGURED",
+        message:
+          "FLOMKK_API_TOKEN is not configured."
+      }
+    };
+  }
+
+  try {
+    const response =
+      await fetch(
+        `${FLOMKK_BASE_URL}${endpoint}`,
+        {
+          method:
+            discordId
+              ? "POST"
+              : "GET",
+
+          headers: {
+            Authorization:
+              `Bearer ${flomkkToken}`,
+
+            "Content-Type":
+              "application/json",
+
+            Accept:
+              "application/json"
+          },
+
+          body:
+            discordId
+              ? JSON.stringify({
+                  discord:
+                    discordId
+                })
+              : undefined
+        }
+      );
+
+    let data:
+      FlomkkResponse | null =
+        null;
+
+    try {
+      data =
+        await response.json()
+          as FlomkkResponse;
+    } catch {
+      data =
+        null;
+    }
+
+    return {
+      ok:
+        response.ok,
+
+      statusCode:
+        response.status,
+
+      data
+    };
+  } catch (error) {
+    app.log.error(
+      error,
+      `Failed Flomkk request to ${endpoint}`
+    );
+
+    return {
+      ok: false,
+      statusCode: 502,
+
+      data: {
+        success: false,
+        status:
+          "PROVIDER_UNAVAILABLE",
+        message:
+          "Unable to reach intelligence provider."
+      }
+    };
+  }
+}
+
+function normalizeFlomkkServers(
+  servers:
+    FlomkkServer[] | undefined
+) {
+  return (
+    servers ?? []
+  ).map(
+    server => ({
+      serverId:
+        server.server_id ??
+        null,
+
+      serverName:
+        server.server_name ??
+        "Unknown Server",
+
+      roles:
+        (
+          server.roles ??
+          []
+        ).map(
+          role => ({
+            roleId:
+              role.role_id ??
+              null,
+
+            roleName:
+              role.role_name ??
+              "Unknown Role",
+
+            timestamp:
+              role.timestamp ??
+              null,
+
+            observedAt:
+              role.timestamp
+                ? new Date(
+                    role.timestamp *
+                    1000
+                  ).toISOString()
+                : null
+          })
+        )
+    })
+  );
 }
 
 /*
@@ -190,9 +469,12 @@ function requireRole(
 |--------------------------------------------------------------------------
 */
 
-app.get("/health", async () => ({
-  ok: true
-}));
+app.get(
+  "/health",
+  async () => ({
+    ok: true
+  })
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -206,69 +488,97 @@ app.post(
     config: {
       rateLimit: {
         max: 10,
-        timeWindow: "15 minutes"
+        timeWindow:
+          "15 minutes"
       }
     }
   },
-  async (req, reply) => {
-    const body = z.object({
-      username: z
-        .string()
-        .min(2)
-        .max(100),
+  async (
+    req,
+    reply
+  ) => {
+    const body =
+      z.object({
+        username:
+          z
+            .string()
+            .min(2)
+            .max(100),
 
-      password: z
-        .string()
-        .min(1)
-        .max(200)
-    }).parse(req.body);
+        password:
+          z
+            .string()
+            .min(1)
+            .max(200)
+      })
+      .parse(
+        req.body
+      );
 
     const user =
-      await prisma.staffUser.findUnique({
-        where: {
-          username: body.username
-        }
-      });
+      await prisma.staffUser
+        .findUnique({
+          where: {
+            username:
+              body.username
+          }
+        });
 
-    if (!user || !user.active) {
-      return reply.code(401).send({
-        error:
-          "Invalid username or password"
-      });
+    if (
+      !user ||
+      !user.active
+    ) {
+      return reply
+        .code(401)
+        .send({
+          error:
+            "Invalid username or password"
+        });
     }
 
-    const passwordValid =
+    const valid =
       await bcrypt.compare(
         body.password,
         user.passwordHash
       );
 
-    if (!passwordValid) {
-      return reply.code(401).send({
-        error:
-          "Invalid username or password"
-      });
+    if (!valid) {
+      return reply
+        .code(401)
+        .send({
+          error:
+            "Invalid username or password"
+        });
     }
 
-    await prisma.staffUser.update({
-      where: {
-        id: user.id
-      },
+    await prisma.staffUser
+      .update({
+        where: {
+          id:
+            user.id
+        },
 
-      data: {
-        lastLoginAt: new Date()
-      }
-    });
+        data: {
+          lastLoginAt:
+            new Date()
+        }
+      });
 
     const token =
       await reply.jwtSign(
         {
-          id: user.id,
-          username: user.username,
-          role: user.role
+          id:
+            user.id,
+
+          username:
+            user.username,
+
+          role:
+            user.role
         },
         {
-          expiresIn: "8h"
+          expiresIn:
+            "8h"
         }
       );
 
@@ -279,8 +589,10 @@ app.post(
         path: "/",
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
-        maxAge: 60 * 60 * 8
+        sameSite:
+          "strict",
+        maxAge:
+          60 * 60 * 8
       }
     );
 
@@ -288,9 +600,14 @@ app.post(
       ok: true,
 
       user: {
-        id: user.id,
-        username: user.username,
-        role: user.role
+        id:
+          user.id,
+
+        username:
+          user.username,
+
+        role:
+          user.role
       }
     };
   }
@@ -298,7 +615,10 @@ app.post(
 
 app.post(
   "/api/v1/auth/logout",
-  async (_req, reply) => {
+  async (
+    _req,
+    reply
+  ) => {
     reply.clearCookie(
       "intel_session",
       {
@@ -315,13 +635,304 @@ app.post(
 app.get(
   "/api/v1/auth/me",
   {
-    preHandler: requireLogin
+    preHandler:
+      requireLogin
   },
-  async (req: any) => {
-    return {
-      authenticated: true,
-      user: req.staffUser
-    };
+  async (
+    req: any
+  ) => ({
+    authenticated: true,
+    user:
+      req.staffUser
+  })
+);
+
+/*
+|--------------------------------------------------------------------------
+| LIVE INTELLIGENCE CHECK
+|--------------------------------------------------------------------------
+*/
+
+app.get(
+  "/api/v1/intel/check/:discordId",
+  {
+    preHandler:
+      requireRole([
+        "ADMIN",
+        "ANALYST",
+        "READ_ONLY"
+      ])
+  },
+  async (
+    req,
+    reply
+  ) => {
+    const {
+      discordId
+    } =
+      z.object({
+        discordId:
+          discordIdSchema
+      })
+      .parse(
+        req.params
+      );
+
+    /*
+      Check BadlandsRP internal database
+    */
+
+    const internalUser =
+      await prisma.discordUser
+        .findUnique({
+          where: {
+            discordId
+          },
+
+          include: {
+            evidence: {
+              orderBy: {
+                observedAt:
+                  "desc"
+              },
+
+              include: {
+                server: {
+                  include: {
+                    subject:
+                      true
+                  }
+                }
+              }
+            }
+          }
+        });
+
+    /*
+      Query Flomkk simultaneously
+    */
+
+    const [
+      blacklistResponse,
+      cheaterResponse
+    ] =
+      await Promise.all([
+        flomkkRequest(
+          "/v1/check-user",
+          discordId
+        ),
+
+        flomkkRequest(
+          "/v1/check-cheater",
+          discordId
+        )
+      ]);
+
+    const tokenExpired =
+      blacklistResponse.statusCode ===
+        401 ||
+      cheaterResponse.statusCode ===
+        401;
+
+    const blacklistData =
+      blacklistResponse.data;
+
+    const cheaterData =
+      cheaterResponse.data;
+
+    const blacklistFound =
+      Boolean(
+        blacklistData
+          ?.success &&
+        blacklistData
+          ?.result
+      );
+
+    const cheaterFound =
+      Boolean(
+        cheaterData
+          ?.success &&
+        cheaterData
+          ?.result
+      );
+
+    const blacklistedServers =
+      normalizeFlomkkServers(
+        blacklistData
+          ?.result
+          ?.servers
+      );
+
+    const cheaterServers =
+      normalizeFlomkkServers(
+        cheaterData
+          ?.result
+          ?.servers
+      );
+
+    return reply.send({
+      success: true,
+
+      discordId,
+
+      provider: {
+        name:
+          "Flomkk",
+
+        configured:
+          Boolean(
+            flomkkToken
+          ),
+
+        tokenExpired,
+
+        blacklistRequest: {
+          ok:
+            blacklistResponse.ok,
+
+          statusCode:
+            blacklistResponse.statusCode,
+
+          providerStatus:
+            blacklistData
+              ?.status ??
+            null,
+
+          providerMessage:
+            blacklistData
+              ?.message ??
+            null
+        },
+
+        cheaterRequest: {
+          ok:
+            cheaterResponse.ok,
+
+          statusCode:
+            cheaterResponse.statusCode,
+
+          providerStatus:
+            cheaterData
+              ?.status ??
+            null,
+
+          providerMessage:
+            cheaterData
+              ?.message ??
+            null
+        }
+      },
+
+      internal: {
+        found:
+          Boolean(
+            internalUser
+          ),
+
+        evidenceCount:
+          internalUser
+            ?.evidence
+            .length ??
+          0,
+
+        evidence:
+          internalUser
+            ?.evidence ??
+          []
+      },
+
+      blacklist: {
+        found:
+          blacklistFound,
+
+        serverCount:
+          blacklistedServers
+            .length,
+
+        timestamp:
+          blacklistData
+            ?.result
+            ?.timestamp ??
+          null,
+
+        servers:
+          blacklistedServers
+      },
+
+      confirmedCheater: {
+        found:
+          cheaterFound,
+
+        serverCount:
+          cheaterServers
+            .length,
+
+        timestamp:
+          cheaterData
+            ?.result
+            ?.timestamp ??
+          null,
+
+        servers:
+          cheaterServers
+      }
+    });
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
+| FLOMKK LICENSE INFORMATION
+|--------------------------------------------------------------------------
+*/
+
+app.get(
+  "/api/v1/intel/license",
+  {
+    preHandler:
+      requireRole([
+        "ADMIN"
+      ])
+  },
+  async (
+    _req,
+    reply
+  ) => {
+    const result =
+      await flomkkRequest(
+        "/v1/license-information"
+      );
+
+    if (
+      result.statusCode ===
+      401
+    ) {
+      return reply
+        .code(401)
+        .send({
+          success: false,
+          expired: true,
+          provider:
+            "Flomkk",
+
+          data:
+            result.data
+        });
+    }
+
+    return reply.send({
+      success:
+        result.ok,
+
+      expired:
+        false,
+
+      provider:
+        "Flomkk",
+
+      data:
+        result.data
+    });
   }
 );
 
@@ -335,24 +946,28 @@ app.get(
   "/api/v1/staff",
   {
     preHandler:
-      requireRole(["ADMIN"])
+      requireRole([
+        "ADMIN"
+      ])
   },
   async () => {
-    return prisma.staffUser.findMany({
-      orderBy: {
-        username: "asc"
-      },
+    return prisma.staffUser
+      .findMany({
+        orderBy: {
+          username:
+            "asc"
+        },
 
-      select: {
-        id: true,
-        username: true,
-        role: true,
-        active: true,
-        lastLoginAt: true,
-        createdAt: true,
-        updatedAt: true
-      }
-    });
+        select: {
+          id: true,
+          username: true,
+          role: true,
+          active: true,
+          lastLoginAt: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      });
   }
 );
 
@@ -360,47 +975,68 @@ app.post(
   "/api/v1/staff",
   {
     preHandler:
-      requireRole(["ADMIN"])
-  },
-  async (req, reply) => {
-    const body = z.object({
-      username: z
-        .string()
-        .min(2)
-        .max(100),
-
-      password: z
-        .string()
-        .min(12)
-        .max(72),
-
-      role: z.enum([
-        "ADMIN",
-        "ANALYST",
-        "READ_ONLY"
+      requireRole([
+        "ADMIN"
       ])
-    }).parse(req.body);
+  },
+  async (
+    req,
+    reply
+  ) => {
+    const body =
+      z.object({
+        username:
+          z
+            .string()
+            .min(2)
+            .max(100),
 
-    if (bcrypt.truncates(body.password)) {
-      return reply.code(400).send({
-        error:
-          "Password is too long."
-      });
+        password:
+          z
+            .string()
+            .min(12)
+            .max(72),
+
+        role:
+          z.enum([
+            "ADMIN",
+            "ANALYST",
+            "READ_ONLY"
+          ])
+      })
+      .parse(
+        req.body
+      );
+
+    if (
+      bcrypt.truncates(
+        body.password
+      )
+    ) {
+      return reply
+        .code(400)
+        .send({
+          error:
+            "Password is too long."
+        });
     }
 
     const existing =
-      await prisma.staffUser.findUnique({
-        where: {
-          username:
-            body.username
-        }
-      });
+      await prisma.staffUser
+        .findUnique({
+          where: {
+            username:
+              body.username
+          }
+        });
 
     if (existing) {
-      return reply.code(409).send({
-        error:
-          "Staff username already exists"
-      });
+      return reply
+        .code(409)
+        .send({
+          error:
+            "Staff username already exists"
+        });
     }
 
     const passwordHash =
@@ -410,32 +1046,35 @@ app.post(
       );
 
     const user =
-      await prisma.staffUser.create({
-        data: {
-          username:
-            body.username,
+      await prisma.staffUser
+        .create({
+          data: {
+            username:
+              body.username,
 
-          passwordHash,
+            passwordHash,
 
-          role:
-            body.role,
+            role:
+              body.role,
 
-          active: true
-        },
+            active: true
+          },
 
-        select: {
-          id: true,
-          username: true,
-          role: true,
-          active: true,
-          lastLoginAt: true,
-          createdAt: true
-        }
-      });
+          select: {
+            id: true,
+            username: true,
+            role: true,
+            active: true,
+            lastLoginAt: true,
+            createdAt: true
+          }
+        });
 
     return reply
       .code(201)
-      .send(user);
+      .send(
+        user
+      );
   }
 );
 
@@ -443,46 +1082,69 @@ app.patch(
   "/api/v1/staff/:id",
   {
     preHandler:
-      requireRole(["ADMIN"])
+      requireRole([
+        "ADMIN"
+      ])
   },
-  async (req, reply) => {
-    const params = z.object({
-      id: z.string().min(1)
-    }).parse(req.params);
+  async (
+    req,
+    reply
+  ) => {
+    const params =
+      z.object({
+        id:
+          z
+            .string()
+            .min(1)
+      })
+      .parse(
+        req.params
+      );
 
-    const body = z.object({
-      role: z
-        .enum([
-          "ADMIN",
-          "ANALYST",
-          "READ_ONLY"
-        ])
-        .optional(),
+    const body =
+      z.object({
+        role:
+          z
+            .enum([
+              "ADMIN",
+              "ANALYST",
+              "READ_ONLY"
+            ])
+            .optional(),
 
-      active: z
-        .boolean()
-        .optional(),
+        active:
+          z
+            .boolean()
+            .optional(),
 
-      password: z
-        .string()
-        .min(12)
-        .max(72)
-        .optional()
-    }).parse(req.body);
+        password:
+          z
+            .string()
+            .min(12)
+            .max(72)
+            .optional()
+      })
+      .parse(
+        req.body
+      );
 
     let passwordHash:
       string | undefined;
 
-    if (body.password) {
+    if (
+      body.password
+    ) {
       if (
         bcrypt.truncates(
           body.password
         )
       ) {
-        return reply.code(400).send({
-          error:
-            "Password is too long."
-        });
+        return reply
+          .code(400)
+          .send({
+            error:
+              "Password is too long."
+          });
       }
 
       passwordHash =
@@ -492,15 +1154,20 @@ app.patch(
         );
     }
 
-    const updated =
-      await prisma.staffUser.update({
+    return prisma.staffUser
+      .update({
         where: {
-          id: params.id
+          id:
+            params.id
         },
 
         data: {
-          role: body.role,
-          active: body.active,
+          role:
+            body.role,
+
+          active:
+            body.active,
+
           passwordHash
         },
 
@@ -514,8 +1181,6 @@ app.patch(
           updatedAt: true
         }
       });
-
-    return updated;
   }
 );
 
@@ -535,15 +1200,18 @@ app.get(
       ])
   },
   async () => {
-    return prisma.subject.findMany({
-      orderBy: {
-        name: "asc"
-      },
+    return prisma.subject
+      .findMany({
+        orderBy: {
+          name:
+            "asc"
+        },
 
-      include: {
-        servers: true
-      }
-    });
+        include: {
+          servers:
+            true
+        }
+      });
   }
 );
 
@@ -563,15 +1231,18 @@ app.get(
       ])
   },
   async () => {
-    return prisma.discordServer.findMany({
-      orderBy: {
-        name: "asc"
-      },
+    return prisma.discordServer
+      .findMany({
+        orderBy: {
+          name:
+            "asc"
+        },
 
-      include: {
-        subject: true
-      }
-    });
+        include: {
+          subject:
+            true
+        }
+      });
   }
 );
 
@@ -579,77 +1250,121 @@ app.post(
   "/api/v1/servers",
   {
     preHandler:
-      requireRole(["ADMIN"])
+      requireRole([
+        "ADMIN"
+      ])
   },
-  async (req, reply) => {
-    const body = z.object({
-      discordId:
-        discordIdSchema,
+  async (
+    req,
+    reply
+  ) => {
+    const body =
+      z.object({
+        discordId:
+          discordIdSchema,
 
-      name: z
-        .string()
-        .min(1)
-        .max(150),
+        name:
+          z
+            .string()
+            .min(1)
+            .max(150),
 
-      subjectId: z
-        .string()
-        .optional(),
+        subjectId:
+          z
+            .string()
+            .optional(),
 
-      confidence: z
-        .enum([
-          "UNVERIFIED",
-          "LOW",
-          "MEDIUM",
-          "HIGH",
-          "CONFIRMED"
-        ])
-        .default(
-          "UNVERIFIED"
-        ),
+        confidence:
+          z
+            .enum([
+              "UNVERIFIED",
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CONFIRMED"
+            ])
+            .default(
+              "UNVERIFIED"
+            ),
 
-      sourceUrl: z
-        .string()
-        .url()
-        .optional(),
+        sourceUrl:
+          z
+            .string()
+            .url()
+            .optional(),
 
-      active: z
-        .boolean()
-        .optional()
-    }).parse(req.body);
+        active:
+          z
+            .boolean()
+            .optional()
+      })
+      .parse(
+        req.body
+      );
 
     const existing =
-      await prisma.discordServer.findUnique({
-        where: {
-          discordId:
-            body.discordId
-        }
-      });
+      await prisma.discordServer
+        .findUnique({
+          where: {
+            discordId:
+              body.discordId
+          }
+        });
 
     if (existing) {
-      return reply.code(409).send({
-        error:
-          "Discord community already exists"
-      });
+      return reply
+        .code(409)
+        .send({
+          error:
+            "Discord community already exists"
+        });
+    }
+
+    if (
+      body.subjectId
+    ) {
+      const subject =
+        await prisma.subject
+          .findUnique({
+            where: {
+              id:
+                body.subjectId
+            }
+          });
+
+      if (!subject) {
+        return reply
+          .code(400)
+          .send({
+            error:
+              "Unknown subjectId"
+          });
+      }
     }
 
     const server =
-      await prisma.discordServer.create({
-        data: body,
+      await prisma.discordServer
+        .create({
+          data:
+            body,
 
-        include: {
-          subject: true
-        }
-      });
+          include: {
+            subject:
+              true
+          }
+        });
 
     return reply
       .code(201)
-      .send(server);
+      .send(
+        server
+      );
   }
 );
 
 /*
 |--------------------------------------------------------------------------
-| USER LOOKUP
+| INTERNAL USER LOOKUP
 |--------------------------------------------------------------------------
 */
 
@@ -663,35 +1378,46 @@ app.get(
         "READ_ONLY"
       ])
   },
-  async (req, reply) => {
-    const { discordId } =
+  async (
+    req,
+    reply
+  ) => {
+    const {
+      discordId
+    } =
       z.object({
         discordId:
           discordIdSchema
-      }).parse(req.params);
+      })
+      .parse(
+        req.params
+      );
 
     const user =
-      await prisma.discordUser.findUnique({
-        where: {
-          discordId
-        },
+      await prisma.discordUser
+        .findUnique({
+          where: {
+            discordId
+          },
 
-        include: {
-          evidence: {
-            orderBy: {
-              observedAt: "desc"
-            },
+          include: {
+            evidence: {
+              orderBy: {
+                observedAt:
+                  "desc"
+              },
 
-            include: {
-              server: {
-                include: {
-                  subject: true
+              include: {
+                server: {
+                  include: {
+                    subject:
+                      true
+                  }
                 }
               }
             }
           }
-        }
-      });
+        });
 
     if (!user) {
       return reply
@@ -706,7 +1432,9 @@ app.get(
 
     return {
       found: true,
+
       discordId,
+
       evidenceCount:
         user.evidence.length,
 
@@ -718,7 +1446,7 @@ app.get(
 
 /*
 |--------------------------------------------------------------------------
-| MEMBERSHIPS
+| ADD INTERNAL MEMBERSHIP
 |--------------------------------------------------------------------------
 */
 
@@ -731,131 +1459,161 @@ app.post(
         "ANALYST"
       ])
   },
-  async (req: any, reply) => {
-    const { discordId } =
+  async (
+    req: any,
+    reply
+  ) => {
+    const {
+      discordId
+    } =
       z.object({
         discordId:
           discordIdSchema
-      }).parse(req.params);
+      })
+      .parse(
+        req.params
+      );
 
-    const body = z.object({
-      serverDiscordId:
-        discordIdSchema,
+    const body =
+      z.object({
+        serverDiscordId:
+          discordIdSchema,
 
-      observedAt:
-        z.coerce.date(),
+        observedAt:
+          z.coerce
+            .date(),
 
-      endedAt:
-        z.coerce
-          .date()
-          .optional(),
+        endedAt:
+          z.coerce
+            .date()
+            .optional(),
 
-      confidence: z
-        .enum([
-          "UNVERIFIED",
-          "LOW",
-          "MEDIUM",
-          "HIGH",
-          "CONFIRMED"
-        ])
-        .default("HIGH"),
+        confidence:
+          z
+            .enum([
+              "UNVERIFIED",
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CONFIRMED"
+            ])
+            .default(
+              "HIGH"
+            ),
 
-      roleNames:
-        z.array(
-          z.string().max(100)
-        )
-        .default([])
-    }).parse(req.body);
+        roleNames:
+          z
+            .array(
+              z
+                .string()
+                .max(100)
+            )
+            .default([])
+      })
+      .parse(
+        req.body
+      );
 
     const server =
-      await prisma.discordServer.findUnique({
-        where: {
-          discordId:
-            body.serverDiscordId
-        }
-      });
+      await prisma.discordServer
+        .findUnique({
+          where: {
+            discordId:
+              body.serverDiscordId
+          }
+        });
 
     if (!server) {
-      return reply.code(400).send({
-        error:
-          "Unknown community"
-      });
+      return reply
+        .code(400)
+        .send({
+          error:
+            "Unknown community"
+        });
     }
 
     const user =
-      await prisma.discordUser.upsert({
-        where: {
-          discordId
-        },
+      await prisma.discordUser
+        .upsert({
+          where: {
+            discordId
+          },
 
-        update: {},
+          update: {},
 
-        create: {
-          discordId
-        }
-      });
+          create: {
+            discordId
+          }
+        });
 
     const existing =
-      await prisma.evidence.findFirst({
-        where: {
-          userId:
-            user.id,
+      await prisma.evidence
+        .findFirst({
+          where: {
+            userId:
+              user.id,
 
-          serverId:
-            server.id
-        }
-      });
+            serverId:
+              server.id
+          }
+        });
 
     if (existing) {
-      return reply.code(409).send({
-        error:
-          "Association already exists"
-      });
+      return reply
+        .code(409)
+        .send({
+          error:
+            "Association already exists"
+        });
     }
 
     const evidence =
-      await prisma.evidence.create({
-        data: {
-          userId:
-            user.id,
+      await prisma.evidence
+        .create({
+          data: {
+            userId:
+              user.id,
 
-          serverId:
-            server.id,
+            serverId:
+              server.id,
 
-          sourceType:
-            "INTERNAL_MODERATION_RECORD",
+            sourceType:
+              "INTERNAL_MODERATION_RECORD",
 
-          sourceRef:
-            "Dashboard membership entry",
+            sourceRef:
+              "Dashboard membership entry",
 
-          observedAt:
-            body.observedAt,
+            observedAt:
+              body.observedAt,
 
-          endedAt:
-            body.endedAt,
+            endedAt:
+              body.endedAt,
 
-          confidence:
-            body.confidence,
+            confidence:
+              body.confidence,
 
-          roleNames:
-            body.roleNames,
+            roleNames:
+              body.roleNames,
 
-          createdBy:
-            req.staffUser.username
-        },
+            createdBy:
+              req.staffUser.username
+          },
 
-        include: {
-          server: {
-            include: {
-              subject: true
+          include: {
+            server: {
+              include: {
+                subject:
+                  true
+              }
             }
           }
-        }
-      });
+        });
 
     return reply
       .code(201)
-      .send(evidence);
+      .send(
+        evidence
+      );
   }
 );
 
@@ -866,27 +1624,44 @@ app.post(
 */
 
 app.setErrorHandler(
-  (err, req, reply) => {
+  (
+    err,
+    req,
+    reply
+  ) => {
     if (
-      err instanceof z.ZodError
+      err instanceof
+      z.ZodError
     ) {
-      return reply.code(400).send({
-        error:
-          "Validation failed",
+      return reply
+        .code(400)
+        .send({
+          error:
+            "Validation failed",
 
-        details:
-          err.flatten()
-      });
+          details:
+            err.flatten()
+        });
     }
 
-    req.log.error(err);
+    req.log.error(
+      err
+    );
 
-    return reply.code(500).send({
-      error:
-        "Internal server error"
-    });
+    return reply
+      .code(500)
+      .send({
+        error:
+          "Internal server error"
+      });
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| START SERVER
+|--------------------------------------------------------------------------
+*/
 
 const port =
   Number(
